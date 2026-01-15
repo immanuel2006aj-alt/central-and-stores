@@ -2,8 +2,9 @@
    PRICE CONFIG – EDIT HERE
 ========================= */
 
-const PRICE_DATA = {
-  // 🌾 RICE
+// price.js
+const PRICE_MASTER = {
+
   "Raw Rice": {
     "India Gate": 65,
     "Daawat": 68,
@@ -42,26 +43,17 @@ const PRICE_DATA = {
     "Local Rice Mill": 88
   },
 
-  // 🥛 DAIRY
   "Milk": {
     "Aavin": 30,
     "Amul": 32,
     "Heritage": 31
   },
 
-  // 🧼 SOAP
   "Bath Soap": {
     "Lux": 40,
     "Hamam": 38,
     "Lifebuoy": 35,
     "Dove": 55
   }
+
 };
-
-/* =========================
-   HELPER FUNCTION
-========================= */
-
-function getPrice(productName, brandName) {
-  return PRICE_DATA?.[productName]?.[brandName] || 0;
-}
