@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Cart | Central & Stores</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{background:#f2f4f7;}
+
+.header{
+  background:#0fbf4a;
+  color:#fff;
+  padding:18px;
+  text-align:center;
+  font-size:20px;
+  font-weight:700;
+}
+
+.cart-wrapper{padding:16px;}
+
+.cart-card{
+  background:#fff;
+  border-radius:16px;
+  padding:14px;
+  margin-bottom:12px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 6px 16px rgba(0,0,0,.08);
+}
+
+.cart-title{font-weight:600;font-size:15px;}
+.qty-box{display:flex;align-items:center;gap:10px;margin-top:6px;}
+.qty-box button{
+  width:28px;height:28px;border:none;border-radius:50%;
+  background:#0fbf4a;color:#fff;font-size:18px;font-weight:700;
+}
+.qty-box span{font-weight:600;}
+
+.remove-btn{
+  background:#ffecec;color:#e53935;border:none;
+  padding:6px 10px;border-radius:8px;font-size:12px;
+}
+
+.disclaimer{
+  background:#fff8e1;
+  margin:16px;
+  padding:14px;
+  border-radius:14px;
+  font-size:13px;
+  line-height:1.5;
+}
+
+.footer{
+  position:sticky;bottom:0;background:#fff;padding:14px;border-top:1px solid #ddd;
+}
+.footer button{
+  width:100%;padding:14px;border:none;border-radius:14px;
+  background:#0fbf4a;color:#fff;font-size:16px;font-weight:700;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">🛒 My Cart</div>
+
+<div class="cart-wrapper" id="cartWrapper"></div>
+
+<div class="disclaimer">
+  <strong>📞 Order Confirmation</strong><br>
+  After placing an order, we will call you to confirm and update product details.
+</div>
+
+<div class="footer">
+  <button onclick="goToOrder()">Proceed to Order</button>
+</div>
+
+<script>
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+const cartWrapper = document.getElementById("cartWrapper");
+
+function renderCart(){
+  cartWrapper.innerHTML="";
+  if(cart.length===0){
+    cartWrapper.innerHTML="<p style='text-align:center;opacity:.6'>Cart is empty</p>";
+    return;
+  }
+  cart.forEach((item,i)=>{
+    cartWrapper.innerHTML+=`
+      <div class="cart-card">
+        <div>
+          <div class="cart-title">${item.name}</div>
+          <div class="qty-box">
+            <button onclick="updateQty(${i},-1)">−</button>
+            <span>${item.qty}</span>
+            <button onclick="updateQty(${i},1)">+</button>
+          </div>
+        </div>
+        <button class="remove-btn" onclick="removeItem(${i})">Remove</button>
+      </div>`;
+  });
+}
+
+function updateQty(i,d){
+  cart[i].qty+=d;
+  if(cart[i].qty<1)cart[i].qty=1;
+  localStorage.setItem("cart",JSON.stringify(cart));
+  renderCart();
+}
+
+function removeItem(i){
+  cart.splice(i,1);
+  localStorage.setItem("cart",JSON.stringify(cart));
+  renderCart();
+}
+
+function goToOrder(){
+  if(cart.length===0){alert("Cart is empty");return;}
+  window.location.href="order.html";
+}
+
+renderCart();
+</script>
+
+</body>
+</html>
