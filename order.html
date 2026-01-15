@@ -131,94 +131,68 @@ button:active{
   </div>
 
 </div>
-
-<!-- PRICE DATA -->
-<script src="price.js"></script>
-
 <script>
-const cart = JSON.parse(localStorage.getItem("cart")) || [];
-const box = document.getElementById("orderItems");
+/* ===== TELEGRAM CONFIG ===== */
+const BOT_TOKEN = "YOUR_BOT_TOKEN_HERE";
+const CHAT_ID  = "YOUR_CHAT_ID_HERE";
 
-/* RENDER CART ITEMS */
-cart.forEach((item,i)=>{
-  const brands = PRICE_MASTER[item.name] || {};
-  let options = `<option value="">Select Brand</option>`;
+/* ===== PLACE ORDER FUNCTION ===== */
+function placeOrder(){
 
-  for(const b in brands){
-    options += `<option value="${b}">${b} – ₹${brands[b]}</option>`;
-  }
+  // Get customer details
+  const name    = document.getElementById("custName").value.trim();
+  const address = document.getElementById("custAddress").value.trim();
+  const mobile  = document.getElementById("custMobile").value.trim();
+  const range   = document.getElementById("orderRange").value;
 
-  box.innerHTML += `
-    <div class="item">
-      <div class="item-name">${item.name}</div>
-
-      <select onchange="updatePrice(${i},this)">
-        ${options}
-      </select>
-
-      <div class="price" id="price-${i}">₹0</div>
-    </div>
-  `;
-});
-
-/* UPDATE PRICE */
-function updatePrice(i,el){
-  const brand = el.value;
-  const product = cart[i].name;
-  const price = PRICE_MASTER[product]?.[brand] || 0;
-
-  cart[i].brand = brand;
-  cart[i].price = price;
-
-  document.getElementById("price-"+i).innerText = "₹" + price;
-}
-
-/* PLACE ORDER */
-async function placeOrder(){
-
-  const name = custName.value.trim();
-  const address = custAddress.value.trim();
-  const mobile = custMobile.value.trim();
-  const range = orderRange.value;
-
+  // Validation
   if(!name || !address || !mobile || !range){
     alert("Please fill all details");
     return;
   }
 
-  for(const item of cart){
-    if(!item.brand){
-      alert("Please select brand for all products");
-      return;
-    }
+  // Get cart items (optional but useful)
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  // Build Telegram message
+  let message = "🛒 *New Order – Central & Stores*\n\n";
+
+  if(cart.length > 0){
+    message += "*Order Items:*\n";
+    cart.forEach(item=>{
+      message += `• ${item.name || item.product} ${item.kg ? "- " + item.kg : ""}\n`;
+    });
+    message += "\n";
   }
 
-  let msg = `🛒 *New Order – Central & Stores*\n\n`;
-  msg += `👤 ${name}\n📞 ${mobile}\n🏠 ${address}\n\n`;
+  message += `💰 *Estimated Order Value:* ${range}\n\n`;
+  message += `👤 *Name:* ${name}\n`;
+  message += `📞 *Mobile:* ${mobile}\n`;
+  message += `🏠 *Address:* ${address}`;
 
-  cart.forEach((it,i)=>{
-    msg += `${i+1}. ${it.name}\nBrand: ${it.brand}\nPrice: ₹${it.price}\n\n`;
-  });
-
-  msg += `💰 Estimated: ${range}`;
-
-  const BOT_TOKEN = "8562892791:AAFkdPm66jzBOhQPwtGExtQbvE8P4hgCtcg";
-  const CHAT_ID  = "1287496525";
-
-  await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body:JSON.stringify({
-      chat_id:CHAT_ID,
-      text:msg,
-      parse_mode:"Markdown"
+  // Send to Telegram
+  fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      chat_id: CHAT_ID,
+      text: message,
+      parse_mode: "Markdown"
     })
+  })
+  .then(() => {
+    // Optional: clear cart
+    localStorage.removeItem("cart");
+
+    // Redirect to success page
+    window.location.href = "success.html";
+  })
+  .catch(() => {
+    alert("Order failed. Please try again.");
   });
-
-  localStorage.removeItem("cart");
-  window.location.href = "success.html";
 }
-</script>
-
+      </script>
 </body>
 </html>
