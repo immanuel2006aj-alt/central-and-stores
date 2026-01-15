@@ -105,6 +105,7 @@ button:active{
 
   <!-- ORDER ITEMS -->
   <div class="card">
+    <div id="orderItems"></div>
     <h3>🛒 Order Items</h3>
     <div id="orderItems"></div>
   </div>
@@ -184,28 +185,42 @@ async function placeOrder(){
     alert("Please fill all details");
     return;
   }
-
+// ✅ BRAND SELECTION CHECK
+  for(const item of cart){
+    if(!item.brand){
+      alert("Please select brand for all products");
+      return;
+    }
+  }
   let msg=`🛒 *New Order – Central & Stores*\n\n`;
   msg+=`👤 ${name}\n📞 ${mobile}\n🏠 ${address}\n\n`;
 
   cart.forEach((it,i)=>{
-    msg+=`${i+1}. ${it.name}\nBrand: ${it.brand}\nPrice: ₹${it.price}\n\n`;
-  });
+    msg += `${i+1}. ${it.name}
+Brand: ${it.brand || "Not selected"}
+Qty: ${it.qty}
+Price: ₹${it.price || 0}
+
+`;
 
   msg+=`💰 Estimated: ${range}`;
 
+  try{
   await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{
     method:"POST",
     headers:{ "Content-Type":"application/json" },
     body:JSON.stringify({
-      chat_id:CHAT_ID,
-      text:msg,
+      chat_id: CHAT_ID,
+      text: msg,
       parse_mode:"Markdown"
     })
   });
 
   localStorage.removeItem("cart");
   location.href="success.html";
+
+}catch(e){
+  alert("Order failed. Please try again.");
 }
 </script>
 
