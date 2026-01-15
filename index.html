@@ -1178,19 +1178,38 @@ let cart = JSON.parse(localStorage.getItem("cart")) || [];
 // show cart count on page load
 document.getElementById("cartCount").innerText = cart.length;
 
-/* ADD TO CART */
+
+  /* ADD TO CART WITH SOUND */
 function addToCart(btn){
+
+  // 🔊 touch sound immediately
+  playTouch();
+
   const card = btn.closest(".product-card");
+  const name = card.dataset.name;
 
-  const product = {
-    name: card.dataset.name,
-    qty: 1   // default 1 unit / 1 kg
-  };
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-  cart.push(product);
+  const existing = cart.find(i => i.name === name);
+
+  if(existing){
+    existing.qty += 1;
+  } else {
+    cart.push({
+      name: name,
+      qty: 1
+    });
+  }
 
   localStorage.setItem("cart", JSON.stringify(cart));
+
+  // update cart count
   document.getElementById("cartCount").innerText = cart.length;
+
+  // 🔔 bell sound after add
+  setTimeout(() => {
+    playBell();
+  }, 150);
 }
 
 /* GO TO CART PAGE */
@@ -1198,6 +1217,28 @@ function goToCart(){
   window.location.href = "cart.html";
 }
 </script>
+  <script>
+function playTouch() {
+  const touch = document.getElementById("touchSound");
+  touch.currentTime = 0;
+  touch.play();
+}
+
+function playBell() {
+  const bell = document.getElementById("bellSound");
+  bell.currentTime = 0;
+  bell.play();
+}
+  </script>
+
+  <!-- 🔊 Sounds -->
+<audio id="touchSound" preload="auto">
+  <source src="touch.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="bellSound" preload="auto">
+  <source src="bell.mp3" type="audio/mpeg">
+</audio>
 
 </body>
 </html>
