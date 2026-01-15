@@ -1,1 +1,1203 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Central & Stores</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ================= RESET ================= */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  background:#f4f6f8;
+  color:#222;
+}
+
+/* ================= HEADER ================= */
+.header{
+  margin:16px;
+  padding:24px;
+  border-radius:22px;
+  background:#0fbf4a;
+  color:#fff;
+  text-align:center;
+}
+
+.header h1{
+  font-size:26px;
+  font-weight:700;
+  letter-spacing:1px;
+}
+
+.header p{
+  font-size:13px;
+  margin-top:6px;
+  opacity:.9;
+}
+
+/* ================= TOP ACTION BAR ================= */
+.top-bar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px 18px;
+}
+
+.cart-indicator{
+  font-size:14px;
+  font-weight:600;
+}
+
+.cart-indicator span{
+  background:#0fbf4a;
+  color:#fff;
+  padding:2px 8px;
+  border-radius:20px;
+  font-size:12px;
+  margin-left:4px;
+}
+
+/* ================= CATEGORY ROW ================= */
+.category-row{
+  display:flex;
+  gap:16px;
+  padding:12px 18px;
+  overflow-x:auto;
+}
+
+.category-row::-webkit-scrollbar{display:none;}
+
+.category-item{
+  min-width:80px;
+  text-align:center;
+  font-size:12px;
+}
+
+.category-item img{
+  width:64px;
+  height:64px;
+  border-radius:50%;
+  background:#fff;
+}
+
+.category-item span{
+  display:block;
+  margin-top:6px;
+}
+
+/* ================= SECTION TITLE ================= */
+.section-title{
+  font-size:18px;
+  font-weight:700;
+  padding:16px 18px 10px;
+}
+
+/* ================= PRODUCT AREA (EMPTY ON PURPOSE) ================= */
+#product-area{
+  padding:0 18px 30px;
+}
+
+/* ================= FOOTER ACTION ================= */
+.footer-action{
+  position:sticky;
+  bottom:0;
+  background:#fff;
+  padding:12px 16px;
+  border-top:1px solid #eee;
+}
+
+.footer-action button{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:14px;
+  background:#0fbf4a;
+  color:#fff;
+  font-size:16px;
+  font-weight:700;
+}
+
+/* BIGBASKET STYLE SWIPE ROW */
+.product-row{
+  display: flex;
+  gap: 14px;
+  padding: 12px 16px 24px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.product-row::-webkit-scrollbar{
+  display: none;
+}
+
+/* BIG PRODUCT CARD */
+.product-card{
+  flex: 0 0 160px;           /* 🔥 fixed card width */
+  background: #fff;
+  border-radius: 16px;
+  padding: 12px;
+  text-align: center;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.10);
+  scroll-snap-align: start; /* 🔥 snap effect */
+}
+
+/* PRODUCT IMAGE */
+.product-card img{
+  width: 100%;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 8px;
+}
+
+/* PRODUCT NAME */
+.product-name{
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 8px;
+}
+
+/* ADD BUTTON */
+.add-btn{
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: #0fbf4a;
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.cart-indicator{
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+}
+.cart-indicator span{
+  background:#0fbf4a;
+  color:#fff;
+  padding:2px 8px;
+  border-radius:20px;
+  font-size:12px;
+  margin-left:4px;
+}
+.product-card img{
+  width:100%;
+  height:140px;          /* fixed height */
+  object-fit:contain;    /* IMPORTANT */
+  background:#f2f2f2;    /* clean background */
+  border-radius:14px;
+  padding:10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+<div class="header">
+  <h1>CENTRAL & STORES</h1>
+  <p>Daily Grocery • Trusted Local Store</p>
+</div>
+
+
+<!-- ================= TOP BAR ================= -->
+<div class="top-bar">
+  <div>Welcome 👋</div>
+  <div class="cart-indicator" onclick="goToCart()">
+  🛒 Cart <span id="cartCount">0</span>
+</div>
+</div>
+
+<!-- ================= CATEGORIES ================= -->
+<div class="category-row">
+  <div class="category-item">
+    <img src="https://dummyimage.com/100x100/ffffff/000000&text=Rice">
+    <span>Rice</span>
+  </div>
+  <div class="category-item">
+    <img src="https://dummyimage.com/100x100/ffffff/000000&text=Tea">
+    <span>Tea</span>
+  </div>
+  <div class="category-item">
+    <img src="https://dummyimage.com/100x100/ffffff/000000&text=Coffee">
+    <span>Coffee</span>
+  </div>
+  <div class="category-item">
+    <img src="https://dummyimage.com/100x100/ffffff/000000&text=Masala">
+    <span>Masala</span>
+  </div>
+  <div class="category-item">
+    <img src="https://dummyimage.com/100x100/ffffff/000000&text=Oil">
+    <span>Oil</span>
+  </div>
+</div>
+
+<!-- ================= SEARCH BAR ================= -->
+<div style="padding:12px 18px;">
+  <input 
+    type="text" 
+    id="searchInput"
+    placeholder="Search products (Rice, Oil, Soap...)"
+    onkeyup="searchProducts()"
+    style="
+      width:100%;
+      padding:14px;
+      border-radius:14px;
+      border:1px solid #ddd;
+      font-size:15px;
+    "
+  >
+</div>
+
+
+<!-- ================= RICE SECTION ================= -->
+<div class="section-title">🌾 RICE <span style="font-size:14px;">(அரிசி)</span></div>
+
+<div class="product-row">
+
+  <!-- Raw Rice -->
+  <div class="product-card" data-name="Raw Rice" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Raw+Rice">
+    <div class="product-name">Raw Rice</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <!-- Boiled Rice -->
+  <div class="product-card" data-name="Boiled Rice" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Boiled+Rice">
+    <div class="product-name">Boiled Rice</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <!-- Ponni Rice -->
+  <div class="product-card" data-name="Ponni Rice" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Ponni+Rice">
+    <div class="product-name">Ponni Rice</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <!-- Sona Masoori -->
+  <div class="product-card" data-name="Sona Masoori" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Sona+Masoori">
+    <div class="product-name">Sona Masoori</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <!-- Idli Rice -->
+  <div class="product-card" data-name="Idli Rice" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Idli+Rice">
+    <div class="product-name">Idli Rice</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <!-- Basmati Rice -->
+  <div class="product-card" data-name="Basmati Rice" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Basmati+Rice">
+    <div class="product-name">Basmati Rice</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <!-- Jeera Samba -->
+  <div class="product-card" data-name="Jeera Samba" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Jeera+Samba">
+    <div class="product-name">Jeera Samba</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <!-- Seeraga Samba -->
+  <div class="product-card" data-name="Seeraga Samba" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Seeraga+Samba">
+    <div class="product-name">Seeraga Samba</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <!-- Kullakar Rice -->
+  <div class="product-card" data-name="Kullakar Rice" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Kullakar+Rice">
+    <div class="product-name">Kullakar Rice</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <!-- Karuppu Kavuni -->
+  <div class="product-card" data-name="Karuppu Kavuni" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Karuppu+Kavuni">
+    <div class="product-name">Karuppu Kavuni</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <!-- Mapillai Samba -->
+  <div class="product-card" data-name="Mapillai Samba" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Mapillai+Samba">
+    <div class="product-name">Mapillai Samba</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+  
+  
+
+</div>
+<!-- ================= END RICE ================= -->
+<!-- ================= DHALS & PULSES SECTION ================= -->
+<div class="section-title">🌾 DHALS & PULSES <span style="font-size:14px;">(பருப்பு வகைகள்)</span></div>
+
+<div class="product-row">
+
+  <div class="product-card" data-name="Toor Dal" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Toor+Dal">
+    <div class="product-name">Toor Dal</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Moong Dal" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Moong+Dal">
+    <div class="product-name">Moong Dal</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Urad Dal" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Urad+Dal">
+    <div class="product-name">Urad Dal</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Chana Dal" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Chana+Dal">
+    <div class="product-name">Chana Dal</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Masoor Dal" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Masoor+Dal">
+    <div class="product-name">Masoor Dal</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Green Gram" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Green+Gram">
+    <div class="product-name">Green Gram</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Black Gram" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Black+Gram">
+    <div class="product-name">Black Gram</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Cow Peas" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Cow+Peas">
+    <div class="product-name">Cow Peas</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="White Peas" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=White+Peas">
+    <div class="product-name">White Peas</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Green Peas (Dry)" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Green+Peas">
+    <div class="product-name">Green Peas (Dry)</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+</div>
+<!-- ================= END DHALS & PULSES ================= -->
+<!-- ================= SPICES & MASALAS SECTION ================= -->
+<div class="section-title">🌶️ SPICES & MASALAS <span style="font-size:14px;">(மசாலா)</span></div>
+
+<div class="product-row">
+
+  <div class="product-card" data-name="Chilli Powder" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Chilli+Powder">
+    <div class="product-name">Chilli Powder</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Coriander Powder" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Coriander+Powder">
+    <div class="product-name">Coriander Powder</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Turmeric Powder" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Turmeric+Powder">
+    <div class="product-name">Turmeric Powder</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Pepper Powder" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Pepper+Powder">
+    <div class="product-name">Pepper Powder</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Cumin Powder" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Cumin+Powder">
+    <div class="product-name">Cumin Powder</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Garam Masala" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Garam+Masala">
+    <div class="product-name">Garam Masala</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Sambar Powder" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Sambar+Powder">
+    <div class="product-name">Sambar Powder</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Rasam Powder" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Rasam+Powder">
+    <div class="product-name">Rasam Powder</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Chicken Masala" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Chicken+Masala">
+    <div class="product-name">Chicken Masala</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Mutton Masala" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Mutton+Masala">
+    <div class="product-name">Mutton Masala</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Briyani Masala" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Briyani+Masala">
+    <div class="product-name">Briyani Masala</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Fish Fry Masala" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Fish+Fry+Masala">
+    <div class="product-name">Fish Fry Masala</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+</div>
+<!-- ================= END SPICES & MASALAS ================= -->
+<!-- ================= FLOUR / MAAVU SECTION ================= -->
+<div class="section-title">🌾 FLOUR / MAAVU <span style="font-size:14px;">(மாவு)</span></div>
+
+<div class="product-row">
+
+  <div class="product-card" data-name="Wheat Flour" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Wheat+Flour">
+    <div class="product-name">Wheat Flour</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Maida" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Maida">
+    <div class="product-name">Maida</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Rava" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Rava">
+    <div class="product-name">Rava</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Rice Flour" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Rice+Flour">
+    <div class="product-name">Rice Flour</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Idiyappam Flour" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Idiyappam+Flour">
+    <div class="product-name">Idiyappam Flour</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Ragi Flour" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Ragi+Flour">
+    <div class="product-name">Ragi Flour</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Multigrain Flour" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Multigrain+Flour">
+    <div class="product-name">Multigrain Flour</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Corn Flour" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Corn+Flour">
+    <div class="product-name">Corn Flour</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Besan Flour" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Besan+Flour">
+    <div class="product-name">Besan Flour</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+</div>
+<!-- ================= END FLOUR / MAAVU ================= -->
+<!-- ================= OILS SECTION ================= -->
+<div class="section-title">🛢️ OILS <span style="font-size:14px;">(எண்ணெய்)</span></div>
+
+<div class="product-row">
+
+  <div class="product-card" data-name="Sunflower Oil" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Sunflower+Oil">
+    <div class="product-name">Sunflower Oil</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Groundnut Oil" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Groundnut+Oil">
+    <div class="product-name">Groundnut Oil</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Gingelly Oil" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Gingelly+Oil">
+    <div class="product-name">Gingelly Oil</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Coconut Oil" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Coconut+Oil">
+    <div class="product-name">Coconut Oil</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Rice Bran Oil" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Rice+Bran+Oil">
+    <div class="product-name">Rice Bran Oil</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Palm Oil" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Palm+Oil">
+    <div class="product-name">Palm Oil</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+</div>
+<!-- ================= END OILS ================= -->
+<!-- ================= DAIRY PRODUCTS SECTION ================= -->
+<div class="section-title">🥛 DAIRY PRODUCTS <span style="font-size:14px;">(பால் & பால் பொருட்கள்)</span></div>
+
+<div class="product-row">
+
+  <div class="product-card" data-name="Milk" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Milk">
+    <div class="product-name">Milk</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Curd" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Curd">
+    <div class="product-name">Curd</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Butter" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Butter">
+    <div class="product-name">Butter</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Ghee" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Ghee">
+    <div class="product-name">Ghee</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Paneer" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Paneer">
+    <div class="product-name">Paneer</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Cheese" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Cheese">
+    <div class="product-name">Cheese</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Buttermilk" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Buttermilk">
+    <div class="product-name">Buttermilk</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+</div>
+<!-- ================= END DAIRY PRODUCTS ================= -->
+<!-- ================= EGGS & FRESH SECTION ================= -->
+<div class="section-title">🥚 EGGS & FRESH <span style="font-size:14px;">(முட்டை)</span></div>
+
+<div class="product-row">
+
+  <div class="product-card" data-name="Country Eggs" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Country+Eggs">
+    <div class="product-name">Country Eggs</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="White Eggs" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=White+Eggs">
+    <div class="product-name">White Eggs</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Brown Eggs" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Brown+Eggs">
+    <div class="product-name">Brown Eggs</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+</div>
+<!-- ================= END EGGS & FRESH ================= -->
+<!-- ================= VEGETABLES SECTION ================= -->
+<div class="section-title">🥕 VEGETABLES <span style="font-size:14px;">(காய்கறிகள்)</span></div>
+
+<div class="product-row">
+
+  <div class="product-card" data-name="Onion" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Onion">
+    <div class="product-name">Onion</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Tomato" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Tomato">
+    <div class="product-name">Tomato</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Potato" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Potato">
+    <div class="product-name">Potato</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Brinjal" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Brinjal">
+    <div class="product-name">Brinjal</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Ladies Finger" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Ladies+Finger">
+    <div class="product-name">Ladies Finger</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Carrot" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Carrot">
+    <div class="product-name">Carrot</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Beetroot" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Beetroot">
+    <div class="product-name">Beetroot</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Drumstick" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Drumstick">
+    <div class="product-name">Drumstick</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Beans" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Beans">
+    <div class="product-name">Beans</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Cabbage" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Cabbage">
+    <div class="product-name">Cabbage</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Cauliflower" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Cauliflower">
+    <div class="product-name">Cauliflower</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Green Chilli" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Green+Chilli">
+    <div class="product-name">Green Chilli</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Ginger" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Ginger">
+    <div class="product-name">Ginger</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Garlic" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Garlic">
+    <div class="product-name">Garlic</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Lemon" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Lemon">
+    <div class="product-name">Lemon</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+</div>
+<!-- ================= END VEGETABLES ================= -->
+<!-- ================= BISCUITS & SNACKS SECTION ================= -->
+<div class="section-title">🍪 BISCUITS & SNACKS <span style="font-size:14px;">(பிஸ்கட் & ஸ்நாக்ஸ்)</span></div>
+
+<div class="product-row">
+
+  <div class="product-card" data-name="Marie Biscuit" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Marie+Biscuit">
+    <div class="product-name">Marie Biscuit</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Good Day" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Good+Day">
+    <div class="product-name">Good Day</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Bourbon" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Bourbon">
+    <div class="product-name">Bourbon</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Milk Bikis" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Milk+Bikis">
+    <div class="product-name">Milk Bikis</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Hide & Seek" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Hide+and+Seek">
+    <div class="product-name">Hide &amp; Seek</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Little Hearts" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Little+Hearts">
+    <div class="product-name">Little Hearts</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+</div>
+<!-- ================= END BISCUITS & SNACKS ================= -->
+<!-- ================= CHIPS & NAMKEENS SECTION ================= -->
+<div class="section-title">🍟 CHIPS & NAMKEENS <span style="font-size:14px;">(சிப்ஸ் & நம்கீன்)</span></div>
+
+<div class="product-row">
+
+  <div class="product-card" data-name="Lays" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Lays">
+    <div class="product-name">Lays</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Kurkure" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Kurkure">
+    <div class="product-name">Kurkure</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Bingo" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Bingo">
+    <div class="product-name">Bingo</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Uncle Chips" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Uncle+Chips">
+    <div class="product-name">Uncle Chips</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Haldiram Snacks" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Haldiram+Snacks">
+    <div class="product-name">Haldiram Snacks</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Murukku" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Murukku">
+    <div class="product-name">Murukku</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Mixture" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Mixture">
+    <div class="product-name">Mixture</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Kara Sev" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Kara+Sev">
+    <div class="product-name">Kara Sev</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Peanut Candy" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Peanut+Candy">
+    <div class="product-name">Peanut Candy</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+</div>
+<!-- ================= END CHIPS & NAMKEENS ================= -->
+<!-- ================= COFFEE & TEA SECTION ================= -->
+<div class="section-title">☕ COFFEE & TEA <span style="font-size:14px;">(காபி & தேநீர்)</span></div>
+
+<div class="product-row">
+
+  <div class="product-card" data-name="Coffee Powder" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Coffee+Powder">
+    <div class="product-name">Coffee Powder</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Instant Coffee" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Instant+Coffee">
+    <div class="product-name">Instant Coffee</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Tea Powder" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Tea+Powder">
+    <div class="product-name">Tea Powder</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Green Tea" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Green+Tea">
+    <div class="product-name">Green Tea</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+</div>
+<!-- ================= END COFFEE & TEA ================= -->
+<!-- ================= HEALTH DRINKS SECTION ================= -->
+<div class="section-title">🥤 HEALTH DRINKS <span style="font-size:14px;">(ஆரோக்கிய பானங்கள்)</span></div>
+
+<div class="product-row">
+
+  <div class="product-card" data-name="Boost" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Boost">
+    <div class="product-name">Boost</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Horlicks" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Horlicks">
+    <div class="product-name">Horlicks</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Complan" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Complan">
+    <div class="product-name">Complan</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Bournvita" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Bournvita">
+    <div class="product-name">Bournvita</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Junior Horlicks" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Junior+Horlicks">
+    <div class="product-name">Junior Horlicks</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+</div>
+<!-- ================= END HEALTH DRINKS ================= -->
+<!-- ================= SOAP & PERSONAL CARE SECTION ================= -->
+<div class="section-title">🧼 SOAP & PERSONAL CARE</div>
+
+<div class="product-row">
+
+  <div class="product-card" data-name="Bath Soap" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Bath+Soap">
+    <div class="product-name">Bath Soap</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Face Wash" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Face+Wash">
+    <div class="product-name">Face Wash</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Shampoo" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Shampoo">
+    <div class="product-name">Shampoo</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Conditioner" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Conditioner">
+    <div class="product-name">Conditioner</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Hair Oil" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Hair+Oil">
+    <div class="product-name">Hair Oil</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Talcum Powder" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Talcum+Powder">
+    <div class="product-name">Talcum Powder</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Tooth Paste" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Tooth+Paste">
+    <div class="product-name">Tooth Paste</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Tooth Brush" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Tooth+Brush">
+    <div class="product-name">Tooth Brush</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+</div>
+<!-- ================= END SOAP & PERSONAL CARE ================= -->
+<!-- ================= HOUSEHOLD & CLEANING SECTION ================= -->
+<div class="section-title">🧹 HOUSEHOLD & CLEANING</div>
+
+<div class="product-row">
+
+  <div class="product-card" data-name="Detergent Powder" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Detergent+Powder">
+    <div class="product-name">Detergent Powder</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Detergent Liquid" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Detergent+Liquid">
+    <div class="product-name">Detergent Liquid</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Dish Wash Bar" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Dish+Wash+Bar">
+    <div class="product-name">Dish Wash Bar</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Dish Wash Liquid" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Dish+Wash+Liquid">
+    <div class="product-name">Dish Wash Liquid</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Floor Cleaner" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Floor+Cleaner">
+    <div class="product-name">Floor Cleaner</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Toilet Cleaner" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Toilet+Cleaner">
+    <div class="product-name">Toilet Cleaner</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Phenyl" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Phenyl">
+    <div class="product-name">Phenyl</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Fog Spray" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Fog+Spray">
+    <div class="product-name">Fog Spray</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Room Freshener" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Room+Freshener">
+    <div class="product-name">Room Freshener</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Mosquito Repellent" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Mosquito+Repellent">
+    <div class="product-name">Mosquito Repellent</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+</div>
+<!-- ================= END HOUSEHOLD & CLEANING ================= -->
+<!-- ================= OTHER ESSENTIALS SECTION ================= -->
+<div class="section-title">🧂 OTHER ESSENTIALS</div>
+
+<div class="product-row">
+
+  <div class="product-card" data-name="Salt" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Salt">
+    <div class="product-name">Salt</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Sugar" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Sugar">
+    <div class="product-name">Sugar</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Jaggery" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Jaggery">
+    <div class="product-name">Jaggery</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Tamarind" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Tamarind">
+    <div class="product-name">Tamarind</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Pickles" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Pickles">
+    <div class="product-name">Pickles</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Appalam" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Appalam">
+    <div class="product-name">Appalam</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Papad" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Papad">
+    <div class="product-name">Papad</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Vermicelli" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Vermicelli">
+    <div class="product-name">Vermicelli</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Noodles" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Noodles">
+    <div class="product-name">Noodles</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+  <div class="product-card" data-name="Pasta" data-kg="1">
+    <img src="https://dummyimage.com/300x300/eeeeee/000000&text=Pasta">
+    <div class="product-name">Pasta</div>
+    <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
+  </div>
+
+</div>
+<!-- ================= END OTHER ESSENTIALS ================= -->
+
+
+</div>
+
+<!-- ================= FOOTER ================= -->
+<div class="footer-action">
+  <button onclick="location.href='cart.html'">
+    View Cart
+  </button>
+</div>
+
+<script>
+function searchProducts(){
+  const input = document.getElementById("searchInput").value.toLowerCase();
+  const allCards = document.querySelectorAll(".product-card");
+  const allSections = document.querySelectorAll(".section-title, .product-row");
+
+  if(input === ""){
+    // Show everything
+    allSections.forEach(el => el.style.display = "");
+    allCards.forEach(card => card.style.display = "");
+    return;
+  }
+
+  // Hide all sections initially
+  allSections.forEach(el => el.style.display = "none");
+
+  allCards.forEach(card => {
+    const name = card.dataset.name.toLowerCase();
+    if(name.includes(input)){
+      card.style.display = "block";
+      card.closest(".product-row").style.display = "flex";
+      card.closest(".product-row")
+          .previousElementSibling.style.display = "block";
+    }else{
+      card.style.display = "none";
+    }
+  });
+}
+</script>
+<script>
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+// show cart count on page load
+document.getElementById("cartCount").innerText = cart.length;
+
+/* ADD TO CART */
+function addToCart(btn){
+  const card = btn.closest(".product-card");
+
+  const product = {
+    name: card.dataset.name,
+    qty: 1   // default 1 unit / 1 kg
+  };
+
+  cart.push(product);
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+  document.getElementById("cartCount").innerText = cart.length;
+}
+
+/* GO TO CART PAGE */
+function goToCart(){
+  window.location.href = "cart.html";
+}
+</script>
+
+</body>
+</html>
