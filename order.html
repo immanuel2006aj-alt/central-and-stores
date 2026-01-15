@@ -5,28 +5,20 @@
 <title>Place Order – Central & Stores</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-:root{
-  --green:#16a34a;
-  --bg:#f3f4f6;
-  --card:#ffffff;
-  --input:#eaf2ff;
-  --border:#c7d2fe;
-  --text:#111827;
-}
-
 *{
   margin:0;
   padding:0;
   box-sizing:border-box;
-  font-family:'Poppins',sans-serif;
+  font-family:'Inter',sans-serif;
 }
 
 body{
-  background:var(--bg);
-  padding:16px;
+  background:#f4f6f8;
+  min-height:100vh;
+  padding:18px;
 }
 
 .container{
@@ -34,63 +26,74 @@ body{
   margin:auto;
 }
 
+/* Card */
 .card{
-  background:var(--card);
-  border-radius:20px;
+  background:#fff;
+  border-radius:22px;
   padding:16px;
-  box-shadow:0 12px 30px rgba(0,0,0,.08);
   margin-bottom:16px;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
 }
 
-h3{
+/* Title */
+h2{
   font-size:20px;
   font-weight:700;
   margin-bottom:12px;
 }
 
-/* INPUT STYLE (MATCH SCREENSHOT) */
-input, textarea, select{
-  width:100%;
-  padding:14px 16px;
-  border-radius:16px;
-  border:2px solid var(--border);
-  background:var(--input);
-  font-size:15px;
-  margin-bottom:12px;
-  outline:none;
-}
-
-textarea{ resize:none; }
-
-/* ORDER ITEM */
+/* Order Item */
 .item{
-  border-bottom:1px solid #e5e7eb;
-  padding-bottom:12px;
+  border:1px solid #eee;
+  border-radius:16px;
+  padding:12px;
   margin-bottom:12px;
 }
-
-.item:last-child{ border:none; }
 
 .item-name{
   font-weight:700;
+  margin-bottom:6px;
+}
+
+select{
+  width:100%;
+  padding:10px;
+  border-radius:12px;
+  border:1px solid #ddd;
+  margin-bottom:6px;
 }
 
 .price{
-  margin-top:6px;
   font-weight:700;
-  color:var(--green);
+  color:#0fbf4a;
 }
 
-/* BUTTON */
+/* Inputs */
+input, textarea{
+  width:100%;
+  padding:14px;
+  border-radius:14px;
+  border:2px solid #ddd;
+  margin-bottom:12px;
+  font-size:15px;
+}
+
+input:focus, textarea:focus{
+  outline:none;
+  border-color:#0fbf4a;
+  background:#eef5ff;
+}
+
 button{
   width:100%;
-  padding:18px;
-  background:var(--green);
-  color:#fff;
+  padding:16px;
   border:none;
   border-radius:18px;
-  font-size:17px;
+  background:#0fbf4a;
+  color:#fff;
+  font-size:16px;
   font-weight:700;
+  cursor:pointer;
 }
 
 button:active{
@@ -105,14 +108,13 @@ button:active{
 
   <!-- ORDER ITEMS -->
   <div class="card">
-    <div id="orderItems"></div>
-    <h3>🛒 Order Items</h3>
+    <h2>🛒 Order Items</h2>
     <div id="orderItems"></div>
   </div>
 
   <!-- CUSTOMER DETAILS -->
   <div class="card">
-    <h3>Customer Details</h3>
+    <h2>Customer Details</h2>
 
     <input id="custName" placeholder="Name">
     <textarea id="custAddress" rows="3" placeholder="Address"></textarea>
@@ -124,9 +126,9 @@ button:active{
       <option>₹500 – ₹1000</option>
       <option>₹1000+</option>
     </select>
-  </div>
 
-  <button onclick="placeOrder()">Place Order</button>
+    <button onclick="placeOrder()">Place Order</button>
+  </div>
 
 </div>
 
@@ -137,13 +139,13 @@ button:active{
 const cart = JSON.parse(localStorage.getItem("cart")) || [];
 const box = document.getElementById("orderItems");
 
-/* RENDER ITEMS */
+/* RENDER CART ITEMS */
 cart.forEach((item,i)=>{
-  let brandOptions = `<option value="">Select Brand</option>`;
   const brands = PRICE_MASTER[item.name] || {};
+  let options = `<option value="">Select Brand</option>`;
 
   for(const b in brands){
-    brandOptions += `<option value="${b}">${b} – ₹${brands[b]}</option>`;
+    options += `<option value="${b}">${b} – ₹${brands[b]}</option>`;
   }
 
   box.innerHTML += `
@@ -151,7 +153,7 @@ cart.forEach((item,i)=>{
       <div class="item-name">${item.name}</div>
 
       <select onchange="updatePrice(${i},this)">
-        ${brandOptions}
+        ${options}
       </select>
 
       <div class="price" id="price-${i}">₹0</div>
@@ -159,7 +161,7 @@ cart.forEach((item,i)=>{
   `;
 });
 
-/* PRICE UPDATE */
+/* UPDATE PRICE */
 function updatePrice(i,el){
   const brand = el.value;
   const product = cart[i].name;
@@ -168,59 +170,53 @@ function updatePrice(i,el){
   cart[i].brand = brand;
   cart[i].price = price;
 
-  document.getElementById(`price-${i}`).innerText = "₹" + price;
+  document.getElementById("price-"+i).innerText = "₹" + price;
 }
 
-/* TELEGRAM */
-const BOT_TOKEN="8562892791:AAFkdPm66jzBOhQPwtGExtQbvE8P4hgCtcg";
-const CHAT_ID="1287496525";
-
+/* PLACE ORDER */
 async function placeOrder(){
-  const name=custName.value.trim();
-  const address=custAddress.value.trim();
-  const mobile=custMobile.value.trim();
-  const range=orderRange.value;
 
-  if(!name||!address||!mobile||!range){
+  const name = custName.value.trim();
+  const address = custAddress.value.trim();
+  const mobile = custMobile.value.trim();
+  const range = orderRange.value;
+
+  if(!name || !address || !mobile || !range){
     alert("Please fill all details");
     return;
   }
-// ✅ BRAND SELECTION CHECK
+
   for(const item of cart){
     if(!item.brand){
       alert("Please select brand for all products");
       return;
     }
   }
-  let msg=`🛒 *New Order – Central & Stores*\n\n`;
-  msg+=`👤 ${name}\n📞 ${mobile}\n🏠 ${address}\n\n`;
+
+  let msg = `🛒 *New Order – Central & Stores*\n\n`;
+  msg += `👤 ${name}\n📞 ${mobile}\n🏠 ${address}\n\n`;
 
   cart.forEach((it,i)=>{
-    msg += `${i+1}. ${it.name}
-Brand: ${it.brand || "Not selected"}
-Qty: ${it.qty}
-Price: ₹${it.price || 0}
+    msg += `${i+1}. ${it.name}\nBrand: ${it.brand}\nPrice: ₹${it.price}\n\n`;
+  });
 
-`;
+  msg += `💰 Estimated: ${range}`;
 
-  msg+=`💰 Estimated: ${range}`;
+  const BOT_TOKEN = "YOUR_BOT_TOKEN";
+  const CHAT_ID  = "YOUR_CHAT_ID";
 
-  try{
   await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{
     method:"POST",
     headers:{ "Content-Type":"application/json" },
     body:JSON.stringify({
-      chat_id: CHAT_ID,
-      text: msg,
+      chat_id:CHAT_ID,
+      text:msg,
       parse_mode:"Markdown"
     })
   });
 
   localStorage.removeItem("cart");
-  location.href="success.html";
-
-}catch(e){
-  alert("Order failed. Please try again.");
+  window.location.href = "success.html";
 }
 </script>
 
