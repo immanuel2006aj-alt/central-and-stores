@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Received | Central & Stores</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  min-height:100vh;
+  background:linear-gradient(135deg,#0fbf4a,#18c96e);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.card{
+  background:#fff;
+  border-radius:22px;
+  padding:28px 24px;
+  max-width:420px;
+  width:100%;
+  text-align:center;
+  box-shadow:0 18px 40px rgba(0,0,0,.2);
+}
+
+/* ICON */
+.icon{
+  width:90px;
+  height:90px;
+  margin:0 auto 18px;
+  border-radius:50%;
+  background:#e8f9ef;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:42px;
+  color:#0fbf4a;
+}
+
+/* TITLE */
+h1{
+  font-size:22px;
+  font-weight:700;
+  margin-bottom:6px;
+  color:#0fbf4a;
+}
+
+.tamil-title{
+  font-size:15px;
+  font-weight:600;
+  margin-bottom:12px;
+  color:#333;
+}
+
+/* MESSAGE */
+.message{
+  font-size:14px;
+  line-height:1.6;
+  opacity:.85;
+  margin-bottom:16px;
+}
+
+.tamil-msg{
+  font-size:14px;
+  line-height:1.6;
+  margin-bottom:18px;
+}
+
+/* NOTE */
+.note{
+  background:#f7f7f7;
+  border-radius:14px;
+  padding:12px;
+  font-size:13px;
+  margin-bottom:22px;
+  line-height:1.6;
+}
+
+/* BUTTON */
+button{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:16px;
+  background:#0fbf4a;
+  color:#fff;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.footer-text{
+  margin-top:18px;
+  font-size:12px;
+  opacity:.6;
+}
+</style>
+</head>
+
+<body>
+
+<!-- SUCCESS SOUND -->
+<audio id="successSound" preload="auto">
+  <source src="https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3" type="audio/mpeg">
+</audio>
+
+<div class="card">
+
+  <div class="icon">✔</div>
+
+  <h1>Order Received</h1>
+  <div class="tamil-title">ஆர்டர் பெறப்பட்டது</div>
+
+  <div class="message">
+    We have received your order successfully.<br>
+    Your order is now being processed.
+  </div>
+
+  <div class="tamil-msg">
+    உங்கள் ஆர்டர் வெற்றிகரமாக பெறப்பட்டுள்ளது.<br>
+    உங்கள் ஆர்டர் தற்போது செயல்பாட்டில் உள்ளது.
+  </div>
+
+  <div class="note">
+    📞 <strong>Verification Call</strong><br>
+    After placing the order, we will call you to confirm
+    product details, availability and quantity.
+    <br><br>
+    📞 <strong>உறுதிப்படுத்தல் அழைப்பு</strong><br>
+    பொருட்களின் விவரங்களை உறுதிப்படுத்த
+    நாங்கள் உங்களை தொலைபேசியில் தொடர்பு கொள்வோம்.
+  </div>
+
+  <button onclick="goHome()">Continue Shopping</button>
+
+  <div class="footer-text">
+    Thank you for shopping with <strong>Central & Stores</strong><br>
+    Central & Stores-இல் வாங்கியதற்கு நன்றி
+  </div>
+
+</div>
+
+<script>
+window.onload = function(){
+  const sound = document.getElementById("successSound");
+  sound.play().catch(()=>{});
+};
+
+function goHome(){
+  window.location.href="index.html";
+}
+</script>
+
+</body>
+</html>
