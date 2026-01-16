@@ -108,129 +108,305 @@ body{background:#f2f4f7;}
 .proceed-btn:disabled{
   background:#9ca3af;
 }
+.cart-form-card{
+  background:#ffffff;
+  border-radius:20px;
+  padding:16px;
+  margin:20px 16px;
+  box-shadow:0 12px 28px rgba(0,0,0,.12);
+}
+
+/* Header */
+.form-header{
+  font-size:18px;
+  font-weight:800;
+  margin-bottom:14px;
+  padding-bottom:8px;
+  border-bottom:2px solid #16a34a;
+}
+
+/* Form fields */
+.form-group{
+  margin-bottom:12px;
+}
+
+.form-group label{
+  display:block;
+  font-size:13px;
+  font-weight:600;
+  margin-bottom:6px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select{
+  width:100%;
+  padding:12px;
+  border-radius:12px;
+  border:1px solid #ddd;
+  font-size:14px;
+}
+
+.form-group textarea{
+  resize:none;
+  height:70px;
+}
+
+/* Note card */
+.note-card{
+  background:#f9fafb;
+  border-left:4px solid #16a34a;
+  padding:12px;
+  font-size:13px;
+  line-height:1.6;
+  margin:14px 0;
+}
+
+/* Button */
+.place-order-btn{
+  width:100%;
+  padding:14px;
+  background:#16a34a;
+  color:#fff;
+  border:none;
+  border-radius:16px;
+  font-size:16px;
+  font-weight:800;
+}
+
+.place-order-btn:disabled{
+  background:#9ca3af;
+  cursor:not-allowed;
+}
+.cart-header{
+  margin:16px;
+}
+
+.cart-title-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.cart-title-row h2{
+  font-size:22px;
+  font-weight:800;
+  margin:0;
+}
+
+.cart-icon-svg{
+  width:26px;
+  height:26px;
+  fill:#16a34a;
+}
+
+.cart-tagline{
+  font-size:13px;
+  color:#6b7280;
+  margin-left:36px; /* aligns under text, not icon */
+  margin-top:4px;
+}
+
+
 </style>
 </head>
 
 <body>
 
-<div class="header">🛒 My Cart</div>
-
 <div class="cart-wrapper" id="cartWrapper"></div>
+<!-- ================= MY CART HEADER ================= -->
+<div class="cart-header no-copy">
+  <div class="cart-title-row">
+    <svg class="cart-icon-svg" viewBox="0 0 24 24">
+      <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 
+               2 2-.9 2-2-.9-2-2-2zm10 
+               0c-1.1 0-2 .9-2 2s.9 
+               2 2 2 2-.9 2-2-.9-2-2-2zM7.2 
+               14h9.9c.8 0 1.5-.5 
+               1.8-1.2l3-7.1H6.3L5.6 
+               2H2v2h2l3.6 
+               7.6-1.3 2.4c-.2.3-.3.6-.3 
+               1 0 1.1.9 2 2 
+               2h12v-2H7.2z"/>
+    </svg>
+
+    <h2>My Cart</h2>
+  </div>
+
+  <div class="cart-tagline">
+    Review your selected items before placing the order
+  </div>
+</div>
+
 <!-- CART SUMMARY -->
-<div id="cartSummary" class="cart-summary">
-  <div class="summary-row">
-    <span>Items</span>
-    <span id="itemCount">0</span>
+<!-- ================= CART DETAILS FORM ================= -->
+<div class="cart-form-card">
+
+  <h3 class="form-title">Cart Added Items Here</h3>
+
+  <!-- Customer Name -->
+  <div class="form-group">
+    <label>Name</label>
+    <input type="text" id="custName" placeholder="Enter your name" required>
   </div>
 
-  <div class="summary-row">
-    <span>Estimated Total</span>
-    <span id="cartTotal">₹0</span>
+  <!-- Mobile -->
+  <div class="form-group">
+    <label>Mobile Number</label>
+    <input type="tel" id="custMobile" placeholder="Enter mobile number" required>
   </div>
 
-  <div id="minAlert" class="min-alert">
-    Minimum order value is ₹200
+  <!-- Address -->
+  <div class="form-group">
+    <label>Address</label>
+    <textarea id="custAddress" placeholder="Enter your address"></textarea>
   </div>
-  
-<div class="disclaimer">
-  <strong>📞 Order Confirmation</strong><br>
-  After placing an order, we will call you to confirm and update product details.
+
+  <!-- Order Type -->
+  <div class="form-group">
+    <label>Select Order Type</label>
+    <select id="orderType" required>
+      <option value="">Select order type</option>
+      <option value="Retail - Store Pickup">Retail (Store Pickup)</option>
+      <option value="Wholesale - Home Delivery">Wholesale / Bulk (Home Delivery)</option>
+    </select>
+  </div>
+
+  <!-- Area -->
+  <div class="form-group">
+    <label>Select Area</label>
+    <select id="area" required>
+      <option value="Mangalam">Mangalam</option>
+    </select>
+  </div>
+
+  <!-- Note -->
+  <div class="note-card">
+    <b>Note:</b><br><br>
+
+    • <b>Retail orders</b> will be packed and you can visit the shop and collect
+    the items at your free time.<br><br>
+
+    • <b>No minimum order limit</b> for Retail orders.<br><br>
+
+    • <b>Wholesale / Bulk orders</b> will be packed and delivered to your home
+    address.<br><br>
+
+    • <b>No delivery charges</b> for Wholesale orders.
+  </div>
+
+  <!-- Place Order -->
+  <button class="place-order-btn" onclick="placeOrder()">
+    Place an Order
+  </button>
+
 </div>
 
-<div class="footer">
-  <button onclick="goToOrder()">Proceed to Order</button>
-</div>
-
-<script src="price.js"></script>
 <script>
+/* ================= CART DATA ================= */
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
-const MIN_ORDER = 200;
 
-const cartWrapper = document.getElementById("cartWrapper");
-const cartTotalEl = document.getElementById("cartTotal");
-const itemCountEl = document.getElementById("itemCount");
-const minAlert = document.getElementById("minAlert");
-const proceedBtn = document.getElementById("proceedBtn");
+/* ================= FORM ELEMENTS ================= */
+const nameInput = document.getElementById("custName");
+const mobileInput = document.getElementById("custMobile");
+const addressInput = document.getElementById("custAddress");
+const orderTypeInput = document.getElementById("orderType");
+const placeBtn = document.getElementById("placeOrderBtn");
 
-/* RENDER CART */
-function renderCart() {
-  cartWrapper.innerHTML = "";
+/* ================= LIVE FORM VALIDATION ================= */
+function checkFormValidity(){
+  const nameValid = nameInput.value.trim().length > 0;
+  const mobileValid = mobileInput.value.trim().length === 10;
+  const addressValid = addressInput.value.trim().length > 0;
+  const orderTypeValid = orderTypeInput.value !== "";
 
-  if (cart.length === 0) {
-    cartWrapper.innerHTML = `<p style="text-align:center;opacity:.6">Cart is empty</p>`;
-    cartTotalEl.innerText = "₹0";
-    itemCountEl.innerText = "0";
-    proceedBtn.disabled = true;
+  placeBtn.disabled = !(nameValid && mobileValid && addressValid && orderTypeValid);
+}
+
+/* Listen to changes */
+nameInput.addEventListener("input", checkFormValidity);
+mobileInput.addEventListener("input", checkFormValidity);
+addressInput.addEventListener("input", checkFormValidity);
+orderTypeInput.addEventListener("change", checkFormValidity);
+
+/* ================= PLACE ORDER ================= */
+function placeOrder(){
+
+  if(cart.length === 0){
+    alert("Your cart is empty");
     return;
   }
 
+  const name = nameInput.value.trim();
+  const mobile = mobileInput.value.trim();
+  const address = addressInput.value.trim();
+  const orderType = orderTypeInput.value;
+  const area = document.getElementById("area").value;
+
+  /* Final safety check */
+  if(!name || !mobile || !address || !orderType){
+    alert("Please fill all required details");
+    return;
+  }
+
+  /* 🕒 DATE & TIME (IST) */
+  const now = new Date();
+  const day = now.toLocaleDateString("en-IN", { weekday: "long" });
+  const date = now.toLocaleDateString("en-IN");
+  const time = now.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" });
+
+  /* Build product list */
+  let productText = "";
   cart.forEach((item, i) => {
-    cartWrapper.innerHTML += `
-      <div class="cart-card">
-        <div class="cart-title">${item.name}</div>
-
-        <div class="qty-box">
-          <button onclick="updateQty(${i}, -1)">−</button>
-          <span>${item.qty}</span>
-          <button onclick="updateQty(${i}, 1)">+</button>
-        </div>
-
-        <button class="remove-btn" onclick="removeItem(${i})">Remove</button>
-      </div>
-    `;
+    productText += `${i+1}. ${item.name} × ${item.qty}\n`;
   });
 
-  calculateCartTotal();
-}
+  /* Telegram message */
+  let message =
+`🛒 *New Grocery Order*
 
-/* UPDATE QTY */
-function updateQty(i, d) {
-  cart[i].qty += d;
-  if (cart[i].qty < 1) cart[i].qty = 1;
-  localStorage.setItem("cart", JSON.stringify(cart));
-  renderCart();
-}
+🕒 ${day}, ${date}
+⏰ Time: ${time}
 
-/* REMOVE ITEM */
-function removeItem(i) {
-  cart.splice(i, 1);
-  localStorage.setItem("cart", JSON.stringify(cart));
-  renderCart();
-}
+👤 Name: ${name}
+📞 Mobile: ${mobile}
+📍 Area: ${area}
 
-/* TOTAL CALCULATION */
-function calculateCartTotal() {
-  let total = 0;
-  let count = 0;
+📦 Order Type:
+${orderType}
 
-  cart.forEach(item => {
-    const price = getPrice(item.name); // from price.js
-    total += price * item.qty;
-    count += item.qty;
+🏠 Address:
+${address}
+
+🛍 Products:
+${productText}
+
+ℹ️ Note:
+Final price, availability & confirmation will be done via phone call.
+`;
+
+  /* 🔐 Telegram Config (REPLACE THESE) */
+  const BOT_TOKEN = "YOUR_BOT_TOKEN";
+  const CHAT_ID  = "YOUR_CHAT_ID";
+
+  /* Send to Telegram */
+  fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body:JSON.stringify({
+      chat_id: CHAT_ID,
+      text: message,
+      parse_mode: "Markdown"
+    })
+  })
+  .then(() => {
+    localStorage.removeItem("cart");
+    window.location.href = "success.html";
+  })
+  .catch(() => {
+    alert("Order failed. Please try again.");
   });
-
-  cartTotalEl.innerText = "₹" + total;
-  itemCountEl.innerText = count;
-
-  if (total < MIN_ORDER) {
-    minAlert.style.display = "block";
-    proceedBtn.disabled = true;
-  } else {
-    minAlert.style.display = "none";
-    proceedBtn.disabled = false;
-  }
 }
-
-/* GO TO ORDER */
-function goToOrder() {
-  if (cart.length === 0) {
-    alert("Cart is empty");
-    return;
-  }
-  window.location.href = "order.html";
-}
-
-renderCart();
 </script>
 
 </body>
