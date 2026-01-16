@@ -206,6 +206,75 @@ body{background:#f2f4f7;}
   margin-left:36px; /* aligns under text, not icon */
   margin-top:4px;
 }
+/* Red heading */
+.voice-title{
+  color:#dc2626;
+  font-weight:800;
+  font-size:15px;
+  margin:20px 0 8px;
+}
+
+/* Voice container */
+.wa-voice{
+  margin-bottom:20px;
+}
+
+.wa-bubble{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  background:#f8fafc;
+  padding:12px 14px;
+  border-radius:16px;
+  border:1px solid #e5e7eb;
+}
+
+/* Mic button */
+.mic-btn{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  border:none;
+  background:#16a34a;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.mic-icon{
+  width:22px;
+  height:22px;
+  fill:#fff;
+}
+
+/* Info */
+.voice-info{
+  flex:1;
+}
+
+.status{
+  font-size:14px;
+  font-weight:600;
+}
+
+.timer{
+  font-size:12px;
+  color:#6b7280;
+}
+
+/* Cancel */
+.cancel-btn{
+  border:none;
+  background:transparent;
+  font-size:20px;
+  color:#dc2626;
+}
+
+/* Audio preview */
+audio{
+  width:100%;
+  margin-top:10px;
+}
 
 
 </style>
@@ -261,6 +330,42 @@ body{background:#f2f4f7;}
     <label>Address</label>
     <textarea id="custAddress" placeholder="Enter your address"></textarea>
   </div>
+  <!-- 🔴 Voice Heading -->
+<div class="voice-title">
+  Send your order also through voice
+</div>
+
+<!-- 🎤 Voice Message Card -->
+<div class="wa-voice">
+
+  <div class="wa-bubble">
+
+    <!-- MIC BUTTON -->
+    <button id="micBtn" class="mic-btn" onclick="startVoice()">
+      <svg viewBox="0 0 24 24" class="mic-icon">
+        <path d="M12 14a3 3 0 003-3V5a3 3 0 00-6 0v6a3 3 0 003 3z"/>
+        <path d="M19 11a1 1 0 10-2 0 5 5 0 01-10 0 1 1 0 10-2 0 7 7 0 006 6.92V21h2v-3.08A7 7 0 0019 11z"/>
+      </svg>
+    </button>
+
+    <!-- INFO -->
+    <div class="voice-info">
+      <div id="recordStatus" class="status">Record your order voice</div>
+      <div id="timer" class="timer">00:00</div>
+    </div>
+
+    <!-- CANCEL -->
+    <button id="cancelVoice" class="cancel-btn" onclick="cancelVoice()" hidden>
+      ✕
+    </button>
+
+  </div>
+
+  <!-- AUDIO PREVIEW -->
+  <audio id="voicePreview" controls hidden></audio>
+
+</div>
+  
 
   <!-- Order Type -->
   <div class="form-group">
@@ -410,6 +515,7 @@ function placeOrder(){
   cart.forEach((item, i) => {
     productText += `${i+1}. ${item.name} × ${item.qty}\n`;
   });
+  
 
   // Telegram message
   const message =
@@ -435,33 +541,115 @@ ${productText}
 `;
 
   // 🔐 TELEGRAM CONFIG (CHANGE THESE)
-  const BOT_TOKEN = "8562892791:AAFkdPm66jzBOhQPwtGExtQbvE8P4hgCtcg";
-  const CHAT_ID  = "1287496525";
+  const BOT_TOKEN = "YOUR_BOT_TOKEN";
+  const CHAT_ID  = "YOUR_CHAT_ID";
 
-  fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body:JSON.stringify({
-      chat_id: CHAT_ID,
-      text: message,
-      parse_mode: "Markdown"
-    })
+  fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    chat_id: CHAT_ID,
+    text: message,
+    parse_mode: "Markdown"
   })
-  .then(() => {
-    localStorage.removeItem("cart");
-    window.location.href = "success.html";
-  })
-  .catch(() => {
-    alert("Order failed. Please try again.");
-  });
-}
+})
+.then(async () => {
 
+  // 🎤 SEND VOICE MESSAGE (OPTIONAL)
+  if(voiceBlob){
+    const voiceData = new FormData();
+    voiceData.append("chat_id", CHAT_ID);
+    voiceData.append("voice", voiceBlob, "voice.webm");
+
+    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendVoice`, {
+      method: "POST",
+      body: voiceData
+    });
+  }
+
+  // ✅ AFTER TEXT + VOICE SENT
+  localStorage.removeItem("cart");
+  window.location.href = "success.html";
+
+})
+.catch(() => {
+  alert("Order failed. Please try again.");
+});
 /* =========================
    INIT
 ========================= */
 renderCart();
 checkFormValidity();
 </script>
+<script>
+let recorder, stream;
+let chunks = [];
+let seconds = 0;
+let timerInterval;
+let voiceBlob = null; // optional – use later for Telegram
+
+async function startVoice(){
+  stream = await navigator.mediaDevices.getUserMedia({ audio:true });
+  recorder = new MediaRecorder(stream);
+  chunks = [];
+
+  recorder.ondataavailable = e => chunks.push(e.data);
+
+  recorder.onstop = () => {
+    voiceBlob = new Blob(chunks, { type:"audio/webm" });
+    const url = URL.createObjectURL(voiceBlob);
+    const audio = document.getElementById("voicePreview");
+    audio.src = url;
+    audio.hidden = false;
+  };
+
+  recorder.start();
+
+  document.getElementById("recordStatus").innerText = "Recording…";
+  document.getElementById("cancelVoice").hidden = false;
+
+  seconds = 0;
+  timerInterval = setInterval(()=>{
+    seconds++;
+    document.getElementById("timer").innerText =
+      `00:${seconds.toString().padStart(2,"0")}`;
+  },1000);
+
+  // change icon to STOP
+  document.getElementById("micBtn").innerHTML = `
+    <svg viewBox="0 0 24 24" class="mic-icon">
+      <rect x="6" y="6" width="12" height="12" rx="2" fill="#fff"/>
+    </svg>`;
+  document.getElementById("micBtn").onclick = stopVoice;
+}
+
+function stopVoice(){
+  recorder.stop();
+  stream.getTracks().forEach(t=>t.stop());
+  clearInterval(timerInterval);
+
+  document.getElementById("recordStatus").innerText = "Voice recorded";
+  document.getElementById("micBtn").innerHTML = `
+    <svg viewBox="0 0 24 24" class="mic-icon">
+      <path d="M12 14a3 3 0 003-3V5a3 3 0 00-6 0v6a3 3 0 003 3z"/>
+      <path d="M19 11a1 1 0 10-2 0 5 5 0 01-10 0 1 1 0 10-2 0 7 7 0 006 6.92V21h2v-3.08A7 7 0 0019 11z"/>
+    </svg>`;
+  document.getElementById("micBtn").onclick = startVoice;
+}
+
+function cancelVoice(){
+  if(recorder && recorder.state==="recording"){
+    recorder.stop();
+  }
+  clearInterval(timerInterval);
+  voiceBlob = null;
+
+  document.getElementById("voicePreview").hidden = true;
+  document.getElementById("cancelVoice").hidden = true;
+  document.getElementById("recordStatus").innerText = "Record your order voice";
+  document.getElementById("timer").innerText = "00:00";
+}
+</script>
 
 </body>
-</html>
+                                  </html>
