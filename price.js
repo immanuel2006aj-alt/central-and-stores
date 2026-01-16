@@ -1,59 +1,58 @@
-/* =========================
-   PRICE CONFIG – EDIT HERE
-========================= */
+/* ===============================
+   PRICE MASTER – CENTRAL & STORES
+   Edit ONLY this file to change prices
+================================ */
 
-// price.js
-const PRICE_MASTER = {
+/* 🟢 RICE – PER KG */
+const RICE_PRICES = {
+  "Raw Rice": 58,
+  "Boiled Rice": 55,
+  "Ponni Rice": 60,
+  "Sona Masoori": 64,
+  "Idli Rice": 56,
+  "Basmati Rice": 110,
+  "Jeera Samba": 90,
+  "Seeraga Samba": 92,
+  "Kullakar Rice": 85,
+  "Karuppu Kavuni": 120,
+  "Mapillai Samba": 95
+};
 
-  "Raw Rice": {
-    "India Gate": 65,
-    "Daawat": 68,
-    "Lal Qilla": 64,
-    "Ponni": 62,
-    "777": 60,
-    "Aashirvaad": 66,
-    "Royal": 70,
-    "Local Rice Mill": 58
-  },
+/* 🟡 DHAL / PULSES – PER ½ KG (500g) */
+const DHAL_PRICES = {
+  "Toor Dal": 85,
+  "Moong Dal": 78,
+  "Urad Dal": 92,
+  "Chana Dal": 68,
+  "Masoor Dal": 74,
+  "Green Gram": 80,
+  "Black Gram": 88,
+  "Cow Peas": 65,
+  "White Peas": 60,
+  "Green Peas (Dry)": 70
+};
 
-  "Boiled Rice": {
-    "Ponni": 60,
-    "777": 58,
-    "Local Rice Mill": 55
-  },
+/* ===============================
+   COMMON PRICE FUNCTION
+================================ */
+function getPrice(productName) {
 
-  "Ponni Rice": {
-    "Ponni": 62,
-    "777": 60
-  },
-
-  "Idli Rice": {
-    "Ponni": 58,
-    "777": 56
-  },
-
-  "Basmati Rice": {
-    "India Gate": 110,
-    "Daawat": 115,
-    "Royal": 120
-  },
-
-  "Seeraga Samba": {
-    "Ponni": 92,
-    "Local Rice Mill": 88
-  },
-
-  "Milk": {
-    "Aavin": 30,
-    "Amul": 32,
-    "Heritage": 31
-  },
-
-  "Bath Soap": {
-    "Lux": 40,
-    "Hamam": 38,
-    "Lifebuoy": 35,
-    "Dove": 55
+  if (RICE_PRICES[productName]) {
+    return {
+      price: RICE_PRICES[productName],
+      unit: "Kg"
+    };
   }
 
-};
+  if (DHAL_PRICES[productName]) {
+    return {
+      price: DHAL_PRICES[productName],
+      unit: "½ Kg"
+    };
+  }
+
+  return {
+    price: 0,
+    unit: ""
+  };
+}
