@@ -141,85 +141,96 @@ body{background:#f2f4f7;}
   <button onclick="goToOrder()">Proceed to Order</button>
 </div>
 
+<script src="price.js"></script>
 <script>
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
-const cartWrapper = document.getElementById("cartWrapper");
+const MIN_ORDER = 200;
 
-function renderCart(){
-  cartWrapper.innerHTML="";
-  if(cart.length===0){
-    cartWrapper.innerHTML="<p style='text-align:center;opacity:.6'>Cart is empty</p>";
+const cartWrapper = document.getElementById("cartWrapper");
+const cartTotalEl = document.getElementById("cartTotal");
+const itemCountEl = document.getElementById("itemCount");
+const minAlert = document.getElementById("minAlert");
+const proceedBtn = document.getElementById("proceedBtn");
+
+/* RENDER CART */
+function renderCart() {
+  cartWrapper.innerHTML = "";
+
+  if (cart.length === 0) {
+    cartWrapper.innerHTML = `<p style="text-align:center;opacity:.6">Cart is empty</p>`;
+    cartTotalEl.innerText = "₹0";
+    itemCountEl.innerText = "0";
+    proceedBtn.disabled = true;
     return;
   }
-  cart.forEach((item,i)=>{
-    cartWrapper.innerHTML+=`
+
+  cart.forEach((item, i) => {
+    cartWrapper.innerHTML += `
       <div class="cart-card">
-        <div>
-          <div class="cart-title">${item.name}</div>
-          <div class="qty-box">
-            <button onclick="updateQty(${i},-1)">−</button>
-            <span>${item.qty}</span>
-            <button onclick="updateQty(${i},1)">+</button>
-          </div>
+        <div class="cart-title">${item.name}</div>
+
+        <div class="qty-box">
+          <button onclick="updateQty(${i}, -1)">−</button>
+          <span>${item.qty}</span>
+          <button onclick="updateQty(${i}, 1)">+</button>
         </div>
+
         <button class="remove-btn" onclick="removeItem(${i})">Remove</button>
-      </div>`;
+      </div>
+    `;
   });
+
+  calculateCartTotal();
 }
 
-function updateQty(i,d){
-  cart[i].qty+=d;
-  if(cart[i].qty<1)cart[i].qty=1;
-  localStorage.setItem("cart",JSON.stringify(cart));
+/* UPDATE QTY */
+function updateQty(i, d) {
+  cart[i].qty += d;
+  if (cart[i].qty < 1) cart[i].qty = 1;
+  localStorage.setItem("cart", JSON.stringify(cart));
   renderCart();
 }
 
-function removeItem(i){
-  cart.splice(i,1);
-  localStorage.setItem("cart",JSON.stringify(cart));
+/* REMOVE ITEM */
+function removeItem(i) {
+  cart.splice(i, 1);
+  localStorage.setItem("cart", JSON.stringify(cart));
   renderCart();
 }
 
-function goToOrder(){
-  if(cart.length===0){alert("Cart is empty");return;}
-  window.location.href="order.html";
-}
-
-renderCart();
-
-  const MIN_ORDER = 200;
-
-function calculateCartTotal(){
+/* TOTAL CALCULATION */
+function calculateCartTotal() {
   let total = 0;
   let count = 0;
 
-  cart.forEach(item=>{
+  cart.forEach(item => {
     const price = getPrice(item.name); // from price.js
     total += price * item.qty;
     count += item.qty;
   });
 
-  document.getElementById("cartTotal").innerText = "₹" + total;
-  document.getElementById("itemCount").innerText = count;
+  cartTotalEl.innerText = "₹" + total;
+  itemCountEl.innerText = count;
 
-  const alert = document.getElementById("minAlert");
-  const btn = document.getElementById("proceedBtn");
-
-  if(total < MIN_ORDER){
-    alert.style.display = "block";
-    btn.disabled = true;
-  }else{
-    alert.style.display = "none";
-    btn.disabled = false;
+  if (total < MIN_ORDER) {
+    minAlert.style.display = "block";
+    proceedBtn.disabled = true;
+  } else {
+    minAlert.style.display = "none";
+    proceedBtn.disabled = false;
   }
 }
 
-/* Call after every render */
-function renderCart(){
-  // your existing STEP 1 render logic
-  // ...
-  calculateCartTotal();
+/* GO TO ORDER */
+function goToOrder() {
+  if (cart.length === 0) {
+    alert("Cart is empty");
+    return;
   }
+  window.location.href = "order.html";
+}
+
+renderCart();
 </script>
 
 </body>
