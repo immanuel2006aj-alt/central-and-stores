@@ -302,14 +302,18 @@ body{background:#f2f4f7;}
   </div>
 
   <!-- Place Order -->
-  <button class="place-order-btn" onclick="placeOrder()">
-    Place an Order
+  <button
+  id="placeOrderBtn"
+  class="place-order-btn"
+  type="button"
+  onclick="placeOrder()"
+  disabled
+>
+  Place an Order
   </button>
 
 </div>
 
-<script>
-  
 <script>
 /* =========================
    CART STATE (PERSISTENT)
@@ -319,12 +323,12 @@ let cart = JSON.parse(localStorage.getItem("cart")) || [];
 /* =========================
    ELEMENTS
 ========================= */
-const cartWrapper = document.getElementById("cartWrapper");
-const nameInput = document.getElementById("custName");
-const mobileInput = document.getElementById("custMobile");
-const addressInput = document.getElementById("custAddress");
-const orderTypeInput = document.getElementById("orderType");
-const placeBtn = document.getElementById("placeOrderBtn");
+const cartWrapper   = document.getElementById("cartWrapper");
+const nameInput     = document.getElementById("custName");
+const mobileInput   = document.getElementById("custMobile");
+const addressInput  = document.getElementById("custAddress");
+const orderTypeInput= document.getElementById("orderType");
+const placeBtn      = document.getElementById("placeOrderBtn");
 
 /* =========================
    RESTORE FORM DATA
@@ -345,7 +349,7 @@ function renderCart(){
 
   if(cart.length === 0){
     cartWrapper.innerHTML =
-      "<p style='text-align:center;opacity:.6'>No items in cart</p>";
+      `<p style="text-align:center;opacity:.6">No items in cart</p>`;
     return;
   }
 
@@ -364,11 +368,12 @@ function renderCart(){
 }
 
 /* =========================
-   UPDATE QUANTITY
+   UPDATE QTY
 ========================= */
 function updateQty(index,change){
   cart[index].qty += change;
   if(cart[index].qty < 1) cart.splice(index,1);
+
   localStorage.setItem("cart", JSON.stringify(cart));
   renderCart();
   checkFormValidity();
@@ -379,6 +384,7 @@ function updateQty(index,change){
 ========================= */
 function checkFormValidity(){
   placeBtn.disabled = !(
+    cart.length > 0 &&
     nameInput.value.trim() &&
     mobileInput.value.trim().length === 10 &&
     addressInput.value.trim() &&
@@ -390,28 +396,28 @@ function checkFormValidity(){
    SAVE FORM DATA
 ========================= */
 function saveFormData(){
-  const data = {
+  localStorage.setItem("cartForm", JSON.stringify({
     name: nameInput.value,
     mobile: mobileInput.value,
     address: addressInput.value,
     orderType: orderTypeInput.value
-  };
-  localStorage.setItem("cartForm", JSON.stringify(data));
+  }));
 }
 
-[nameInput,mobileInput,addressInput].forEach(el=>{
+[nameInput, mobileInput, addressInput].forEach(el=>{
   el.addEventListener("input", ()=>{
     checkFormValidity();
     saveFormData();
   });
 });
+
 orderTypeInput.addEventListener("change", ()=>{
   checkFormValidity();
   saveFormData();
 });
 
 /* =========================
-   PLACE ORDER (TEXT ONLY)
+   PLACE ORDER (TELEGRAM)
 ========================= */
 async function placeOrder(){
 
@@ -420,15 +426,15 @@ async function placeOrder(){
     return;
   }
 
-  const BOT_TOKEN = "8562892791:AAFkdPm66jzBOhQPwtGExtQbvE8P4hgCtcg";
-  const CHAT_ID  = "1287496525";
+  const BOT_TOKEN = "YOUR_BOT_TOKEN";
+  const CHAT_ID  = "YOUR_CHAT_ID";
 
   const now = new Date();
-  const message =
-`🛒 New Grocery Order
 
-🕒 ${now.toLocaleDateString("en-IN",{weekday:"long"})}
-📅 ${now.toLocaleDateString("en-IN")}
+  const message = `
+🛒 *New Grocery Order*
+
+📅 ${now.toLocaleDateString("en-IN",{weekday:"long"})}
 ⏰ ${now.toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit"})}
 
 👤 Name: ${nameInput.value}
@@ -436,23 +442,23 @@ async function placeOrder(){
 🏠 Address: ${addressInput.value}
 📦 Order Type: ${orderTypeInput.value}
 
-🛍 Products:
+🧾 Products:
 ${cart.map((i,n)=>`${n+1}. ${i.name} × ${i.qty}`).join("\n")}
 
-ℹ️ Final price & availability will be confirmed by call.
+ℹ Final price & availability will be confirmed by call.
 `;
 
   try{
     await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{
       method:"POST",
       headers:{ "Content-Type":"application/json" },
-      body:JSON.stringify({
+      body: JSON.stringify({
         chat_id: CHAT_ID,
-        text: message
+        text: message,
+        parse_mode: "Markdown"
       })
     });
 
-    // CLEAR AFTER SUCCESS
     localStorage.removeItem("cart");
     localStorage.removeItem("cartForm");
     window.location.href = "success.html";
@@ -469,7 +475,6 @@ ${cart.map((i,n)=>`${n+1}. ${i.name} × ${i.qty}`).join("\n")}
 renderCart();
 checkFormValidity();
 </script>
-  
   
 </body>
                                   </html>
