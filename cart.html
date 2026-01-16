@@ -214,69 +214,6 @@ body{background:#f2f4f7;}
   margin:20px 0 8px;
 }
 
-/* Voice container */
-.wa-voice{
-  margin-bottom:20px;
-}
-
-.wa-bubble{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  background:#f8fafc;
-  padding:12px 14px;
-  border-radius:16px;
-  border:1px solid #e5e7eb;
-}
-
-/* Mic button */
-.mic-btn{
-  width:48px;
-  height:48px;
-  border-radius:50%;
-  border:none;
-  background:#16a34a;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.mic-icon{
-  width:22px;
-  height:22px;
-  fill:#fff;
-}
-
-/* Info */
-.voice-info{
-  flex:1;
-}
-
-.status{
-  font-size:14px;
-  font-weight:600;
-}
-
-.timer{
-  font-size:12px;
-  color:#6b7280;
-}
-
-/* Cancel */
-.cancel-btn{
-  border:none;
-  background:transparent;
-  font-size:20px;
-  color:#dc2626;
-}
-
-/* Audio preview */
-audio{
-  width:100%;
-  margin-top:10px;
-}
-
-
 </style>
 </head>
 
@@ -330,43 +267,7 @@ audio{
     <label>Address</label>
     <textarea id="custAddress" placeholder="Enter your address"></textarea>
   </div>
-  <!-- 🔴 Voice Heading -->
-<div class="voice-title">
-  Send your order also through voice
-</div>
-
-<!-- 🎤 Voice Message Card -->
-<div class="wa-voice">
-
-  <div class="wa-bubble">
-
-    <!-- MIC BUTTON -->
-    <button id="micBtn" class="mic-btn" onclick="startVoice()">
-      <svg viewBox="0 0 24 24" class="mic-icon">
-        <path d="M12 14a3 3 0 003-3V5a3 3 0 00-6 0v6a3 3 0 003 3z"/>
-        <path d="M19 11a1 1 0 10-2 0 5 5 0 01-10 0 1 1 0 10-2 0 7 7 0 006 6.92V21h2v-3.08A7 7 0 0019 11z"/>
-      </svg>
-    </button>
-
-    <!-- INFO -->
-    <div class="voice-info">
-      <div id="recordStatus" class="status">Record your order voice</div>
-      <div id="timer" class="timer">00:00</div>
-    </div>
-
-    <!-- CANCEL -->
-    <button id="cancelVoice" class="cancel-btn" onclick="cancelVoice()" hidden>
-      ✕
-    </button>
-
-  </div>
-
-  <!-- AUDIO PREVIEW -->
-  <audio id="voicePreview" controls hidden></audio>
-
-</div>
   
-
   <!-- Order Type -->
   <div class="form-group">
     <label>Select Order Type</label>
