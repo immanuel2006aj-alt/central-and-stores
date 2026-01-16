@@ -313,8 +313,7 @@ body{background:#f2f4f7;}
   </button>
 
 </div>
-
-<script>
+  <script>
 /* =========================
    CART STATE (PERSISTENT)
 ========================= */
@@ -383,98 +382,8 @@ function updateQty(index,change){
    FORM VALIDATION
 ========================= */
 function checkFormValidity(){
-  placeBtn.disabled = !(
-    cart.length > 0 &&
-    nameInput.value.trim() &&
-    mobileInput.value.trim().length === 10 &&
-    addressInput.value.trim() &&
-    orderTypeInput.value
-  );
-}
+  placeBtn.disabled
 
-/* =========================
-   SAVE FORM DATA
-========================= */
-function saveFormData(){
-  localStorage.setItem("cartForm", JSON.stringify({
-    name: nameInput.value,
-    mobile: mobileInput.value,
-    address: addressInput.value,
-    orderType: orderTypeInput.value
-  }));
-}
-
-[nameInput, mobileInput, addressInput].forEach(el=>{
-  el.addEventListener("input", ()=>{
-    checkFormValidity();
-    saveFormData();
-  });
-});
-
-orderTypeInput.addEventListener("change", ()=>{
-  checkFormValidity();
-  saveFormData();
-});
-
-/* =========================
-   PLACE ORDER (TELEGRAM)
-========================= */
-async function placeOrder(){
-
-  if(cart.length === 0){
-    alert("Your cart is empty");
-    return;
-  }
-
-  const BOT_TOKEN = "YOUR_BOT_TOKEN";
-  const CHAT_ID  = "YOUR_CHAT_ID";
-
-  const now = new Date();
-
-  const message = `
-🛒 *New Grocery Order*
-
-📅 ${now.toLocaleDateString("en-IN",{weekday:"long"})}
-⏰ ${now.toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit"})}
-
-👤 Name: ${nameInput.value}
-📞 Mobile: ${mobileInput.value}
-🏠 Address: ${addressInput.value}
-📦 Order Type: ${orderTypeInput.value}
-
-🧾 Products:
-${cart.map((i,n)=>`${n+1}. ${i.name} × ${i.qty}`).join("\n")}
-
-ℹ Final price & availability will be confirmed by call.
-`;
-
-  try{
-    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{
-      method:"POST",
-      headers:{ "Content-Type":"application/json" },
-      body: JSON.stringify({
-        chat_id: CHAT_ID,
-        text: message,
-        parse_mode: "Markdown"
-      })
-    });
-
-    localStorage.removeItem("cart");
-    localStorage.removeItem("cartForm");
-    window.location.href = "success.html";
-
-  }catch(err){
-    alert("Order failed. Please try again.");
-    console.error(err);
-  }
-}
-
-/* =========================
-   INIT
-========================= */
-renderCart();
-checkFormValidity();
 </script>
-  
-</body>
-                                  </html>
+  </body>
+    </html>
