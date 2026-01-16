@@ -62,6 +62,52 @@ body{background:#f2f4f7;}
   width:100%;padding:14px;border:none;border-radius:14px;
   background:#0fbf4a;color:#fff;font-size:16px;font-weight:700;
 }
+
+.cart-summary{
+  position:sticky;
+  bottom:0;
+  background:#fff;
+  border-radius:20px 20px 0 0;
+  padding:16px;
+  box-shadow:0 -10px 25px rgba(0,0,0,.12);
+  margin-top:20px;
+}
+
+.summary-row{
+  display:flex;
+  justify-content:space-between;
+  font-size:15px;
+  font-weight:600;
+  margin-bottom:10px;
+}
+
+#cartTotal{
+  font-size:18px;
+  font-weight:800;
+  color:#16a34a;
+}
+
+.min-alert{
+  font-size:13px;
+  color:#e11d48;
+  margin-bottom:10px;
+  display:none;
+}
+
+.proceed-btn{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:16px;
+  background:#16a34a;
+  color:#fff;
+  font-size:16px;
+  font-weight:800;
+}
+
+.proceed-btn:disabled{
+  background:#9ca3af;
+}
 </style>
 </head>
 
@@ -70,7 +116,28 @@ body{background:#f2f4f7;}
 <div class="header">🛒 My Cart</div>
 
 <div class="cart-wrapper" id="cartWrapper"></div>
+<!-- CART SUMMARY -->
+<div id="cartSummary" class="cart-summary">
+  <div class="summary-row">
+    <span>Items</span>
+    <span id="itemCount">0</span>
+  </div>
 
+  <div class="summary-row">
+    <span>Estimated Total</span>
+    <span id="cartTotal">₹0</span>
+  </div>
+
+  <div id="minAlert" class="min-alert">
+    Minimum order value is ₹200
+  </div>
+
+  <button id="proceedBtn" class="proceed-btn" onclick="goToOrder()">
+    Proceed to Order
+  </button>
+</div>
+
+  
 <div class="disclaimer">
   <strong>📞 Order Confirmation</strong><br>
   After placing an order, we will call you to confirm and update product details.
@@ -125,6 +192,40 @@ function goToOrder(){
 }
 
 renderCart();
+
+  const MIN_ORDER = 200;
+
+function calculateCartTotal(){
+  let total = 0;
+  let count = 0;
+
+  cart.forEach(item=>{
+    const price = getPrice(item.name); // from price.js
+    total += price * item.qty;
+    count += item.qty;
+  });
+
+  document.getElementById("cartTotal").innerText = "₹" + total;
+  document.getElementById("itemCount").innerText = count;
+
+  const alert = document.getElementById("minAlert");
+  const btn = document.getElementById("proceedBtn");
+
+  if(total < MIN_ORDER){
+    alert.style.display = "block";
+    btn.disabled = true;
+  }else{
+    alert.style.display = "none";
+    btn.disabled = false;
+  }
+}
+
+/* Call after every render */
+function renderCart(){
+  // your existing STEP 1 render logic
+  // ...
+  calculateCartTotal();
+  }
 </script>
 
 </body>
