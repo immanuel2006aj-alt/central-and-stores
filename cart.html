@@ -303,17 +303,69 @@ body{background:#f2f4f7;}
 </div>
 
 <script>
-/* ================= CART DATA ================= */
+/* =========================
+   READ CART (ONE SOURCE)
+========================= */
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
+console.log("CART:", cart);
 
-/* ================= FORM ELEMENTS ================= */
+/* =========================
+   ELEMENTS
+========================= */
+const cartWrapper = document.getElementById("cartWrapper");
 const nameInput = document.getElementById("custName");
 const mobileInput = document.getElementById("custMobile");
 const addressInput = document.getElementById("custAddress");
 const orderTypeInput = document.getElementById("orderType");
 const placeBtn = document.getElementById("placeOrderBtn");
 
-/* ================= LIVE FORM VALIDATION ================= */
+/* =========================
+   RENDER CART ITEMS
+========================= */
+function renderCart(){
+  cartWrapper.innerHTML = "";
+
+  if(cart.length === 0){
+    cartWrapper.innerHTML = `
+      <p style="text-align:center;opacity:.6">
+        No items added to cart
+      </p>`;
+    return;
+  }
+
+  cart.forEach((item, index) => {
+    cartWrapper.innerHTML += `
+      <div class="cart-card">
+        <div class="cart-title">${item.name}</div>
+
+        <div class="qty-box">
+          <button onclick="updateQty(${index}, -1)">−</button>
+          <span>${item.qty}</span>
+          <button onclick="updateQty(${index}, 1)">+</button>
+        </div>
+      </div>
+    `;
+  });
+}
+
+/* =========================
+   UPDATE QUANTITY
+========================= */
+function updateQty(index, change){
+  cart[index].qty += change;
+
+  if(cart[index].qty < 1){
+    cart.splice(index, 1);
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+  renderCart();
+  checkFormValidity();
+}
+
+/* =========================
+   FORM VALIDATION
+========================= */
 function checkFormValidity(){
   const nameValid = nameInput.value.trim().length > 0;
   const mobileValid = mobileInput.value.trim().length === 10;
@@ -323,13 +375,17 @@ function checkFormValidity(){
   placeBtn.disabled = !(nameValid && mobileValid && addressValid && orderTypeValid);
 }
 
-/* Listen to changes */
+/* =========================
+   FORM EVENTS
+========================= */
 nameInput.addEventListener("input", checkFormValidity);
 mobileInput.addEventListener("input", checkFormValidity);
 addressInput.addEventListener("input", checkFormValidity);
 orderTypeInput.addEventListener("change", checkFormValidity);
 
-/* ================= PLACE ORDER ================= */
+/* =========================
+   PLACE ORDER → TELEGRAM
+========================= */
 function placeOrder(){
 
   if(cart.length === 0){
@@ -343,30 +399,24 @@ function placeOrder(){
   const orderType = orderTypeInput.value;
   const area = document.getElementById("area").value;
 
-  /* Final safety check */
-  if(!name || !mobile || !address || !orderType){
-    alert("Please fill all required details");
-    return;
-  }
-
-  /* 🕒 DATE & TIME (IST) */
+  // Date & Time
   const now = new Date();
   const day = now.toLocaleDateString("en-IN", { weekday: "long" });
   const date = now.toLocaleDateString("en-IN");
   const time = now.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" });
 
-  /* Build product list */
+  // Product list
   let productText = "";
   cart.forEach((item, i) => {
     productText += `${i+1}. ${item.name} × ${item.qty}\n`;
   });
 
-  /* Telegram message */
-  let message =
+  // Telegram message
+  const message =
 `🛒 *New Grocery Order*
 
 🕒 ${day}, ${date}
-⏰ Time: ${time}
+⏰ ${time}
 
 👤 Name: ${name}
 📞 Mobile: ${mobile}
@@ -381,15 +431,13 @@ ${address}
 🛍 Products:
 ${productText}
 
-ℹ️ Note:
-Final price, availability & confirmation will be done via phone call.
+ℹ️ Final price & confirmation via phone call.
 `;
 
-  /* 🔐 Telegram Config (REPLACE THESE) */
-  const BOT_TOKEN = "YOUR_BOT_TOKEN";
-  const CHAT_ID  = "YOUR_CHAT_ID";
+  // 🔐 TELEGRAM CONFIG (CHANGE THESE)
+  const BOT_TOKEN = "8562892791:AAFkdPm66jzBOhQPwtGExtQbvE8P4hgCtcg";
+  const CHAT_ID  = "1287496525";
 
-  /* Send to Telegram */
   fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{
     method:"POST",
     headers:{ "Content-Type":"application/json" },
@@ -407,6 +455,12 @@ Final price, availability & confirmation will be done via phone call.
     alert("Order failed. Please try again.");
   });
 }
+
+/* =========================
+   INIT
+========================= */
+renderCart();
+checkFormValidity();
 </script>
 
 </body>
