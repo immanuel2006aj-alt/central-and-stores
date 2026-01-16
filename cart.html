@@ -408,14 +408,14 @@ audio{
 </div>
 
 <script>
+<script>
 /* =========================
-   READ CART (ONE SOURCE)
+   CART STATE (PERSISTENT)
 ========================= */
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
-console.log("CART:", cart);
 
 /* =========================
-   ELEMENTS
+   FORM ELEMENTS
 ========================= */
 const cartWrapper = document.getElementById("cartWrapper");
 const nameInput = document.getElementById("custName");
@@ -425,28 +425,36 @@ const orderTypeInput = document.getElementById("orderType");
 const placeBtn = document.getElementById("placeOrderBtn");
 
 /* =========================
-   RENDER CART ITEMS
+   RESTORE FORM DATA
+========================= */
+const savedForm = JSON.parse(localStorage.getItem("cartForm"));
+if(savedForm){
+  nameInput.value = savedForm.name || "";
+  mobileInput.value = savedForm.mobile || "";
+  addressInput.value = savedForm.address || "";
+  orderTypeInput.value = savedForm.orderType || "";
+}
+
+/* =========================
+   RENDER CART
 ========================= */
 function renderCart(){
   cartWrapper.innerHTML = "";
 
   if(cart.length === 0){
-    cartWrapper.innerHTML = `
-      <p style="text-align:center;opacity:.6">
-        No items added to cart
-      </p>`;
+    cartWrapper.innerHTML =
+      "<p style='text-align:center;opacity:.6'>No items in cart</p>";
     return;
   }
 
-  cart.forEach((item, index) => {
+  cart.forEach((item,index)=>{
     cartWrapper.innerHTML += `
       <div class="cart-card">
-        <div class="cart-title">${item.name}</div>
-
+        <div>${item.name}</div>
         <div class="qty-box">
-          <button onclick="updateQty(${index}, -1)">−</button>
+          <button onclick="updateQty(${index},-1)">−</button>
           <span>${item.qty}</span>
-          <button onclick="updateQty(${index}, 1)">+</button>
+          <button onclick="updateQty(${index},1)">+</button>
         </div>
       </div>
     `;
@@ -454,15 +462,11 @@ function renderCart(){
 }
 
 /* =========================
-   UPDATE QUANTITY
+   UPDATE QTY
 ========================= */
-function updateQty(index, change){
+function updateQty(index,change){
   cart[index].qty += change;
-
-  if(cart[index].qty < 1){
-    cart.splice(index, 1);
-  }
-
+  if(cart[index].qty < 1) cart.splice(index,1);
   localStorage.setItem("cart", JSON.stringify(cart));
   renderCart();
   checkFormValidity();
@@ -472,121 +476,46 @@ function updateQty(index, change){
    FORM VALIDATION
 ========================= */
 function checkFormValidity(){
-  const nameValid = nameInput.value.trim().length > 0;
-  const mobileValid = mobileInput.value.trim().length === 10;
-  const addressValid = addressInput.value.trim().length > 0;
-  const orderTypeValid = orderTypeInput.value !== "";
-
-  placeBtn.disabled = !(nameValid && mobileValid && addressValid && orderTypeValid);
+  placeBtn.disabled = !(
+    nameInput.value.trim() &&
+    mobileInput.value.trim().length === 10 &&
+    addressInput.value.trim() &&
+    orderTypeInput.value
+  );
 }
 
 /* =========================
-   FORM EVENTS
+   SAVE FORM DATA
 ========================= */
-nameInput.addEventListener("input", checkFormValidity);
-mobileInput.addEventListener("input", checkFormValidity);
-addressInput.addEventListener("input", checkFormValidity);
-orderTypeInput.addEventListener("change", checkFormValidity);
+function saveFormData(){
+  const data = {
+    name: nameInput.value,
+    mobile: mobileInput.value,
+    address: addressInput.value,
+    orderType: orderTypeInput.value
+  };
+  localStorage.setItem("cartForm", JSON.stringify(data));
+}
 
-/* =========================
-   PLACE ORDER → TELEGRAM
-========================= */
-function placeOrder(){
-
-  if(cart.length === 0){
-    alert("Your cart is empty");
-    return;
-  }
-
-  const name = nameInput.value.trim();
-  const mobile = mobileInput.value.trim();
-  const address = addressInput.value.trim();
-  const orderType = orderTypeInput.value;
-  const area = document.getElementById("area").value;
-
-  // Date & Time
-  const now = new Date();
-  const day = now.toLocaleDateString("en-IN", { weekday: "long" });
-  const date = now.toLocaleDateString("en-IN");
-  const time = now.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" });
-
-  // Product list
-  let productText = "";
-  cart.forEach((item, i) => {
-    productText += `${i+1}. ${item.name} × ${item.qty}\n`;
+[nameInput,mobileInput,addressInput].forEach(el=>{
+  el.addEventListener("input", ()=>{
+    checkFormValidity();
+    saveFormData();
   });
-  
-
-  // Telegram message
-  const message =
-`🛒 *New Grocery Order*
-
-🕒 ${day}, ${date}
-⏰ ${time}
-
-👤 Name: ${name}
-📞 Mobile: ${mobile}
-📍 Area: ${area}
-
-📦 Order Type:
-${orderType}
-
-🏠 Address:
-${address}
-
-🛍 Products:
-${productText}
-
-ℹ️ Final price & confirmation via phone call.
-`;
-
-  // 🔐 TELEGRAM CONFIG (CHANGE THESE)
-  const BOT_TOKEN = "8562892791:AAFkdPm66jzBOhQPwtGExtQbvE8P4hgCtcg";
-  const CHAT_ID  = "1287496525";
-
-  fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    chat_id: CHAT_ID,
-    text: message,
-    parse_mode: "Markdown"
-  })
-})
-.then(async () => {
-
-  // 🎤 SEND VOICE MESSAGE (OPTIONAL)
-  if(voiceBlob){
-    const voiceData = new FormData();
-    voiceData.append("chat_id", CHAT_ID);
-    voiceData.append("voice", voiceBlob, "voice.webm");
-
-    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendVoice`, {
-      method: "POST",
-      body: voiceData
-    });
-  }
-
-  // ✅ AFTER TEXT + VOICE SENT
-  localStorage.removeItem("cart");
-  window.location.href = "success.html";
-
-})
-.catch(() => {
-  alert("Order failed. Please try again.");
 });
+orderTypeInput.addEventListener("change", ()=>{
+  checkFormValidity();
+  saveFormData();
+});
+
 /* =========================
-   INIT
+   VOICE RECORDING (OPTIONAL)
 ========================= */
-renderCart();
-checkFormValidity();
-</script>
-<script>
 let recorder, stream;
 let chunks = [];
 let seconds = 0;
 let timerInterval;
-let voiceBlob = null; // optional – use later for Telegram
+let voiceBlob = null;
 
 async function startVoice(){
   stream = await navigator.mediaDevices.getUserMedia({ audio:true });
@@ -594,17 +523,14 @@ async function startVoice(){
   chunks = [];
 
   recorder.ondataavailable = e => chunks.push(e.data);
-
   recorder.onstop = () => {
-    voiceBlob = new Blob(chunks, { type:"audio/webm" });
-    const url = URL.createObjectURL(voiceBlob);
+    voiceBlob = new Blob(chunks,{ type:"audio/webm" });
     const audio = document.getElementById("voicePreview");
-    audio.src = url;
+    audio.src = URL.createObjectURL(voiceBlob);
     audio.hidden = false;
   };
 
   recorder.start();
-
   document.getElementById("recordStatus").innerText = "Recording…";
   document.getElementById("cancelVoice").hidden = false;
 
@@ -615,11 +541,6 @@ async function startVoice(){
       `00:${seconds.toString().padStart(2,"0")}`;
   },1000);
 
-  // change icon to STOP
-  document.getElementById("micBtn").innerHTML = `
-    <svg viewBox="0 0 24 24" class="mic-icon">
-      <rect x="6" y="6" width="12" height="12" rx="2" fill="#fff"/>
-    </svg>`;
   document.getElementById("micBtn").onclick = stopVoice;
 }
 
@@ -627,29 +548,87 @@ function stopVoice(){
   recorder.stop();
   stream.getTracks().forEach(t=>t.stop());
   clearInterval(timerInterval);
-
   document.getElementById("recordStatus").innerText = "Voice recorded";
-  document.getElementById("micBtn").innerHTML = `
-    <svg viewBox="0 0 24 24" class="mic-icon">
-      <path d="M12 14a3 3 0 003-3V5a3 3 0 00-6 0v6a3 3 0 003 3z"/>
-      <path d="M19 11a1 1 0 10-2 0 5 5 0 01-10 0 1 1 0 10-2 0 7 7 0 006 6.92V21h2v-3.08A7 7 0 0019 11z"/>
-    </svg>`;
   document.getElementById("micBtn").onclick = startVoice;
 }
 
 function cancelVoice(){
-  if(recorder && recorder.state==="recording"){
-    recorder.stop();
-  }
+  if(recorder && recorder.state==="recording") recorder.stop();
   clearInterval(timerInterval);
   voiceBlob = null;
-
   document.getElementById("voicePreview").hidden = true;
   document.getElementById("cancelVoice").hidden = true;
   document.getElementById("recordStatus").innerText = "Record your order voice";
   document.getElementById("timer").innerText = "00:00";
 }
-</script>
 
+/* =========================
+   PLACE ORDER (TEXT + VOICE)
+========================= */
+async function placeOrder(){
+
+  if(cart.length === 0){
+    alert("Your cart is empty");
+    return;
+  }
+
+  const BOT_TOKEN = "YOUR_BOT_TOKEN";
+  const CHAT_ID  = "YOUR_CHAT_ID";
+
+  const now = new Date();
+  const message =
+`🛒 New Grocery Order
+
+🕒 ${now.toLocaleDateString("en-IN",{weekday:"long"})}
+📅 ${now.toLocaleDateString("en-IN")}
+⏰ ${now.toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit"})}
+
+👤 ${nameInput.value}
+📞 ${mobileInput.value}
+🏠 ${addressInput.value}
+📦 ${orderTypeInput.value}
+
+🛍 Products:
+${cart.map((i,n)=>`${n+1}. ${i.name} × ${i.qty}`).join("\n")}
+`;
+
+  try{
+    // TEXT
+    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body:JSON.stringify({ chat_id:CHAT_ID, text:message })
+    });
+
+    // VOICE (OPTIONAL)
+    if(voiceBlob){
+      const fd = new FormData();
+      fd.append("chat_id",CHAT_ID);
+      fd.append("voice",voiceBlob,"voice.webm");
+
+      await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendVoice`,{
+        method:"POST",
+        body:fd
+      });
+    }
+
+    // CLEAR AFTER SUCCESS
+    localStorage.removeItem("cart");
+    localStorage.removeItem("cartForm");
+    window.location.href = "success.html";
+
+  }catch(err){
+    alert("Order failed. Please try again.");
+    console.error(err);
+  }
+}
+
+/* =========================
+   INIT
+========================= */
+renderCart();
+checkFormValidity();
+</script>
+  
 </body>
                                   </html>
