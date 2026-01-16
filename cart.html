@@ -313,175 +313,112 @@ body{background:#f2f4f7;}
   </button>
 
 </div>
-  <script>
-/* =========================
-   CART STATE (PERSISTENT)
-========================= */
+  
+<script>
+/* ================= CART DATA ================= */
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-/* =========================
-   ELEMENTS
-========================= */
-const cartWrapper   = document.getElementById("cartWrapper");
-const nameInput     = document.getElementById("custName");
-const mobileInput   = document.getElementById("custMobile");
-const addressInput  = document.getElementById("custAddress");
-const orderTypeInput= document.getElementById("orderType");
-const areaInput     = document.getElementById("orderArea");
-const placeBtn      = document.getElementById("placeOrderBtn");
+/* ================= FORM ELEMENTS ================= */
+const nameInput = document.getElementById("custName");
+const mobileInput = document.getElementById("custMobile");
+const addressInput = document.getElementById("custAddress");
+const orderTypeInput = document.getElementById("orderType");
+const placeBtn = document.getElementById("placeOrderBtn");
 
-/* =========================
-   RENDER CART ITEMS
-========================= */
-function renderCart(){
-  cartWrapper.innerHTML = "";
+/* ================= LIVE FORM VALIDATION ================= */
+function checkFormValidity(){
+  const nameValid = nameInput.value.trim().length > 0;
+  const mobileValid = mobileInput.value.trim().length === 10;
+  const addressValid = addressInput.value.trim().length > 0;
+  const orderTypeValid = orderTypeInput.value !== "";
+
+  placeBtn.disabled = !(nameValid && mobileValid && addressValid && orderTypeValid);
+}
+
+/* Listen to changes */
+nameInput.addEventListener("input", checkFormValidity);
+mobileInput.addEventListener("input", checkFormValidity);
+addressInput.addEventListener("input", checkFormValidity);
+orderTypeInput.addEventListener("change", checkFormValidity);
+
+/* ================= PLACE ORDER ================= */
+function placeOrder(){
 
   if(cart.length === 0){
-    cartWrapper.innerHTML = `
-      <p style="text-align:center;opacity:.6">
-        Your cart is empty
-      </p>`;
-    checkFormValidity();
+    alert("Your cart is empty");
     return;
   }
 
-  cart.forEach((item,index)=>{
-    cartWrapper.innerHTML += `
-      <div class="cart-card">
-        <div class="cart-name">${item.name}</div>
+  const name = nameInput.value.trim();
+  const mobile = mobileInput.value.trim();
+  const address = addressInput.value.trim();
+  const orderType = orderTypeInput.value;
+  const area = document.getElementById("area").value;
 
-        <div class="qty-box">
-          <button onclick="updateQty(${index},-1)">−</button>
-          <span>${item.qty}</span>
-          <button onclick="updateQty(${index},1)">+</button>
-        </div>
+  /* Final safety check */
+  if(!name || !mobile || !address || !orderType){
+    alert("Please fill all required details");
+    return;
+  }
 
-        <button class="remove-btn"
-          onclick="removeItem(${index})">Remove</button>
-      </div>
-    `;
+  /* 🕒 DATE & TIME (IST) */
+  const now = new Date();
+  const day = now.toLocaleDateString("en-IN", { weekday: "long" });
+  const date = now.toLocaleDateString("en-IN");
+  const time = now.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" });
+
+  /* Build product list */
+  let productText = "";
+  cart.forEach((item, i) => {
+    productText += `${i+1}. ${item.name} × ${item.qty}\n`;
   });
 
-  checkFormValidity();
-}
+  /* Telegram message */
+  let message =
+`🛒 *New Grocery Order*
 
-/* =========================
-   QUANTITY CONTROL
-========================= */
-function updateQty(index,change){
-  cart[index].qty += change;
-  if(cart[index].qty < 1) cart.splice(index,1);
-  localStorage.setItem("cart",JSON.stringify(cart));
-  renderCart();
-}
+🕒 ${day}, ${date}
+⏰ Time: ${time}
 
-function removeItem(index){
-  cart.splice(index,1);
-  localStorage.setItem("cart",JSON.stringify(cart));
-  renderCart();
-}
+👤 Name: ${name}
+📞 Mobile: ${mobile}
+📍 Area: ${area}
 
-/* =========================
-   FORM VALIDATION
-========================= */
-function checkFormValidity(){
-  placeBtn.disabled = !(
-    cart.length > 0 &&
-    nameInput.value.trim() &&
-    mobileInput.value.trim().length === 10 &&
-    addressInput.value.trim() &&
-    orderTypeInput.value &&
-    areaInput.value
-  );
-}
+📦 Order Type:
+${orderType}
 
-/* =========================
-   SAVE FORM DATA (REFRESH SAFE)
-========================= */
-function saveForm(){
-  localStorage.setItem("cartForm",JSON.stringify({
-    name:nameInput.value,
-    mobile:mobileInput.value,
-    address:addressInput.value,
-    orderType:orderTypeInput.value,
-    area:areaInput.value
-  }));
-}
-
-[nameInput,mobileInput,addressInput]
-.forEach(el=>el.addEventListener("input",()=>{
-  saveForm(); checkFormValidity();
-}));
-[orderTypeInput,areaInput]
-.forEach(el=>el.addEventListener("change",()=>{
-  saveForm(); checkFormValidity();
-}));
-
-/* =========================
-   RESTORE FORM DATA
-========================= */
-const saved = JSON.parse(localStorage.getItem("cartForm"));
-if(saved){
-  nameInput.value = saved.name || "";
-  mobileInput.value = saved.mobile || "";
-  addressInput.value = saved.address || "";
-  orderTypeInput.value = saved.orderType || "";
-  areaInput.value = saved.area || "";
-}
-
-/* =========================
-   PLACE ORDER → TELEGRAM
-========================= */
-async function placeOrder(){
-  if(cart.length === 0) return alert("Cart empty");
-
-  const BOT_TOKEN = "8562892791:AAFkdPm66jzBOhQPwtGExtQbvE8P4hgCtcg";
-  const CHAT_ID   = "1287496525";
-
-  const now = new Date();
-  const message = `
-🛒 *New Grocery Order*
-
-🕒 ${now.toLocaleString("en-IN")}
-
-👤 Name: ${nameInput.value}
-📞 Mobile: ${mobileInput.value}
-📍 Address: ${addressInput.value}
-📦 Order Type: ${orderTypeInput.value}
-📍 Area: ${areaInput.value}
+🏠 Address:
+${address}
 
 🛍 Products:
-${cart.map((i,n)=>`${n+1}. ${i.name} × ${i.qty}`).join("\n")}
+${productText}
 
-📌 Price & availability will be confirmed by call
+ℹ️ Note:
+Final price, availability & confirmation will be done via phone call.
 `;
 
-  try{
-    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{
-      method:"POST",
-      headers:{ "Content-Type":"application/json" },
-      body:JSON.stringify({
-        chat_id:CHAT_ID,
-        text:message,
-        parse_mode:"Markdown"
-      })
-    });
+  /* 🔐 Telegram Config (REPLACE THESE) */
+  const BOT_TOKEN = "8562892791:AAFkdPm66jzBOhQPwtGExtQbvE8P4hgCtcg";
+  const CHAT_ID  = "1287496525";
 
+  /* Send to Telegram */
+  fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body:JSON.stringify({
+      chat_id: CHAT_ID,
+      text: message,
+      parse_mode: "Markdown"
+    })
+  })
+  .then(() => {
     localStorage.removeItem("cart");
-    localStorage.removeItem("cartForm");
     window.location.href = "success.html";
-
-  }catch(err){
-    alert("Order failed. Try again");
-    console.error(err);
-  }
+  })
+  .catch(() => {
+    alert("Order failed. Please try again.");
+  });
 }
-
-/* =========================
-   INIT
-========================= */
-renderCart();
-checkFormValidity();
-</script>
+    </script>
   </body>
     </html>
