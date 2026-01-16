@@ -239,7 +239,7 @@ body{
 </head>
 
 <body>
-
+<div class="clickable">Proceed to Order</div>
 <!-- ================= HEADER ================= -->
 <div class="header">
   <h1>CENTRAL & STORES</h1>
@@ -1271,6 +1271,29 @@ function playBell() {
 <audio id="bellSound" preload="auto">
   <source src="bell.mp3" type="audio/mpeg">
 </audio>
+  <script>
+const touchAudio = document.getElementById("touchSound");
+
+/* play touch sound safely */
+function playTouchSound(){
+  if(!touchAudio) return;
+  touchAudio.currentTime = 0;
+  touchAudio.play().catch(()=>{});
+}
+
+/* attach to ALL clickable elements */
+document.addEventListener("click", function(e){
+
+  const clickable = e.target.closest(
+    "button, a, .clickable, .cart-icon, .add-btn"
+  );
+
+  if(clickable){
+    playTouchSound();
+  }
+
+});
+  </script>
 
 </body>
 </html>
