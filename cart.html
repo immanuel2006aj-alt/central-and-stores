@@ -408,6 +408,7 @@ audio{
 </div>
 
 <script>
+  
 <script>
 /* =========================
    CART STATE (PERSISTENT)
@@ -415,7 +416,7 @@ audio{
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 /* =========================
-   FORM ELEMENTS
+   ELEMENTS
 ========================= */
 const cartWrapper = document.getElementById("cartWrapper");
 const nameInput = document.getElementById("custName");
@@ -462,7 +463,7 @@ function renderCart(){
 }
 
 /* =========================
-   UPDATE QTY
+   UPDATE QUANTITY
 ========================= */
 function updateQty(index,change){
   cart[index].qty += change;
@@ -509,61 +510,7 @@ orderTypeInput.addEventListener("change", ()=>{
 });
 
 /* =========================
-   VOICE RECORDING (OPTIONAL)
-========================= */
-let recorder, stream;
-let chunks = [];
-let seconds = 0;
-let timerInterval;
-let voiceBlob = null;
-
-async function startVoice(){
-  stream = await navigator.mediaDevices.getUserMedia({ audio:true });
-  recorder = new MediaRecorder(stream);
-  chunks = [];
-
-  recorder.ondataavailable = e => chunks.push(e.data);
-  recorder.onstop = () => {
-    voiceBlob = new Blob(chunks,{ type:"audio/webm" });
-    const audio = document.getElementById("voicePreview");
-    audio.src = URL.createObjectURL(voiceBlob);
-    audio.hidden = false;
-  };
-
-  recorder.start();
-  document.getElementById("recordStatus").innerText = "Recording…";
-  document.getElementById("cancelVoice").hidden = false;
-
-  seconds = 0;
-  timerInterval = setInterval(()=>{
-    seconds++;
-    document.getElementById("timer").innerText =
-      `00:${seconds.toString().padStart(2,"0")}`;
-  },1000);
-
-  document.getElementById("micBtn").onclick = stopVoice;
-}
-
-function stopVoice(){
-  recorder.stop();
-  stream.getTracks().forEach(t=>t.stop());
-  clearInterval(timerInterval);
-  document.getElementById("recordStatus").innerText = "Voice recorded";
-  document.getElementById("micBtn").onclick = startVoice;
-}
-
-function cancelVoice(){
-  if(recorder && recorder.state==="recording") recorder.stop();
-  clearInterval(timerInterval);
-  voiceBlob = null;
-  document.getElementById("voicePreview").hidden = true;
-  document.getElementById("cancelVoice").hidden = true;
-  document.getElementById("recordStatus").innerText = "Record your order voice";
-  document.getElementById("timer").innerText = "00:00";
-}
-
-/* =========================
-   PLACE ORDER (TEXT + VOICE)
+   PLACE ORDER (TEXT ONLY)
 ========================= */
 async function placeOrder(){
 
@@ -583,34 +530,26 @@ async function placeOrder(){
 📅 ${now.toLocaleDateString("en-IN")}
 ⏰ ${now.toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit"})}
 
-👤 ${nameInput.value}
-📞 ${mobileInput.value}
-🏠 ${addressInput.value}
-📦 ${orderTypeInput.value}
+👤 Name: ${nameInput.value}
+📞 Mobile: ${mobileInput.value}
+🏠 Address: ${addressInput.value}
+📦 Order Type: ${orderTypeInput.value}
 
 🛍 Products:
 ${cart.map((i,n)=>`${n+1}. ${i.name} × ${i.qty}`).join("\n")}
+
+ℹ️ Final price & availability will be confirmed by call.
 `;
 
   try{
-    // TEXT
     await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{
       method:"POST",
       headers:{ "Content-Type":"application/json" },
-      body:JSON.stringify({ chat_id:CHAT_ID, text:message })
+      body:JSON.stringify({
+        chat_id: CHAT_ID,
+        text: message
+      })
     });
-
-    // VOICE (OPTIONAL)
-    if(voiceBlob){
-      const fd = new FormData();
-      fd.append("chat_id",CHAT_ID);
-      fd.append("voice",voiceBlob,"voice.webm");
-
-      await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendVoice`,{
-        method:"POST",
-        body:fd
-      });
-    }
 
     // CLEAR AFTER SUCCESS
     localStorage.removeItem("cart");
@@ -629,6 +568,7 @@ ${cart.map((i,n)=>`${n+1}. ${i.name} × ${i.qty}`).join("\n")}
 renderCart();
 checkFormValidity();
 </script>
+  
   
 </body>
                                   </html>
