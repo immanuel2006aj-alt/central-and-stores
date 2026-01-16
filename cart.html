@@ -327,63 +327,161 @@ const nameInput     = document.getElementById("custName");
 const mobileInput   = document.getElementById("custMobile");
 const addressInput  = document.getElementById("custAddress");
 const orderTypeInput= document.getElementById("orderType");
+const areaInput     = document.getElementById("orderArea");
 const placeBtn      = document.getElementById("placeOrderBtn");
 
 /* =========================
-   RESTORE FORM DATA
-========================= */
-const savedForm = JSON.parse(localStorage.getItem("cartForm"));
-if(savedForm){
-  nameInput.value = savedForm.name || "";
-  mobileInput.value = savedForm.mobile || "";
-  addressInput.value = savedForm.address || "";
-  orderTypeInput.value = savedForm.orderType || "";
-}
-
-/* =========================
-   RENDER CART
+   RENDER CART ITEMS
 ========================= */
 function renderCart(){
   cartWrapper.innerHTML = "";
 
   if(cart.length === 0){
-    cartWrapper.innerHTML =
-      `<p style="text-align:center;opacity:.6">No items in cart</p>`;
+    cartWrapper.innerHTML = `
+      <p style="text-align:center;opacity:.6">
+        Your cart is empty
+      </p>`;
+    checkFormValidity();
     return;
   }
 
   cart.forEach((item,index)=>{
     cartWrapper.innerHTML += `
       <div class="cart-card">
-        <div>${item.name}</div>
+        <div class="cart-name">${item.name}</div>
+
         <div class="qty-box">
           <button onclick="updateQty(${index},-1)">−</button>
           <span>${item.qty}</span>
           <button onclick="updateQty(${index},1)">+</button>
         </div>
+
+        <button class="remove-btn"
+          onclick="removeItem(${index})">Remove</button>
       </div>
     `;
   });
+
+  checkFormValidity();
 }
 
 /* =========================
-   UPDATE QTY
+   QUANTITY CONTROL
 ========================= */
 function updateQty(index,change){
   cart[index].qty += change;
   if(cart[index].qty < 1) cart.splice(index,1);
-
-  localStorage.setItem("cart", JSON.stringify(cart));
+  localStorage.setItem("cart",JSON.stringify(cart));
   renderCart();
-  checkFormValidity();
+}
+
+function removeItem(index){
+  cart.splice(index,1);
+  localStorage.setItem("cart",JSON.stringify(cart));
+  renderCart();
 }
 
 /* =========================
    FORM VALIDATION
 ========================= */
 function checkFormValidity(){
-  placeBtn.disabled
+  placeBtn.disabled = !(
+    cart.length > 0 &&
+    nameInput.value.trim() &&
+    mobileInput.value.trim().length === 10 &&
+    addressInput.value.trim() &&
+    orderTypeInput.value &&
+    areaInput.value
+  );
+}
 
+/* =========================
+   SAVE FORM DATA (REFRESH SAFE)
+========================= */
+function saveForm(){
+  localStorage.setItem("cartForm",JSON.stringify({
+    name:nameInput.value,
+    mobile:mobileInput.value,
+    address:addressInput.value,
+    orderType:orderTypeInput.value,
+    area:areaInput.value
+  }));
+}
+
+[nameInput,mobileInput,addressInput]
+.forEach(el=>el.addEventListener("input",()=>{
+  saveForm(); checkFormValidity();
+}));
+[orderTypeInput,areaInput]
+.forEach(el=>el.addEventListener("change",()=>{
+  saveForm(); checkFormValidity();
+}));
+
+/* =========================
+   RESTORE FORM DATA
+========================= */
+const saved = JSON.parse(localStorage.getItem("cartForm"));
+if(saved){
+  nameInput.value = saved.name || "";
+  mobileInput.value = saved.mobile || "";
+  addressInput.value = saved.address || "";
+  orderTypeInput.value = saved.orderType || "";
+  areaInput.value = saved.area || "";
+}
+
+/* =========================
+   PLACE ORDER → TELEGRAM
+========================= */
+async function placeOrder(){
+  if(cart.length === 0) return alert("Cart empty");
+
+  const BOT_TOKEN = "8562892791:AAFkdPm66jzBOhQPwtGExtQbvE8P4hgCtcg";
+  const CHAT_ID   = "1287496525";
+
+  const now = new Date();
+  const message = `
+🛒 *New Grocery Order*
+
+🕒 ${now.toLocaleString("en-IN")}
+
+👤 Name: ${nameInput.value}
+📞 Mobile: ${mobileInput.value}
+📍 Address: ${addressInput.value}
+📦 Order Type: ${orderTypeInput.value}
+📍 Area: ${areaInput.value}
+
+🛍 Products:
+${cart.map((i,n)=>`${n+1}. ${i.name} × ${i.qty}`).join("\n")}
+
+📌 Price & availability will be confirmed by call
+`;
+
+  try{
+    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body:JSON.stringify({
+        chat_id:CHAT_ID,
+        text:message,
+        parse_mode:"Markdown"
+      })
+    });
+
+    localStorage.removeItem("cart");
+    localStorage.removeItem("cartForm");
+    window.location.href = "success.html";
+
+  }catch(err){
+    alert("Order failed. Try again");
+    console.error(err);
+  }
+}
+
+/* =========================
+   INIT
+========================= */
+renderCart();
+checkFormValidity();
 </script>
   </body>
     </html>
