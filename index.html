@@ -1176,94 +1176,89 @@ body{
 </div>
 
 <script>
-function searchProducts(){
-  const input = document.getElementById("searchInput").value.toLowerCase();
-  const allCards = document.querySelectorAll(".product-card");
-  const allSections = document.querySelectorAll(".section-title, .product-row");
-
-  if(input === ""){
-    // Show everything
-    allSections.forEach(el => el.style.display = "");
-    allCards.forEach(card => card.style.display = "");
-    return;
-  }
-
-  // Hide all sections initially
-  allSections.forEach(el => el.style.display = "none");
-
-  allCards.forEach(card => {
-    const name = card.dataset.name.toLowerCase();
-    if(name.includes(input)){
-      card.style.display = "block";
-      card.closest(".product-row").style.display = "flex";
-      card.closest(".product-row")
-          .previousElementSibling.style.display = "block";
-    }else{
-      card.style.display = "none";
-    }
-  });
+/* =========================
+   CART STATE (SINGLE SOURCE)
+========================= */
+function getCart(){
+  return JSON.parse(localStorage.getItem("cart")) || [];
 }
-</script>
-<script>
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-// show cart count on page load
-document.getElementById("cartCount").innerText = cart.length;
+function saveCart(cart){
+  localStorage.setItem("cart", JSON.stringify(cart));
+}
 
+/* =========================
+   CART COUNT (TOTAL QTY)
+========================= */
+function updateCartCount(){
+  const cart = getCart();
+  let totalQty = 0;
 
-  /* ADD TO CART WITH SOUND */
+  cart.forEach(item => {
+    totalQty += item.qty;
+  });
+
+  const el = document.getElementById("cartCount");
+  if(el) el.innerText = totalQty;
+}
+
+/* =========================
+   ADD TO CART
+========================= */
 function addToCart(btn){
-
-  // 🔊 touch sound immediately
-  playTouch();
+  playTouch(); // 🔊 touch sound
 
   const card = btn.closest(".product-card");
   const name = card.dataset.name;
 
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  let cart = getCart();
 
   const existing = cart.find(i => i.name === name);
 
   if(existing){
     existing.qty += 1;
-  } else {
-    cart.push({
-      name: name,
-      qty: 1
-    });
+  }else{
+    cart.push({ name:name, qty:1 });
   }
 
-  localStorage.setItem("cart", JSON.stringify(cart));
-
-  // update cart count
-  document.getElementById("cartCount").innerText = cart.length;
+  saveCart(cart);
+  updateCartCount();
 
   // 🔔 bell sound after add
-  setTimeout(() => {
-    playBell();
-  }, 150);
+  setTimeout(playBell, 120);
 }
 
-/* GO TO CART PAGE */
+/* =========================
+   NAVIGATION
+========================= */
 function goToCart(){
   window.location.href = "cart.html";
 }
+
+/* =========================
+   SOUNDS
+========================= */
+function playTouch(){
+  const a = document.getElementById("touchSound");
+  if(!a) return;
+  a.currentTime = 0;
+  a.play().catch(()=>{});
+}
+
+function playBell(){
+  const a = document.getElementById("bellSound");
+  if(!a) return;
+  a.currentTime = 0;
+  a.play().catch(()=>{});
+}
+
+/* =========================
+   INIT
+========================= */
+updateCartCount();
 </script>
-  <script>
-function playTouch() {
-  const touch = document.getElementById("touchSound");
-  touch.currentTime = 0;
-  touch.play();
-}
 
-function playBell() {
-  const bell = document.getElementById("bellSound");
-  bell.currentTime = 0;
-  bell.play();
-}
-  </script>
-
-  <!-- 🔊 Sounds -->
+<!-- 🔊 Sounds -->
 <audio id="touchSound" preload="auto">
   <source src="touch.mp3" type="audio/mpeg">
 </audio>
@@ -1271,29 +1266,6 @@ function playBell() {
 <audio id="bellSound" preload="auto">
   <source src="bell.mp3" type="audio/mpeg">
 </audio>
-  <script>
-const touchAudio = document.getElementById("touchSound");
-
-/* play touch sound safely */
-function playTouchSound(){
-  if(!touchAudio) return;
-  touchAudio.currentTime = 0;
-  touchAudio.play().catch(()=>{});
-}
-
-/* attach to ALL clickable elements */
-document.addEventListener("click", function(e){
-
-  const clickable = e.target.closest(
-    "button, a, .clickable, .cart-icon, .add-btn"
-  );
-
-  if(clickable){
-    playTouchSound();
-  }
-
-});
-  </script>
 
 </body>
 </html>
