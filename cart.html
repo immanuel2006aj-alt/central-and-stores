@@ -173,7 +173,8 @@ textarea{ resize:none; }
   <div class="cart-wrapper" id="cartWrapper"></div>
 
   <!-- FORM -->
-  <div class="cart-form-card">
+  <div class="cart-form-card"
+<!-- ================= END OVERLAY ================= -->
 
     <div class="form-group">
       <label>Name *</label>
@@ -213,9 +214,27 @@ textarea{ resize:none; }
       • Final price & availability will be confirmed by call.
     </div>
 
-    <button id="placeOrderBtn" class="place-order-btn" onclick="placeOrder()" disabled>
-      Place an Order
-    </button>
+    <!-- Place Order Button -->
+<button
+  id="placeOrderBtn"
+  class="place-order-btn"
+  type="button"
+  onclick="startOrderCountdown()"
+>
+  Place an Order
+</button>
+    <!-- ORDER OVERLAY (FULL SCREEN) -->
+<div id="orderOverlay" class="order-overlay">
+  <div class="order-modal">
+    <div class="spinner"></div>
+    <h3>Placing your order</h3>
+    <p>Please wait <span id="countdown">3</span> seconds</p>
+  </div>
+</div>
+    <script src="js/cart.js"></script>
+<script src="js/orderCountdown.js"></script>
+</body>
+  </html>
 
   </div>
 </div>
@@ -370,6 +389,7 @@ ${cart.map((i,n)=>`${n+1}. ${i.name} x ${i.qty}`).join("\n")}
 renderCart();
 checkForm();
 </script>
+  
 
 </body>
 </html>
