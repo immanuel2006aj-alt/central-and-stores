@@ -234,143 +234,10 @@ body{
   user-select: none;         /* Standard */
   -webkit-touch-callout: none; /* iOS long-press menu */
 }
-  /* ================= ADVANCED LOADER ================= */
 
-#appLoader{
-  position:fixed;
-  inset:0;
-  background:
-    radial-gradient(circle at top,#22c55e,#16a34a 65%);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:99999;
-}
-
-/* Glass Card */
-.loader-glass{
-  width:90%;
-  max-width:340px;
-  padding:28px 24px;
-  border-radius:28px;
-  background:rgba(255,255,255,.18);
-  backdrop-filter:blur(18px);
-  -webkit-backdrop-filter:blur(18px);
-  box-shadow:
-    0 20px 50px rgba(0,0,0,.25),
-    inset 0 0 0 1px rgba(255,255,255,.25);
-  text-align:center;
-  animation:scaleIn .9s cubic-bezier(.2,.8,.2,1);
-}
-
-/* Logo */
-.loader-logo{
-  width:100px;
-  height:100px;
-  border-radius:50%;
-  background:#ffffff;
-  padding:14px;
-  box-shadow:0 10px 25px rgba(0,0,0,.25);
-  animation:logoFloat 2.2s ease-in-out infinite;
-}
-
-/* Brand */
-.brand-name{
-  margin-top:14px;
-  font-size:18px;
-  font-weight:800;
-  letter-spacing:1.6px;
-  color:#ffffff;
-}
-
-.brand-tagline{
-  font-size:12px;
-  margin-top:4px;
-  opacity:.9;
-  color:#ecfdf5;
-}
-
-/* Progress Bar */
-.progress-bar{
-  width:100%;
-  height:6px;
-  background:rgba(255,255,255,.25);
-  border-radius:10px;
-  overflow:hidden;
-  margin-top:18px;
-}
-
-.progress-bar span{
-  display:block;
-  height:100%;
-  width:0%;
-  background:linear-gradient(90deg,#ffffff,#dcfce7);
-  animation:loadBar 3s linear forwards;
-}
-
-/* Loading Text */
-.loading-text{
-  margin-top:10px;
-  font-size:12px;
-  color:#ecfdf5;
-  letter-spacing:.6px;
-  opacity:.85;
-}
-
-/* Animations */
-@keyframes logoFloat{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-8px)}
-}
-
-@keyframes scaleIn{
-  from{opacity:0;transform:scale(.92)}
-  to{opacity:1;transform:scale(1)}
-}
-
-@keyframes loadBar{
-  to{width:100%}
-}
-
-/* Exit animation */
-#appLoader.hide{
-  opacity:0;
-  transform:scale(1.08);
-  transition:.6s ease;
-  pointer-events:none;
-}
-
-/* Prevent scroll during load */
-body.loading{
-  overflow:hidden;
-}
 
 </style>
 </head>
-  <!-- LOADER -->
-<!-- ================= ADVANCED LOADING PAGE ================= -->
-<div id="appLoader">
-
-  <div class="loader-glass">
-
-    <!-- LOGO -->
-    <img src="logoz.jpg" alt="Central & Stores Logo" class="loader-logo">
-
-    <!-- BRAND -->
-    <div class="brand-name">CENTRAL & STORES</div>
-    <div class="brand-tagline">Daily Grocery • Trusted Store</div>
-
-    <!-- LOADING BAR -->
-    <div class="progress-bar">
-      <span></span>
-    </div>
-
-    <!-- LOADING TEXT -->
-    <div class="loading-text">Loading, please wait…</div>
-
-  </div>
-
-</div>
 
 <body>
 <!-- ================= HEADER ================= -->
@@ -1389,23 +1256,6 @@ function playBell(){
    INIT
 ========================= */
 updateCartCount();
-  <script>
-document.body.classList.add("loading");
-
-window.addEventListener("load", () => {
-  const loader = document.getElementById("appLoader");
-
-  // ⏱️ Force loader for exactly 3 seconds
-  setTimeout(() => {
-    loader.classList.add("hide");
-    document.body.classList.remove("loading");
-
-    setTimeout(() => {
-      loader.remove();
-    }, 600);
-
-  }, 3000);
-});
   </script>
 
 <!-- 🔊 Sounds -->
