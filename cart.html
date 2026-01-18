@@ -142,6 +142,45 @@ body{
   background:#9ca3af;
   cursor:not-allowed;
 }
+  .cart-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.remove-btn{
+  background:#fee2e2;
+  color:#dc2626;
+  border:none;
+  border-radius:8px;
+  padding:4px 8px;
+  font-size:14px;
+  font-weight:700;
+}
+
+.qty-row{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin:10px 0;
+}
+
+.qty-row button{
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  border:none;
+  background:#16a34a;
+  color:#fff;
+  font-size:18px;
+  font-weight:800;
+}
+
+.qty-row span{
+  font-weight:700;
+  min-width:24px;
+  text-align:center;
+}
 </style>
 </head>
 
@@ -232,25 +271,59 @@ function renderCart(){
   }
 
   cart.forEach((item,index)=>{
+    if(!item.qty) item.qty = 1;
+
     wrapper.innerHTML += `
       <div class="cart-item">
-        <div class="cart-name">${item.name}</div>
+
+        <div class="cart-top">
+          <div class="cart-name">${item.name}</div>
+          <button class="remove-btn" onclick="removeItem(${index})">✕</button>
+        </div>
+
+        <!-- Quantity -->
+        <div class="qty-row">
+          <button onclick="changeQty(${index}, -1)">−</button>
+          <span>${item.qty}</span>
+          <button onclick="changeQty(${index}, 1)">+</button>
+        </div>
+
+        <!-- Requirement -->
         <input
           class="qty-input"
           placeholder="Eg: 1 Kg / 500 g / 2 Liter / 3 packets"
           value="${item.requirement || ""}"
           oninput="updateRequirement(${index}, this.value)"
         >
+
       </div>
     `;
   });
 }
 
-function updateRequirement(i,val){
-  cart[i].requirement = val;
-  localStorage.setItem("cart", JSON.stringify(cart));
+/* ================= UPDATE FUNCTIONS ================= */
+function changeQty(index, change){
+  cart[index].qty += change;
+  if(cart[index].qty < 1) cart[index].qty = 1;
+  saveCart();
 }
 
+function removeItem(index){
+  cart.splice(index,1);
+  saveCart();
+}
+
+function updateRequirement(index,val){
+  cart[index].requirement = val;
+  saveCart(false);
+}
+
+function saveCart(rerender = true){
+  localStorage.setItem("cart", JSON.stringify(cart));
+  if(rerender) renderCart();
+}
+
+/* ================= INITIAL LOAD ================= */
 renderCart();
 
 /* ================= PLACE ORDER ================= */
@@ -264,21 +337,24 @@ function placeOrder(){
   const name = custName.value.trim();
   const mobile = custMobile.value.trim();
   const address = custAddress.value.trim();
-  const orderType = orderType.value;
+  const orderTypeVal = orderType.value;
   const area = document.getElementById("area").value;
 
-  if(!name || mobile.length !== 10 || !address || !orderType){
+  if(!name || mobile.length !== 10 || !address || !orderTypeVal){
     alert("Please fill all required details");
     return;
   }
 
+  /* Product list */
   const products = cart.map((p,i)=>
-    `${i+1}. ${p.name} – ${p.requirement || "Not specified"}`
+    `${i+1}. ${p.name} × ${p.qty} – ${p.requirement || "Not specified"}`
   ).join("\n");
 
+  /* Date & Time */
   const now = new Date();
   const time = now.toLocaleString("en-IN");
 
+  /* Telegram message */
   const message =
 `🛒 *New Grocery Order*
 
@@ -289,7 +365,7 @@ function placeOrder(){
 📍 Area: ${area}
 
 📦 Order Type:
-${orderType}
+${orderTypeVal}
 
 🏠 Address:
 ${address}
@@ -299,6 +375,7 @@ ${products}
 
 ℹ️ Final price & availability will be confirmed by call.`;
 
+  /* 🔐 Telegram Config */
   const BOT_TOKEN = "YOUR_BOT_TOKEN";
   const CHAT_ID  = "YOUR_CHAT_ID";
 
@@ -319,7 +396,7 @@ ${products}
     alert("Order failed. Please try again.");
   });
 }
-</script>
+  </script>
 
 </body>
 </html>
