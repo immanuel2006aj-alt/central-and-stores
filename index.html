@@ -340,6 +340,59 @@ body{
   font-size:12px;
   opacity:.65;
 }
+  .info-box{
+  margin:10px 16px 14px;
+  border-radius:14px;
+  background:#ffffff;
+  box-shadow:0 6px 18px rgba(0,0,0,0.08);
+  overflow:hidden;
+}
+
+.info-header{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px 14px;
+  cursor:pointer;
+  user-select:none;
+}
+
+.info-icon{
+  width:26px;
+  height:26px;
+  border-radius:50%;
+  background:#f59e0b;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  font-size:14px;
+}
+
+.info-title{
+  font-size:14px;
+  font-weight:600;
+  color:#111827;
+}
+
+.info-content{
+  padding:0 14px;
+  font-size:13px;
+  line-height:1.5;
+  color:#92400e;
+  background:linear-gradient(135deg,#fff7ed,#fffbeb);
+  border-left:4px solid #f59e0b;
+  max-height:0;
+  overflow:hidden;
+  transition:max-height 0.35s ease, padding 0.35s ease;
+}
+
+/* Expanded state */
+.info-content.show{
+  max-height:120px;
+  padding:10px 14px 14px;
+}
 
 
 </style>
@@ -433,6 +486,19 @@ body{
       font-size:15px;
     "
   >
+</div>
+  <!-- ⓘ Collapsible Brand Info -->
+<div class="info-box">
+  <div class="info-header" onclick="toggleBrandInfo()">
+    <span class="info-icon">ⓘ</span>
+    <span class="info-title">Brand information</span>
+  </div>
+
+  <div class="info-content" id="brandInfo">
+    Brand images are for identification reference only.
+    Actual brand may vary based on availability.
+    Final confirmation will be done via phone call.
+  </div>
 </div>
 
 
