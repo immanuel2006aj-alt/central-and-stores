@@ -393,6 +393,104 @@ body{
   max-height:120px;
   padding:10px 14px 14px;
 }
+  /* MENU BUTTON */
+.menu-btn{
+  position:absolute;
+  left:14px;
+  top:16px;
+  cursor:pointer;
+}
+.menu-btn svg{
+  width:26px;
+  height:26px;
+  stroke:#fff;
+  stroke-width:2;
+  fill:none;
+}
+
+/* SIDE MENU */
+.side-menu{
+  position:fixed;
+  top:0;
+  left:-100%;
+  width:85%;
+  max-width:320px;
+  height:100%;
+  background:#fff;
+  z-index:1001;
+  box-shadow:8px 0 25px rgba(0,0,0,.2);
+  transition:left .35s ease;
+  display:flex;
+  flex-direction:column;
+}
+
+/* OPEN STATE */
+.side-menu.open{
+  left:0;
+}
+
+/* HEADER */
+.menu-header{
+  background:linear-gradient(135deg,#16a34a,#22c55e);
+  color:#fff;
+  padding:18px;
+  font-size:18px;
+  font-weight:700;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+/* CONTENT */
+.menu-content{
+  padding:16px;
+  overflow-y:auto;
+}
+
+.steps{
+  padding-left:18px;
+}
+.steps li{
+  margin-bottom:10px;
+  font-size:14px;
+  line-height:1.4;
+}
+
+/* NOTE */
+.menu-note{
+  background:#f0fdf4;
+  border-left:4px solid #16a34a;
+  padding:12px;
+  font-size:13px;
+  margin:16px 0;
+}
+
+/* ENQUIRY */
+.menu-enquiry{
+  text-align:center;
+  background:#f9fafb;
+  padding:14px;
+  border-radius:12px;
+  font-size:14px;
+}
+.menu-enquiry span{
+  display:block;
+  margin-top:6px;
+  font-weight:700;
+  color:#16a34a;
+}
+
+/* OVERLAY */
+.menu-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.45);
+  z-index:1000;
+  display:none;
+}
+.menu-overlay.show{
+  display:block;
+                             }
 
 
 </style>
@@ -405,6 +503,45 @@ body{
 
     <!-- CENTER LOGO -->
     <img src="logoz.jpg" alt="Central & Stores Logo" class="site-logo">
+
+<!-- MENU ICON -->
+<div class="menu-btn" onclick="toggleMenu()">
+  <svg viewBox="0 0 24 24">
+    <path d="M3 6h18M3 12h18M3 18h18"/>
+  </svg>
+</div>
+  <!-- SIDE MENU -->
+<div id="sideMenu" class="side-menu">
+  <div class="menu-header">
+    How to Place Order
+    <span onclick="toggleMenu()">✕</span>
+  </div>
+
+  <div class="menu-content">
+    <ul class="steps">
+      <li>Add products to cart</li>
+      <li>Tap cart icon (top right)</li>
+      <li>Selected products will be listed</li>
+      <li>Increase / decrease quantity (+ / −)</li>
+      <li>Enter Kg / Liter / Packets for each item</li>
+      <li>Fill Name, Mobile & Address</li>
+      <li>Select Order Type & Area</li>
+      <li>Tap <b>Place Order</b></li>
+    </ul>
+
+    <div class="menu-note">
+      Final price & availability will be confirmed via call
+    </div>
+
+    <div class="menu-enquiry">
+      Any enquiry<br>
+      <span>📞 XXXXX XXXXX</span>
+    </div>
+  </div>
+</div>
+
+<!-- OVERLAY -->
+<div id="menuOverlay" class="menu-overlay" onclick="toggleMenu()"></div>  
 
     <!-- STORE NAME -->
     <div class="brand-name">CENTRAL & STORES</div>
@@ -1502,5 +1639,11 @@ function toggleBrandInfo(){
   document.getElementById("brandInfo").classList.toggle("show");
 }
 </script>
+  <script>
+function toggleMenu(){
+  document.getElementById("sideMenu").classList.toggle("open");
+  document.getElementById("menuOverlay").classList.toggle("show");
+}
+  </script>
 </body>
 </html>
