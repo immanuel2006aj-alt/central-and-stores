@@ -2,394 +2,324 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>My Cart | Central & Stores</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- Google Font -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
-body{
-  font-family: 'Poppins', sans-serif;
+:root{
+  --green:#16a34a;
+  --bg:#f2f4f7;
+  --card:#ffffff;
+  --text:#111827;
+  --muted:#6b7280;
+}
+
+*{
   margin:0;
-  background:#f4f6f8;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
 }
 
-.container{
-  max-width:520px;
-  margin:auto;
-  padding:16px;
+body{
+  background:var(--bg);
+  color:var(--text);
 }
 
-/* HEADER */
-.cart-header{
-  background:#16a34a;
+/* ================= HEADER ================= */
+.header{
+  background:linear-gradient(135deg,#22c55e,#16a34a);
   color:#fff;
   padding:18px;
-  border-radius:14px;
-  margin-bottom:16px;
-}
-
-.cart-title{
   display:flex;
   align-items:center;
+  justify-content:center;
   gap:10px;
+  font-size:20px;
+  font-weight:700;
 }
 
-.cart-title svg{
+.header svg{
   width:26px;
   height:26px;
   fill:#fff;
 }
 
-.cart-title h2{
-  margin:0;
-  font-weight:700;
-}
-
-.cart-tagline{
-  font-size:14px;
-  opacity:.9;
-  margin-top:4px;
-}
-
-/* CART ITEMS */
+/* ================= CART LIST ================= */
 .cart-wrapper{
-  background:#fff;
-  border-radius:14px;
-  padding:14px;
-  margin-bottom:16px;
-}
-
-.cart-card{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:10px 0;
-  border-bottom:1px solid #eee;
-}
-
-.cart-card:last-child{
-  border-bottom:none;
-}
-
-.qty-box{
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-
-.qty-btn{
-  width:30px;
-  height:30px;
-  border:none;
-  border-radius:50%;
-  background:#16a34a;
-  color:#fff;
-  font-size:18px;
-}
-
-/* FORM */
-.cart-form-card{
-  background:#fff;
-  border-radius:14px;
   padding:16px;
 }
 
-.form-group{
-  margin-bottom:14px;
+.cart-item{
+  background:var(--card);
+  padding:14px;
+  border-radius:14px;
+  margin-bottom:12px;
+  box-shadow:0 8px 20px rgba(0,0,0,.08);
 }
 
-label{
+.cart-name{
   font-weight:600;
-  font-size:14px;
+  margin-bottom:8px;
 }
 
-input, textarea, select{
+.qty-input{
   width:100%;
   padding:12px;
-  margin-top:6px;
   border-radius:10px;
   border:1px solid #ddd;
   font-size:14px;
 }
 
-textarea{ resize:none; }
-
-/* NOTE */
-.note-card{
-  background:#f0fdf4;
-  border-left:4px solid #16a34a;
-  padding:12px;
-  font-size:14px;
-  margin:16px 0;
+/* ================= FORM ================= */
+.cart-form-card{
+  background:var(--card);
+  border-radius:20px;
+  padding:16px;
+  margin:20px 16px;
+  box-shadow:0 14px 32px rgba(0,0,0,.12);
 }
 
-/* BUTTON */
+.form-header{
+  font-size:18px;
+  font-weight:800;
+  margin-bottom:14px;
+  border-bottom:2px solid var(--green);
+  padding-bottom:6px;
+}
+
+.form-group{
+  margin-bottom:12px;
+}
+
+.form-group label{
+  display:block;
+  font-size:13px;
+  font-weight:600;
+  margin-bottom:6px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select{
+  width:100%;
+  padding:12px;
+  border-radius:12px;
+  border:1px solid #ddd;
+  font-size:14px;
+}
+
+.form-group textarea{
+  resize:none;
+  height:70px;
+}
+
+.note-card{
+  background:#f9fafb;
+  border-left:4px solid var(--green);
+  padding:12px;
+  font-size:13px;
+  line-height:1.6;
+  margin:14px 0;
+}
+
+/* ================= BUTTON ================= */
 .place-order-btn{
   width:100%;
   padding:14px;
   border:none;
-  border-radius:12px;
-  background:#16a34a;
+  border-radius:16px;
+  background:linear-gradient(135deg,#22c55e,#16a34a);
   color:#fff;
   font-size:16px;
-  font-weight:600;
+  font-weight:800;
+  cursor:pointer;
 }
 
 .place-order-btn:disabled{
   background:#9ca3af;
+  cursor:not-allowed;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
-
-  <!-- HEADER -->
-  <div class="cart-header">
-    <div class="cart-title">
-      <svg viewBox="0 0 24 24">
-        <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2
-        2-.9 2-2-.9-2-2-2zm10
-        0c-1.1 0-2 .9-2 2s.9
-        2 2 2 2-.9 2-2-.9-2-2-2zM7.2
-        14h9.9c.8 0 1.5-.5
-        1.8-1.2l3-7.1H6.3L5.6
-        2H2v2h2l3.6
-        7.6-1.3 2.4c-.2.3-.3.6-.3
-        1 0 1.1.9 2 2
-        2h12v-2H7.2z"/>
-      </svg>
-      <h2>My Cart</h2>
-    </div>
-    <div class="cart-tagline">
-      Review your selected items before placing the order
-    </div>
-  </div>
-
-  <!-- CART ITEMS -->
-  <div class="cart-wrapper" id="cartWrapper"></div>
-
-  <!-- FORM -->
-  <div class="cart-form-card"
-<!-- ================= END OVERLAY ================= -->
-
-    <div class="form-group">
-      <label>Name *</label>
-      <input id="custName" placeholder="Enter your name">
-    </div>
-
-    <div class="form-group">
-      <label>Mobile Number *</label>
-      <input id="custMobile" type="tel" placeholder="10 digit mobile">
-    </div>
-
-    <div class="form-group">
-      <label>Address *</label>
-      <textarea id="custAddress" rows="3" placeholder="Enter your address"></textarea>
-    </div>
-
-    <div class="form-group">
-      <label>Select Order Type *</label>
-      <select id="orderType">
-        <option value="">Select order type</option>
-        <option value="Retail - Store Pickup">Retail - Store Pickup</option>
-        <option value="Wholesale / Bulk - Home Delivery">Wholesale / Bulk - Home Delivery</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label>Select Area *</label>
-      <select id="area">
-        <option value="Mangalam">Mangalam</option>
-      </select>
-    </div>
-
-    <div class="note-card">
-      <b>Note:</b><br><br>
-      • <b>Retail</b>: No minimum order, collect from shop.<br><br>
-      • <b>Wholesale / Bulk</b>: Home delivery, no delivery charge.<br><br>
-      • Final price & availability will be confirmed by call.
-    </div>
-
-    <!-- Place Order Button -->
-<button
-  id="placeOrderBtn"
-  class="place-order-btn"
-  type="button"
-  onclick="startOrderCountdown()"
->
-  Place an Order
-</button>
-    <!-- ORDER OVERLAY (FULL SCREEN) -->
-<div id="orderOverlay" class="order-overlay">
-  <div class="order-modal">
-    <div class="spinner"></div>
-    <h3>Placing your order</h3>
-    <p>Please wait <span id="countdown">3</span> seconds</p>
-  </div>
+<!-- ================= HEADER ================= -->
+<div class="header">
+  <svg viewBox="0 0 24 24">
+    <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2
+    2-.9 2-2-.9-2-2-2zm10
+    0c-1.1 0-2 .9-2 2s.9
+    2 2 2 2-.9 2-2-.9-2-2-2zM7.2
+    14h9.9c.8 0 1.5-.5
+    1.8-1.2l3-7.1H6.3L5.6
+    2H2v2h2l3.6
+    7.6-1.3 2.4c-.2.3-.3.6-.3
+    1 0 1.1.9 2 2
+    2h12v-2H7.2z"/>
+  </svg>
+  My Cart
 </div>
-    <script src="js/cart.js"></script>
-<script src="js/orderCountdown.js"></script>
-</body>
-  </html>
 
+<!-- ================= CART ITEMS ================= -->
+<div class="cart-wrapper" id="cartWrapper"></div>
+
+<!-- ================= FORM ================= -->
+<div class="cart-form-card">
+
+  <div class="form-header">Cart Details</div>
+
+  <div class="form-group">
+    <label>Name *</label>
+    <input id="custName" placeholder="Enter your name">
   </div>
+
+  <div class="form-group">
+    <label>Mobile Number *</label>
+    <input id="custMobile" placeholder="10 digit mobile">
+  </div>
+
+  <div class="form-group">
+    <label>Address *</label>
+    <textarea id="custAddress" placeholder="Enter your address"></textarea>
+  </div>
+
+  <div class="form-group">
+    <label>Order Type *</label>
+    <select id="orderType">
+      <option value="">Select order type</option>
+      <option value="Retail - Store Pickup">Retail (Store Pickup)</option>
+      <option value="Wholesale - Home Delivery">Wholesale / Bulk (Home Delivery)</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Area *</label>
+    <select id="area">
+      <option value="Mangalam">Mangalam</option>
+    </select>
+  </div>
+
+  <div class="note-card">
+    <b>Note:</b><br><br>
+    • Retail orders – collect from shop, no minimum order.<br><br>
+    • Wholesale / Bulk – home delivery, no delivery charge.<br><br>
+    • Final price & availability will be confirmed by call.
+  </div>
+
+  <button id="placeOrderBtn" class="place-order-btn" onclick="placeOrder()">
+    Place an Order
+  </button>
+
 </div>
 
 <script>
-/* =====================
-   CART STATE
-===================== */
+/* ================= CART DATA ================= */
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
+const wrapper = document.getElementById("cartWrapper");
 
-/* =====================
-   ELEMENTS
-===================== */
-const cartWrapper = document.getElementById("cartWrapper");
-const nameInput = document.getElementById("custName");
-const mobileInput = document.getElementById("custMobile");
-const addressInput = document.getElementById("custAddress");
-const orderTypeInput = document.getElementById("orderType");
-const areaInput = document.getElementById("area");
-const placeBtn = document.getElementById("placeOrderBtn");
-
-/* =====================
-   RENDER CART
-===================== */
+/* ================= RENDER CART ================= */
 function renderCart(){
-  cartWrapper.innerHTML = "";
+  wrapper.innerHTML = "";
 
   if(cart.length === 0){
-    cartWrapper.innerHTML = "<p style='text-align:center;opacity:.6'>No items in cart</p>";
+    wrapper.innerHTML =
+      "<p style='text-align:center;opacity:.6'>No items in cart</p>";
     return;
   }
 
-  cart.forEach((item,i)=>{
-    cartWrapper.innerHTML += `
-      <div class="cart-card">
-        <div>${item.name}</div>
-        <div class="qty-box">
-          <button class="qty-btn" onclick="updateQty(${i},-1)">−</button>
-          <span>${item.qty}</span>
-          <button class="qty-btn" onclick="updateQty(${i},1)">+</button>
-        </div>
+  cart.forEach((item,index)=>{
+    wrapper.innerHTML += `
+      <div class="cart-item">
+        <div class="cart-name">${item.name}</div>
+        <input
+          class="qty-input"
+          placeholder="Eg: 1 Kg / 500 g / 2 Liter / 3 packets"
+          value="${item.requirement || ""}"
+          oninput="updateRequirement(${index}, this.value)"
+        >
       </div>
     `;
   });
 }
 
-/* =====================
-   UPDATE QTY
-===================== */
-function updateQty(index,change){
-  cart[index].qty += change;
-  if(cart[index].qty < 1) cart.splice(index,1);
+function updateRequirement(i,val){
+  cart[i].requirement = val;
   localStorage.setItem("cart", JSON.stringify(cart));
-  renderCart();
-  checkForm();
 }
 
-/* =====================
-   FORM VALIDATION
-===================== */
-function checkForm(){
-  placeBtn.disabled = !(
-    cart.length &&
-    nameInput.value.trim() &&
-    mobileInput.value.trim().length === 10 &&
-    addressInput.value.trim() &&
-    orderTypeInput.value
-  );
-}
+renderCart();
 
-/* SAVE FORM */
-[nameInput,mobileInput,addressInput].forEach(el=>{
-  el.addEventListener("input",()=>{
-    saveForm();
-    checkForm();
-  });
-});
-orderTypeInput.addEventListener("change",()=>{
-  saveForm();
-  checkForm();
-});
+/* ================= PLACE ORDER ================= */
+function placeOrder(){
 
-function saveForm(){
-  localStorage.setItem("cartForm",JSON.stringify({
-    name:nameInput.value,
-    mobile:mobileInput.value,
-    address:addressInput.value,
-    orderType:orderTypeInput.value
-  }));
-}
+  if(cart.length === 0){
+    alert("Your cart is empty");
+    return;
+  }
 
-/* RESTORE FORM */
-const savedForm = JSON.parse(localStorage.getItem("cartForm"));
-if(savedForm){
-  nameInput.value = savedForm.name || "";
-  mobileInput.value = savedForm.mobile || "";
-  addressInput.value = savedForm.address || "";
-  orderTypeInput.value = savedForm.orderType || "";
-}
+  const name = custName.value.trim();
+  const mobile = custMobile.value.trim();
+  const address = custAddress.value.trim();
+  const orderType = orderType.value;
+  const area = document.getElementById("area").value;
 
-/* =====================
-   TELEGRAM PLACE ORDER
-===================== */
-async function placeOrder(){
-  if(!cart.length) return;
+  if(!name || mobile.length !== 10 || !address || !orderType){
+    alert("Please fill all required details");
+    return;
+  }
 
-  const BOT_TOKEN = "YOUR_BOT_TOKEN";
-  const CHAT_ID = "YOUR_CHAT_ID";
+  const products = cart.map((p,i)=>
+    `${i+1}. ${p.name} – ${p.requirement || "Not specified"}`
+  ).join("\n");
 
   const now = new Date();
+  const time = now.toLocaleString("en-IN");
 
-  const message = `
-🛒 *New Grocery Order*
+  const message =
+`🛒 *New Grocery Order*
 
-📅 ${now.toDateString()}
-⏰ ${now.toLocaleTimeString()}
+🕒 ${time}
 
-👤 Name: ${nameInput.value}
-📞 Mobile: ${mobileInput.value}
-🏠 Address: ${addressInput.value}
-📦 Order Type: ${orderTypeInput.value}
-📍 Area: ${areaInput.value}
+👤 Name: ${name}
+📞 Mobile: ${mobile}
+📍 Area: ${area}
 
-🧾 Products:
-${cart.map((i,n)=>`${n+1}. ${i.name} x ${i.qty}`).join("\n")}
+📦 Order Type:
+${orderType}
 
-ℹ️ Final price & availability will be confirmed by call.
-`;
+🏠 Address:
+${address}
 
-  try{
-    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{
-      method:"POST",
-      headers:{ "Content-Type":"application/json" },
-      body:JSON.stringify({
-        chat_id:CHAT_ID,
-        text:message,
-        parse_mode:"Markdown"
-      })
-    });
+🛍 Products:
+${products}
 
+ℹ️ Final price & availability will be confirmed by call.`;
+
+  const BOT_TOKEN = "YOUR_BOT_TOKEN";
+  const CHAT_ID  = "YOUR_CHAT_ID";
+
+  fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body:JSON.stringify({
+      chat_id: CHAT_ID,
+      text: message,
+      parse_mode:"Markdown"
+    })
+  })
+  .then(()=>{
     localStorage.removeItem("cart");
-    localStorage.removeItem("cartForm");
     window.location.href="success.html";
-
-  }catch(e){
+  })
+  .catch(()=>{
     alert("Order failed. Please try again.");
-    console.error(e);
-  }
+  });
 }
-
-/* INIT */
-renderCart();
-checkForm();
 </script>
-  
 
 </body>
 </html>
