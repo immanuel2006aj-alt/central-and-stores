@@ -234,17 +234,72 @@ body{
   user-select: none;         /* Standard */
   -webkit-touch-callout: none; /* iOS long-press menu */
 }
+  /* ================= HEADER ================= */
+
+.site-header{
+  background:linear-gradient(135deg,#16a34a,#22c55e);
+  padding:24px 16px 26px;
+  box-shadow:0 6px 18px rgba(0,0,0,.15);
+}
+
+.header-inner{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+
+/* LOGO */
+.site-logo{
+  width:96px;
+  height:96px;
+  border-radius:18px;
+  background:#ffffff;
+  padding:12px;
+  box-shadow:0 6px 14px rgba(0,0,0,.25);
+  margin-bottom:10px;
+}
+
+/* BRAND NAME */
+.brand-name{
+  font-size:22px;
+  font-weight:900;
+  letter-spacing:2px;
+  color:#ffffff;
+  margin-bottom:4px;
+}
+
+/* TAGLINE */
+.brand-tagline{
+  font-size:13px;
+  color:#ecfdf5;
+  letter-spacing:.9px;
+  opacity:.95;
+}
 
 
 </style>
 </head>
 
 <body>
-<!-- ================= HEADER ================= -->
-<div class="header">
-  <h1>CENTRAL & STORES</h1>
-  <p>Daily Grocery • Trusted Local Store</p>
-</div>
+  <!-- ================= HEADER ================= -->
+<header class="site-header">
+  <div class="header-inner">
+
+    <!-- CENTER LOGO -->
+    <img src="assets/logoz.jpg" alt="Central & Stores Logo" class="site-logo">
+
+    <!-- STORE NAME -->
+    <div class="brand-name">CENTRAL & STORES</div>
+
+    <!-- TAGLINE -->
+    <div class="brand-tagline">
+      Daily Grocery • Trusted Store
+    </div>
+
+  </div>
+</header>
 
 
 <!-- ================= TOP BAR ================= -->
@@ -256,7 +311,23 @@ body{
   <svg viewBox="0 0 24 24" class="cart-svg">
     <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 
              2-.9 2-2-.9-2-2-2zm10 
-             0c-1.1 0-2 .9-2 2s.9 
+             0c-1.<!-- ================= HEADER ================= -->
+<header class="site-header">
+  <div class="header-inner">
+
+    <!-- CENTER LOGO -->
+    <img src="assets/logo.png" alt="Central & Stores Logo" class="site-logo">
+
+    <!-- STORE NAME -->
+    <div class="brand-name">CENTRAL & STORES</div>
+
+    <!-- TAGLINE -->
+    <div class="brand-tagline">
+      Daily Grocery • Trusted Store
+    </div>
+
+  </div>
+    </header>1 0-2 .9-2 2s.9 
              2 2 2 2-.9 2-2-.9-2-2-2zM7.2 
              14h9.9c.8 0 1.5-.5 
              1.8-1.2l3-7.1H6.3L5.6 
