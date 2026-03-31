@@ -1555,10 +1555,10 @@ body{
     View Cart
   </button>
 </div>
-  
-/* =============<script>
+  <script>
+
 /* =========================
-   SEARCH (SAFE VERSION)
+   SEARCH
 ========================= */
 function searchProducts(){
   const inputEl = document.getElementById("searchInput");
@@ -1567,7 +1567,6 @@ function searchProducts(){
   const products = document.querySelectorAll(".product-card");
   const clearBtn = document.querySelector(".clear-btn");
 
-  // ✅ prevent error if clearBtn missing
   if(clearBtn){
     clearBtn.style.display = input ? "block" : "none";
   }
@@ -1580,22 +1579,18 @@ function searchProducts(){
 
 function clearSearch(){
   const input = document.getElementById("searchInput");
-  if(input){
-    input.value = "";
-  }
+  if(input) input.value = "";
   searchProducts();
 }
-</script>
 
-<script>
 /* =========================
-   CART STATE (SAFE)
+   CART STATE
 ========================= */
 function getCart(){
   try{
     return JSON.parse(localStorage.getItem("cart")) || [];
   }catch(e){
-    return []; // ✅ prevent crash if corrupted data
+    return [];
   }
 }
 
@@ -1604,35 +1599,29 @@ function saveCart(cart){
 }
 
 /* =========================
-   CART COUNT (TOTAL QTY)
+   CART COUNT
 ========================= */
 function updateCartCount(){
   const cart = getCart();
 
   let totalQty = 0;
-
   cart.forEach(item=>{
-    totalQty += item.qty || 0; // ✅ prevent undefined error
+    totalQty += item.qty || 0;
   });
 
   const el = document.getElementById("cartCount");
 
   if(el){
     el.innerText = totalQty;
-    el.style.display = totalQty > 0 ? "inline-block" : "none"; // ✅ hide when 0
+    el.style.display = totalQty > 0 ? "inline-block" : "none";
   }
 }
 
 /* =========================
-   AUTO RUN ON LOAD
-========================= */
-window.addEventListener("load", updateCartCount);
-</script>============
    ADD TO CART (FIXED)
 ========================= */
 function addToCart(btn){
 
-  // 🔊 sound (safe)
   if(typeof playTouch === "function"){
     playTouch();
   }
@@ -1640,19 +1629,21 @@ function addToCart(btn){
   const card = btn.closest(".product-card");
 
   if(!card){
-    console.error("Product card not found");
+    alert("Product not found");
     return;
   }
 
-  const name = card.dataset.name || "Item";
+  const name = card.dataset.name;
+  if(!name){
+    alert("Product name missing");
+    return;
+  }
 
-  // ✅ kg / variant support (optional)
   const kgSelect = card.querySelector(".kg-select");
   const kg = kgSelect ? kgSelect.value : "";
 
-  let cart = getCart() || [];
+  let cart = getCart();
 
-  // ✅ match both name + kg (important fix)
   const existing = cart.find(i => i.name === name && i.kg === kg);
 
   if(existing){
@@ -1668,19 +1659,29 @@ function addToCart(btn){
   saveCart(cart);
   updateCartCount();
 
-  // 🔔 bell sound (safe)
   if(typeof playBell === "function"){
     setTimeout(playBell, 120);
   }
 
-  // ✅ optional feedback
-  console.log(name + " added");
-  }
+  alert(name + " added to cart ✅");
+}
+
 /* =========================
    NAVIGATION
 ========================= */
 function goToCart(){
   window.location.href = "cart.html";
+}
+
+/* =========================
+   MENU TOGGLE
+========================= */
+function toggleMenu(){
+  const menu = document.getElementById("sideMenu");
+  const overlay = document.getElementById("menuOverlay");
+
+  if(menu) menu.classList.toggle("open");
+  if(overlay) overlay.classList.toggle("show");
 }
 
 /* =========================
@@ -1699,21 +1700,19 @@ function playBell(){
   a.currentTime = 0;
   a.play().catch(()=>{});
 }
-  <script>
-function toggleMenu(){
-  const menu = document.getElementById("sideMenu");
-  const overlay = document.getElementById("menuOverlay");
-
-  menu.classList.toggle("open");
-  overlay.classList.toggle("show");
-}
-</script>
 
 /* =========================
    INIT
 ========================= */
-updateCartCount();
+window.addEventListener("load", updateCartCount);
+
   </script>
+
+/* =========================
+   SOUNDS
+========================= */
+function playTouch(){
+  const a = document.getElementById("touchSoun
 
 <!-- 🔊 Sounds -->
 <audio id="touchSound" preload="auto">
