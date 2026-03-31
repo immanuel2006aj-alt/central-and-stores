@@ -326,8 +326,10 @@ function saveCart(rerender = true){
 /* ================= INITIAL LOAD ================= */
 renderCart();
 
-/* ================= PLACE ORDER ================= */
+<script>
 function placeOrder(){
+
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
   if(cart.length === 0){
     alert("Your cart is empty");
@@ -354,10 +356,26 @@ function placeOrder(){
   const now = new Date();
   const time = now.toLocaleString("en-IN");
 
+  /* 🆔 Order ID */
+  const orderId = "CS" + Date.now();
+
+  /* ✅ SAVE FOR PENDING PAGE */
+  localStorage.setItem("lastOrder", JSON.stringify({
+    id: orderId,
+    items: cart,
+    name: name,
+    mobile: mobile,
+    address: address,
+    area: area,
+    orderType: orderTypeVal,
+    time: time
+  }));
+
   /* Telegram message */
   const message =
 `🛒 *New Grocery Order*
 
+🆔 Order ID: ${orderId}
 🕒 ${time}
 
 👤 Name: ${name}
@@ -376,8 +394,8 @@ ${products}
 ℹ️ Final price & availability will be confirmed by call.`;
 
   /* 🔐 Telegram Config */
-  const BOT_TOKEN = "8562892791:AAFkdPm66jzBOhQPwtGExtQbvE8P4hgCtcg";
-  const CHAT_ID  = "1287496525";
+  const BOT_TOKEN = "YOUR_BOT_TOKEN";
+  const CHAT_ID  = "YOUR_CHAT_ID";
 
   fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{
     method:"POST",
@@ -389,14 +407,14 @@ ${products}
     })
   })
   .then(()=>{
-    localStorage.removeItem("cart");
-    window.location.href="success.html";
+    localStorage.removeItem("cart"); // clear cart
+    window.location.href="success.html"; // go to success
   })
   .catch(()=>{
     alert("Order failed. Please try again.");
   });
 }
-  </script>
+</script>
 
 </body>
 </html>
