@@ -842,6 +842,28 @@ body{
   font-size:12px;
   color:#666;
 }
+  /*toast*/
+  .toast{
+  position:fixed;
+  bottom:120px;
+  left:50%;
+  transform:translateX(-50%) translateY(20px);
+  background:#16a34a;
+  color:#fff;
+  padding:12px 18px;
+  border-radius:30px;
+  font-size:14px;
+  opacity:0;
+  pointer-events:none;
+  transition:all 0.4s ease;
+  box-shadow:0 6px 20px rgba(0,0,0,0.3);
+  z-index:9999;
+}
+
+.toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
 
 
 </style>
@@ -1810,9 +1832,8 @@ function addToCart(btn){
     setTimeout(playBell, 120);
   }
 
-  alert(name + " added to cart ✅");
+  showToast(name + " added to cart ✅");
 }
-
 /* =========================
    NAVIGATION
 ========================= */
@@ -1902,6 +1923,20 @@ function updateChatStatus(){
 
 /* ===== INIT ===== */
 window.addEventListener("load", updateChatStatus);
+    
+    /*toat*/
+    <script>
+function showToast(message){
+  const toast = document.getElementById("toast");
+
+  toast.innerText = message;
+  toast.classList.add("show");
+
+  setTimeout(()=>{
+    toast.classList.remove("show");
+  }, 2000);
+}
+</script>
 
 
 
@@ -1998,5 +2033,6 @@ function playTouch(){
   </div>
 
 </div>
+  <div id="toast" class="toast"></div>
 </body>
 </html>
