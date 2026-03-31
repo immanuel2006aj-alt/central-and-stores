@@ -521,6 +521,73 @@ body{
   cursor:pointer;
   display:none;
 }
+  /* ===== SEARCH CONTAINER ===== */
+.search-container{
+  width:100%;
+  padding:10px 14px;
+}
+
+/* ===== SEARCH BOX ===== */
+.search-box{
+  display:flex;
+  align-items:center;
+  background:#fff;
+  border-radius:50px;
+  padding:10px 14px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  transition:0.25s ease;
+}
+
+/* Focus effect */
+.search-box:focus-within{
+  box-shadow:0 6px 20px rgba(0,0,0,0.15);
+}
+
+/* ===== ICON ===== */
+.search-icon{
+  width:18px;
+  height:18px;
+  fill:#777;
+  flex-shrink:0;
+}
+
+/* ===== INPUT ===== */
+.search-box input{
+  flex:1;
+  border:none;
+  outline:none;
+  margin:0 10px;
+  font-size:15px;
+  background:transparent;
+}
+
+/* ===== CLEAR BUTTON ===== */
+.clear-btn{
+  border:none;
+  background:none;
+  font-size:18px;
+  color:#aaa;
+  cursor:pointer;
+  display:none;
+}
+
+/* ===== MOBILE OPTIMIZATION ===== */
+@media(max-width:480px){
+  .search-box{
+    padding:9px 12px;
+  }
+  .search-box input{
+    font-size:14px;
+  }
+}
+
+/* ===== LARGE SCREEN ===== */
+@media(min-width:768px){
+  .search-container{
+    max-width:500px;
+    margin:auto;
+  }
+}
   
                              }
 
@@ -614,6 +681,32 @@ body{
   <span id="cartCount">0</span>
 </div>
 </div>
+</div>
+  <!-- ===== RESPONSIVE SEARCH BAR ===== -->
+<div class="search-container">
+
+  <div class="search-box">
+    
+    <!-- Small SVG Icon -->
+    <svg class="search-icon" viewBox="0 0 24 24">
+      <path d="M10 18a8 8 0 1 1 5.293-14.293A8 8 0 0 1 10 18zm0-2
+      a6 6 0 1 0 0-12 6 6 0 0 0 0 12zm8.707 2.293-3.4-3.4
+      a10 10 0 1 1 1.414-1.414l3.4 3.4-1.414 1.414z"/>
+    </svg>
+
+    <!-- Input -->
+    <input 
+      type="text"
+      id="searchInput"
+      placeholder="Search products..."
+      oninput="searchProducts()"
+    >
+
+    <!-- Clear Button -->
+    <button class="clear-btn" onclick="clearSearch()">✕</button>
+
+  </div>
+
 </div>
 
 <!-- ================= CATEGORIES ================= -->
@@ -1429,6 +1522,28 @@ body{
     View Cart
   </button>
 </div>
+  <script>
+function searchProducts(){
+  const input = document.getElementById("searchInput").value.toLowerCase();
+  const products = document.querySelectorAll(".product-card");
+  const clearBtn = document.querySelector(".clear-btn");
+
+  // show/hide clear button
+  clearBtn.style.display = input ? "block" : "none";
+
+  products.forEach(product=>{
+    const text = product.textContent.toLowerCase();
+
+    product.style.display = text.includes(input) ? "" : "none";
+  });
+}
+
+function clearSearch(){
+  const input = document.getElementById("searchInput");
+  input.value = "";
+  searchProducts();
+}
+  </script>
 
 <script>
 /* =========================
