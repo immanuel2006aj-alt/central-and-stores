@@ -818,6 +818,30 @@ body{
   font-size:12px;
   opacity:0.8;
 }
+  .end-quote{
+  width:100%;
+  text-align:center;
+  margin-top:30px;
+  padding:0 15px;
+}
+
+/* 🔥 MAIN HIGHLIGHT BOX */
+.quote-box{
+  background:linear-gradient(135deg,#16a34a,#22c55e);
+  color:#fff;
+  padding:14px;
+  border-radius:12px;
+  font-size:14px;
+  font-weight:500;
+  box-shadow:0 6px 20px rgba(0,0,0,0.15);
+}
+
+/* SUB TEXT */
+.quote-sub{
+  margin-top:8px;
+  font-size:12px;
+  color:#666;
+}
 
 
 </style>
@@ -1670,12 +1694,14 @@ body{
     <div class="product-name">Pasta</div>
     <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
   </div>
-  
-  <div class="end-quote">
-  <p>🛒 Fresh groceries • Trusted quality • Fast service ❤️</p>
-  <span>Thank you for choosing Central & Stores</span>
+<div class="end-quote">
+  <div class="quote-box">
+    🛒 Fresh groceries • Trusted quality • Fast service ❤️
   </div>
-  
+  <div class="quote-sub">
+    Thank you for choosing Central & Stores
+  </div>
+</div>
   <script>
 
 /* =========================
