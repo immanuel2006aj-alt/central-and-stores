@@ -845,6 +845,35 @@ body{
 .menu-overlay.show{
   display:block;
 }
+ header{
+  position:relative; /* 🔥 IMPORTANT */
+}
+
+/* LEFT MENU BUTTON */
+.menu-btn{
+  position:absolute;
+  top:16px;
+  left:16px;
+  z-index:3000; /* 🔥 VERY IMPORTANT */
+  cursor:pointer;
+
+  background:rgba(255,255,255,0.2);
+  backdrop-filter:blur(6px);
+  padding:6px 10px;
+  border-radius:10px;
+}
+
+/* ICON STYLE */
+.menu-btn svg{
+  stroke:#fff;
+  stroke-width:2;
+  fill:none;
+}
+
+/* CLICK EFFECT */
+.menu-btn:active{
+  transform:scale(0.9);
+}
 </style>
 </head>
 
@@ -852,27 +881,12 @@ body{
   <!-- ================= HEADER ================= -->
 <header class="site-header">
   <div class="header-inner">
-
-    <!-- CENTER LOGO -->
-    <img src="logoz.jpg" alt="Central & Stores Logo" class="site-logo">
-
-  <!-- STORE NAME -->
-    <div class="brand-name">CENTRAL & STORES</div>
-
-    <!-- TAGLINE -->
-    <div class="brand-tagline">      Daily Grocery • Trusted Store
-    </div>
-    
-    <!-- ADDRESS -->
-<div class="brand-address">
-1/90C TIRUPUR MAIN ROAD MANGALAM - 641663
-</div>
 <div class="menu-btn" onclick="toggleMenu()">
   <svg viewBox="0 0 24 24" width="24">
     <path d="M3 6h18M3 12h18M3 18h18"/>
   </svg>
 </div>
-   <div id="sideMenu" class="side-menu">
+      <div id="sideMenu" class="side-menu">
 
   <div class="menu-header">
     <span>How to Place Order</span>
@@ -893,14 +907,26 @@ body{
 <div id="menuOverlay" class="menu-overlay" onclick="toggleMenu()"></div>
   </div>
 </header>
+    <!-- CENTER LOGO -->
+    <img src="logoz.jpg" alt="Central & Stores Logo" class="site-logo">
 
+  <!-- STORE NAME -->
+    <div class="brand-name">CENTRAL & STORES</div>
 
+    <!-- TAGLINE -->
+    <div class="brand-tagline">      Daily Grocery • Trusted Store
+    </div>
+    
+    <!-- ADDRESS -->
+<div class="brand-address">
+1/90C TIRUPUR MAIN ROAD MANGALAM - 641663
+</div>
 <!-- ================= TOP BAR ================= -->
 <div class="top-bar">
   <div style="font-weight:900; font-size:18px;">
   வணக்கம் மக்களே 👋
   </div>
-  <div class="cart-icon" onclick="goToCart()">
+  <div class="cart-icon" onclick="goToCart(l)">
   <svg viewBox="0 0 24 24" class="cart-svg">
     <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 
              2-.9 2-2-.9-2-2-2zm10 
@@ -1947,6 +1973,15 @@ function showToast(message){
   </a>
 </div>
   <div id="toast" class="toast"></div> 
+ <script>
+function toggleMenu(){
+  const menu = document.getElementById("sideMenu");
+  const overlay = document.getElementById("menuOverlay");
+
+  menu.classList.toggle("open");
+  overlay.classList.toggle("show");
+}
+ </script>
  <script>
 function toggleMenu(){
   const menu = document.getElementById("sideMenu");
