@@ -690,6 +690,115 @@ body{
 .menu-overlay.show{
   display:block;
 }
+  /* ===== BUTTON ===== */
+.tg-chat-btn{
+  position:fixed;
+  bottom:90px;
+  left:16px;
+  width:55px;
+  height:55px;
+  background:#0088cc;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 6px 20px rgba(0,0,0,0.3);
+  cursor:pointer;
+  z-index:999;
+}
+
+.tg-chat-btn svg{
+  width:26px;
+  height:26px;
+  fill:#fff;
+}
+
+/* ===== CHAT BOX ===== */
+.tg-chat-box{
+  position:fixed;
+  bottom:160px;
+  left:16px;
+  width:300px;
+  max-width:90%;
+  background:#fff;
+  border-radius:16px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.3);
+  overflow:hidden;
+  display:none;
+  flex-direction:column;
+  z-index:999;
+}
+
+/* HEADER */
+.tg-header{
+  background:#0088cc;
+  color:#fff;
+  padding:12px;
+  display:flex;
+  justify-content:space-between;
+  font-size:14px;
+}
+
+/* BODY */
+.tg-body{
+  padding:14px;
+  font-size:13px;
+  color:#333;
+}
+
+.tg-body p{
+  margin:6px 0;
+}
+
+/* TELEGRAM BUTTON */
+.tg-open{
+  display:block;
+  margin-top:10px;
+  text-align:center;
+  background:#0088cc;
+  color:#fff;
+  padding:12px;
+  border-radius:10px;
+  text-decoration:none;
+  font-weight:500;
+}
+
+/* STATUS */
+#chatStatus{
+  font-size:12px;
+  opacity:0.9;
+}
+
+/* ===== TYPING ANIMATION ===== */
+.typing-box{
+  display:flex;
+  gap:4px;
+  margin-top:10px;
+}
+
+.typing-box span{
+  width:6px;
+  height:6px;
+  background:#999;
+  border-radius:50%;
+  animation:typing 1s infinite;
+}
+
+.typing-box span:nth-child(2){ animation-delay:0.2s; }
+.typing-box span:nth-child(3){ animation-delay:0.4s; }
+
+@keyframes typing{
+  0%{opacity:0.3; transform:translateY(0);}
+  50%{opacity:1; transform:translateY(-4px);}
+  100%{opacity:0.3; transform:translateY(0);}
+}
+
+/* MOBILE */
+@media(max-width:480px){
+  .tg-chat-box{
+    width:90%;
+  }
+  }
 
 
 </style>
@@ -1707,6 +1816,56 @@ function playBell(){
 window.addEventListener("load", updateCartCount);
 
   </script>
+  <script>
+
+/* ===== TOGGLE CHAT ===== */
+function toggleTGChat(){
+  const box = document.getElementById("tgChatBox");
+  const typing = document.getElementById("typingBox");
+  const body = document.getElementById("chatBody");
+
+  if(box.style.display === "flex"){
+    box.style.display = "none";
+  } else {
+    box.style.display = "flex";
+
+    // show typing
+    typing.style.display = "flex";
+
+    setTimeout(()=>{
+      typing.style.display = "none";
+
+      body.innerHTML += `
+        <p><b>Support:</b> Hello 👋 How can we help you today?</p>
+        <p>👉 You can place order using cart 🛒</p>
+      `;
+    }, 1500);
+  }
+}
+
+/* ===== ONLINE / OFFLINE STATUS ===== */
+function updateChatStatus(){
+
+  const now = new Date();
+  const time = now.getHours() + now.getMinutes()/60;
+
+  const statusEl = document.getElementById("chatStatus");
+  if(!statusEl) return;
+
+  const isMorning = time >= 8.5 && time <= 14.5;
+  const isEvening = time >= 16.5 && time <= 22.5;
+
+  if(isMorning || isEvening){
+    statusEl.innerHTML = "🟢 Online now";
+  } else {
+    statusEl.innerHTML = "🔴 Offline (Replies soon)";
+  }
+}
+
+/* ===== INIT ===== */
+window.addEventListener("load", updateChatStatus);
+
+  </script>
 
 /* =========================
    SOUNDS
@@ -1762,5 +1921,44 @@ function playTouch(){
   </a>
 
   </div>
+  <!-- ===== TELEGRAM CHAT BUTTON ===== -->
+<div class="tg-chat-btn" onclick="toggleTGChat()">
+  <svg viewBox="0 0 24 24">
+    <path d="M9.993 15.172l-.397 5.606c.568 0 .815-.244 1.11-.538l2.664-2.547
+    5.522 4.04c1.012.558 1.73.265 1.985-.936l3.597-16.87
+    c.333-1.56-.565-2.17-1.547-1.81L1.34 9.342
+    c-1.5.584-1.477 1.42-.255 1.798l5.9 1.84
+    13.68-8.61c.644-.426 1.23-.19.748.237"/>
+  </svg>
+</div>
+
+<!-- ===== CHAT BOX ===== -->
+<div class="tg-chat-box" id="tgChatBox">
+
+  <div class="tg-header">
+    <div>
+      Central & Stores<br>
+      <span id="chatStatus">Checking...</span>
+    </div>
+    <span onclick="toggleTGChat()">✕</span>
+  </div>
+
+  <div class="tg-body" id="chatBody">
+
+    <p>👋 Hi there!</p>
+    <p>Need help with your order?</p>
+
+    <!-- typing animation -->
+    <div id="typingBox" class="typing-box" style="display:none;">
+      <span></span><span></span><span></span>
+    </div>
+
+    <a href="https://t.me/YOUR_USERNAME" target="_blank" class="tg-open">
+      Open Telegram Chat
+    </a>
+
+  </div>
+
+</div>
 </body>
 </html>
