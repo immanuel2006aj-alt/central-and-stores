@@ -1555,35 +1555,48 @@ body{
     View Cart
   </button>
 </div>
-  <script>
+  
+/* =============<script>
+/* =========================
+   SEARCH (SAFE VERSION)
+========================= */
 function searchProducts(){
-  const input = document.getElementById("searchInput").value.toLowerCase();
+  const inputEl = document.getElementById("searchInput");
+  const input = inputEl ? inputEl.value.toLowerCase() : "";
+
   const products = document.querySelectorAll(".product-card");
   const clearBtn = document.querySelector(".clear-btn");
 
-  // show/hide clear button
-  clearBtn.style.display = input ? "block" : "none";
+  // ✅ prevent error if clearBtn missing
+  if(clearBtn){
+    clearBtn.style.display = input ? "block" : "none";
+  }
 
   products.forEach(product=>{
     const text = product.textContent.toLowerCase();
-
     product.style.display = text.includes(input) ? "" : "none";
   });
 }
 
 function clearSearch(){
   const input = document.getElementById("searchInput");
-  input.value = "";
+  if(input){
+    input.value = "";
+  }
   searchProducts();
 }
-  </script>
+</script>
 
 <script>
 /* =========================
-   CART STATE (SINGLE SOURCE)
+   CART STATE (SAFE)
 ========================= */
 function getCart(){
-  return JSON.parse(localStorage.getItem("cart")) || [];
+  try{
+    return JSON.parse(localStorage.getItem("cart")) || [];
+  }catch(e){
+    return []; // ✅ prevent crash if corrupted data
+  }
 }
 
 function saveCart(cart){
@@ -1595,42 +1608,74 @@ function saveCart(cart){
 ========================= */
 function updateCartCount(){
   const cart = getCart();
+
   let totalQty = 0;
 
-  cart.forEach(item => {
-    totalQty += item.qty;
+  cart.forEach(item=>{
+    totalQty += item.qty || 0; // ✅ prevent undefined error
   });
 
   const el = document.getElementById("cartCount");
-  if(el) el.innerText = totalQty;
+
+  if(el){
+    el.innerText = totalQty;
+    el.style.display = totalQty > 0 ? "inline-block" : "none"; // ✅ hide when 0
+  }
 }
 
 /* =========================
-   ADD TO CART
+   AUTO RUN ON LOAD
+========================= */
+window.addEventListener("load", updateCartCount);
+</script>============
+   ADD TO CART (FIXED)
 ========================= */
 function addToCart(btn){
-  playTouch(); // 🔊 touch sound
+
+  // 🔊 sound (safe)
+  if(typeof playTouch === "function"){
+    playTouch();
+  }
 
   const card = btn.closest(".product-card");
-  const name = card.dataset.name;
 
-  let cart = getCart();
+  if(!card){
+    console.error("Product card not found");
+    return;
+  }
 
-  const existing = cart.find(i => i.name === name);
+  const name = card.dataset.name || "Item";
+
+  // ✅ kg / variant support (optional)
+  const kgSelect = card.querySelector(".kg-select");
+  const kg = kgSelect ? kgSelect.value : "";
+
+  let cart = getCart() || [];
+
+  // ✅ match both name + kg (important fix)
+  const existing = cart.find(i => i.name === name && i.kg === kg);
 
   if(existing){
     existing.qty += 1;
   }else{
-    cart.push({ name:name, qty:1 });
+    cart.push({
+      name: name,
+      kg: kg,
+      qty: 1
+    });
   }
 
   saveCart(cart);
   updateCartCount();
 
-  // 🔔 bell sound after add
-  setTimeout(playBell, 120);
-}
+  // 🔔 bell sound (safe)
+  if(typeof playBell === "function"){
+    setTimeout(playBell, 120);
+  }
 
+  // ✅ optional feedback
+  console.log(name + " added");
+  }
 /* =========================
    NAVIGATION
 ========================= */
