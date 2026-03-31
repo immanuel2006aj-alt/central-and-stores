@@ -775,105 +775,10 @@ body{
 .nav-item:active{
   transform:scale(0.95);
 }
- /* MENU BUTTON */
-.menu-btn{
-  position:absolute;
-  right:16px;
-  top:16px;
-  cursor:pointer;
-}
- 
-.menu-btn svg{
-  stroke:#fff;
-  stroke-width:2;
-  fill:none;
-}
-
-/* SIDE MENU */
-.side-menu{
-  position:fixed;
-  top:0;
-  right:-100%;
-  width:80%;
-  height:100%;
-  background:#fff;
-  box-shadow:-5px 0 15px rgba(0,0,0,0.2);
-  transition:0.3s;
-  z-index:1001;
-  padding:20px;
-}
-
-.side-menu.open{
-  right:0;
-}
-
-/* HEADER */
-.menu-header{
-  display:flex;
-  justify-content:space-between;
-  font-weight:600;
-  font-size:16px;
-  margin-bottom:20px;
-}
-
-/* STEPS */
-.menu-steps{
-  list-style:none;
-  padding:0;
-}
-
-.menu-steps li{
-  padding:12px;
-  margin-bottom:10px;
-  background:#f4f6f8;
-  border-radius:10px;
-  font-size:14px;
-}
-
-/* OVERLAY */
-.menu-overlay{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.4);
-  display:none;
-  z-index:1000;
-}
-
-.menu-overlay.show{
-  display:block;
-}
  header{
   position:relative; /* 🔥 IMPORTANT */
 }
 
-/* LEFT MENU BUTTON */
-.menu-btn{
-  position:absolute;
-  top:16px;
-  left:16px;
-  z-index:3000; /* 🔥 VERY IMPORTANT */
-  cursor:pointer;
-
-  background:rgba(255,255,255,0.2);
-  backdrop-filter:blur(6px);
-  padding:6px 10px;
-  border-radius:10px;
-}
-
-/* ICON STYLE */
-.menu-btn svg{
-  stroke:#fff;
-  stroke-width:2;
-  fill:none;
-}
-
-/* CLICK EFFECT */
-.menu-btn:active{
-  transform:scale(0.9);
-}
 </style>
 </head>
 
@@ -881,10 +786,7 @@ body{
   <!-- ================= HEADER ================= -->
 <header class="site-header">
   <div class="header-inner">
-</div>
-      <div id="sideMenu" class="side-menu">
-
-  
+</div>  
 </header>
     <!-- CENTER LOGO -->
     <img src="logoz.jpg" alt="Central & Stores Logo" class="site-logo">
