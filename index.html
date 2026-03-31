@@ -12,6 +12,66 @@
   *{
   -webkit-tap-highlight-color: transparent;
   }
+ /* ================= HEADER ================= */
+.premium-header{
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+  padding: 40px 20px 60px;
+  text-align: center;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+/* SOFT GLOW EFFECT */
+.premium-header::before{
+  content: "";
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 50%;
+  top: -50px;
+  right: -50px;
+  filter: blur(60px);
+}
+
+/* LOGO */
+.logo-box{
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.logo-box img{
+  width: 95px;
+  border-radius: 18px;
+  background: #fff;
+  padding: 10px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+}
+
+/* STORE NAME */
+.store-name{
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 5px;
+}
+
+/* TAGLINE */
+.tagline{
+  font-size: 14px;
+  opacity: 0.9;
+  margin-bottom: 12px;
+}
+
+/* ADDRESS */
+.address{
+  font-size: 14px;
+  font-weight: 600;
+  color: #fde047; /* yellow highlight */
+  line-height: 1.6;
+ }
 /* ================= RESET ================= */
 *{
   margin:0;
@@ -25,7 +85,6 @@ body{
   color:#222;
   padding-bottom:120px; /* 🔥 FIX: prevents bottom menu from hiding last row */
 }
-
 /* ================= TOP ACTION BAR ================= */
 .top-bar{
   display:flex;
@@ -780,7 +839,27 @@ body{
 </head>
 
 <body>
+<!-- ================= BEAUTIFUL GREEN HEADER ================= -->
+<header class="premium-header">
 
+  <!-- LOGO -->
+  <div class="logo-box">
+    <img src="logo2.jpg" alt="Central & Stores Logo">
+  </div>
+
+  <!-- STORE NAME -->
+  <h1 class="store-name">CENTRAL & STORES</h1>
+
+  <!-- TAGLINE -->
+  <p class="tagline">Daily Grocery • Trusted Store</p>
+
+  <!-- ADDRESS -->
+  <p class="address">
+    1/90C TIRUPUR MAIN ROAD<br>
+    MANGALAM - 641663
+  </p>
+
+</header>
 <!-- ================= TOP BAR ================= -->
 <div class="top-bar">
   <div style="font-weight:900; font-size:18px;">
