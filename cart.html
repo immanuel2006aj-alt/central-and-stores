@@ -230,38 +230,32 @@ body{
     <label>Order Type *</label>
     <select id="orderType">
       <option value="">Select order type</option>
-      <option value="Retail - Store Pickup">Retail (Store Pickup)</option>
-      <option value="Wholesale - Home Delivery">Wholesale / Bulk (Home Delivery)</option>
-    </select>
-  </div>
-
-  <div class="form-group">
-    <label>Area *</label>
-    <select id="area">
-      <option value="Mangalam">Mangalam</option>
-    </select>
-  </div>
-
-  <div class="note-card">
-    <b>Note:</b><br><br>
-    • Retail orders – collect from shop, no minimum order.<br><br>
-    • Wholesale / Bulk – home delivery, no delivery charge.<br><br>
-    • Final price & availability will be confirmed by call.
-  </div>
-
-  <button id="placeOrderBtn" class="place-order-btn" onclick="placeOrder()">
-    Place an Order
-  </button>
-
-</div>
-
 <script>
 /* ================= CART DATA ================= */
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-const wrapper = document.getElementById("cartWrapper");
+let cart = [];
+let wrapper;
+
+/* ================= INIT ================= */
+window.addEventListener("load", () => {
+  wrapper = document.getElementById("cartWrapper");
+  loadCart();
+});
+
+/* ================= LOAD CART ================= */
+function loadCart(){
+  try{
+    cart = JSON.parse(localStorage.getItem("cart")) || [];
+  }catch(e){
+    cart = [];
+  }
+  renderCart();
+}
 
 /* ================= RENDER CART ================= */
 function renderCart(){
+
+  if(!wrapper) return;
+
   wrapper.innerHTML = "";
 
   if(cart.length === 0){
@@ -271,6 +265,7 @@ function renderCart(){
   }
 
   cart.forEach((item,index)=>{
+
     if(!item.qty) item.qty = 1;
 
     wrapper.innerHTML += `
@@ -299,6 +294,8 @@ function renderCart(){
       </div>
     `;
   });
+
+  updateCartCount(); // ✅ sync badge
 }
 
 /* ================= UPDATE FUNCTIONS ================= */
@@ -318,10 +315,47 @@ function updateRequirement(index,val){
   saveCart(false);
 }
 
+/* ================= SAVE ================= */
 function saveCart(rerender = true){
   localStorage.setItem("cart", JSON.stringify(cart));
   if(rerender) renderCart();
 }
+
+/* ================= CART COUNT ================= */
+function updateCartCount(){
+  const el = document.getElementById("cartCount");
+  if(!el) return;
+
+  let total = 0;
+  cart.forEach(i => total += i.qty || 0);
+
+  el.innerText = total;
+}
+</script>      <option value="Retail - Store Pickup">Retail (Store Pickup)</option>
+      <option value="Wholesale - Home Delivery">Wholesale / Bulk (Home Delivery)</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Area *</label>
+    <select id="area">
+      <option value="Mangalam">Mangalam</option>
+    </select>
+  </div>
+
+  <div class="note-card">
+    <b>Note:</b><br><br>
+    • Retail orders – collect from shop, no minimum order.<br><br>
+    • Wholesale / Bulk – home delivery, no delivery charge.<br><br>
+    • Final price & availability will be confirmed by call.
+  </div>
+
+  <button id="placeOrderBtn" class="place-order-btn" onclick="placeOrder()">
+    Place an Order
+  </button>
+
+</div>
+
 
 /* ================= INITIAL LOAD ================= */
 renderCart();
