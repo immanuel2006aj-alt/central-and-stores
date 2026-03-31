@@ -1919,49 +1919,7 @@ window.addEventListener("load", updateCartCount);
   </script>
   <script>
 
-/* ===== TOGGLE CHAT ===== */
-function toggleTGChat(){
-  const box = document.getElementById("tgChatBox");
-  const typing = document.getElementById("typingBox");
-  const body = document.getElementById("chatBody");
 
-  if(box.style.display === "flex"){
-    box.style.display = "none";
-  } else {
-    box.style.display = "flex";
-
-    // show typing
-    typing.style.display = "flex";
-
-    setTimeout(()=>{
-      typing.style.display = "none";
-
-      body.innerHTML += `
-        <p><b>Support:</b> Hello 👋 How can we help you today?</p>
-        <p>👉 You can place order using cart 🛒</p>
-      `;
-    }, 1500);
-  }
-}
-
-/* ===== ONLINE / OFFLINE STATUS ===== */
-function updateChatStatus(){
-
-  const now = new Date();
-  const time = now.getHours() + now.getMinutes()/60;
-
-  const statusEl = document.getElementById("chatStatus");
-  if(!statusEl) return;
-
-  const isMorning = time >= 8.5 && time <= 14.5;
-  const isEvening = time >= 16.5 && time <= 22.5;
-
-  if(isMorning || isEvening){
-    statusEl.innerHTML = "🟢 Online now";
-  } else {
-    statusEl.innerHTML = "🔴 Offline (Replies soon)";
-  }
-}
 
 /* ===== INIT ===== */
 window.addEventListener("load", updateChatStatus);
@@ -1980,13 +1938,6 @@ function showToast(message){
 }
 </script>
 
-
-
-/* =========================
-   SOUNDS
-========================= */
-function playTouch(){
-  const a = document.getElementById("touchSoun
 
 <!-- 🔊 Sounds -->
 <audio id="touchSound" preload="auto">
@@ -2034,46 +1985,6 @@ function playTouch(){
     </svg>
     <span>Contact</span>
   </a>
-
-  </div>
-  <!-- ===== TELEGRAM CHAT BUTTON ===== -->
-<div class="tg-chat-btn" onclick="toggleTGChat()">
-  <svg viewBox="0 0 24 24">
-    <path d="M9.993 15.172l-.397 5.606c.568 0 .815-.244 1.11-.538l2.664-2.547
-    5.522 4.04c1.012.558 1.73.265 1.985-.936l3.597-16.87
-    c.333-1.56-.565-2.17-1.547-1.81L1.34 9.342
-    c-1.5.584-1.477 1.42-.255 1.798l5.9 1.84
-    13.68-8.61c.644-.426 1.23-.19.748.237"/>
-  </svg>
-</div>
-
-<!-- ===== CHAT BOX ===== -->
-<div class="tg-chat-box" id="tgChatBox">
-
-  <div class="tg-header">
-    <div>
-      Central & Stores<br>
-      <span id="chatStatus">Checking...</span>
-    </div>
-    <span onclick="toggleTGChat()">✕</span>
-  </div>
-
-  <div class="tg-body" id="chatBody">
-
-    <p>👋 Hi there!</p>
-    <p>Need help with your order?</p>
-
-    <!-- typing animation -->
-    <div id="typingBox" class="typing-box" style="display:none;">
-      <span></span><span></span><span></span>
-    </div>
-
-    <a href="https://t.me/YOUR_USERNAME" target="_blank" class="tg-open">
-      Open Telegram Chat
-    </a>
-
-  </div>
-
 </div>
   <div id="toast" class="toast"></div>
 </body>
