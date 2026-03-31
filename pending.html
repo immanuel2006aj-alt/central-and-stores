@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Pending Orders – Central & Stores</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Inter',sans-serif;
+}
+
+body{
+  background:#f4f6f8;
+  padding:16px;
+}
+
+/* HEADER */
+.header{
+  background:#16a34a;
+  color:#fff;
+  padding:18px;
+  border-radius:16px;
+  text-align:center;
+  font-size:18px;
+  font-weight:600;
+  margin-bottom:16px;
+}
+
+/* CARD */
+.card{
+  background:#fff;
+  border-radius:16px;
+  padding:16px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.08);
+}
+
+/* ITEM */
+.item{
+  padding:10px;
+  border-radius:10px;
+  background:#f9fafb;
+  margin-bottom:8px;
+  font-size:14px;
+}
+
+/* CUSTOMER */
+.customer{
+  margin-top:12px;
+  font-size:14px;
+  line-height:1.6;
+}
+
+/* STATUS */
+.status{
+  margin-top:12px;
+  padding:10px;
+  background:#fff3cd;
+  border-radius:10px;
+  font-size:14px;
+  font-weight:500;
+}
+
+/* EMPTY STATE */
+.empty{
+  text-align:center;
+  margin-top:40px;
+  color:#777;
+}
+
+/* BUTTON */
+.btn{
+  display:block;
+  margin-top:16px;
+  text-align:center;
+  background:#16a34a;
+  color:#fff;
+  padding:14px;
+  border-radius:14px;
+  text-decoration:none;
+  font-weight:600;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  📦 Pending Orders
+</div>
+
+<div id="orderBox"></div>
+
+<script>
+const order = JSON.parse(localStorage.getItem("lastOrder"));
+
+const box = document.getElementById("orderBox");
+
+if(order){
+
+  let itemsHTML = "";
+
+  order.items.forEach(i=>{
+    itemsHTML += `<div class="item">• ${i.name || i.product} ${i.kg || ""}</div>`;
+  });
+
+  box.innerHTML = `
+    <div class="card">
+      <h3 style="margin-bottom:10px;">🛒 Order Items</h3>
+      ${itemsHTML}
+
+      <div class="customer">
+        <hr style="margin:10px 0;">
+        <p><b>👤 Name:</b> ${order.name}</p>
+        <p><b>📞 Mobile:</b> ${order.mobile}</p>
+        <p><b>🏠 Address:</b> ${order.address}</p>
+      </div>
+
+      <div class="status">
+        ⏳ Status: Pending Confirmation
+      </div>
+
+      <a href="index.html" class="btn">Continue Shopping</a>
+    </div>
+  `;
+
+}else{
+
+  box.innerHTML = `
+    <div class="empty">
+      <h3>No Pending Orders</h3>
+      <p>Your order will appear here</p>
+      <a href="index.html" class="btn">Start Shopping</a>
+    </div>
+  `;
+}
+</script>
+
+</body>
+</html>
