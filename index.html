@@ -834,13 +834,86 @@ body{
 
 .menu-overlay.show{
   display:block;
- }
+}
+/* TOGGLE BUTTON */
+.dark-toggle{
+  position:absolute;
+  top:20px;
+  right:15px;
+  font-size:20px;
+  cursor:pointer;
+  background:rgba(255,255,255,0.2);
+  padding:6px 10px;
+  border-radius:10px;
+  backdrop-filter:blur(6px);
+  color:#fff;
+}
+
+/* ================= LIGHT MODE ================= */
+body{
+  background:#f4f6f8;
+  color:#222;
+}
+
+/* ================= DARK MODE ================= */
+body.dark{
+  background:#0f172a;
+  color:#e5e7eb;
+}
+
+/* CARDS */
+body.dark .product-card{
+  background:#1e293b;
+  color:#fff;
+}
+
+/* HEADER */
+body.dark .premium-header{
+  background: linear-gradient(135deg, #064e3b, #065f46);
+}
+
+/* FOOTER / BOXES */
+body.dark .footer-card,
+body.dark .cart-item,
+body.dark .contact-card{
+  background:#1e293b;
+  color:#e5e7eb;
+}
+
+/* INPUTS */
+body.dark input,
+body.dark select,
+body.dark textarea{
+  background:#0f172a;
+  color:#fff;
+  border:1px solid #334155;
+}
+
+/* NAV BAR */
+body.dark .bottom-nav{
+  background:#020617;
+}
+
+body.dark .nav-item{
+  color:#94a3b8;
+}
+
+body.dark .nav-item.active{
+  color:#22c55e;
+}
+
+
+ 
 </style>
 </head>
 
 <body>
+ 
+ <!-- 🌙 DARK MODE TOGGLE -->
+<div class="dark-toggle" onclick="toggleDarkMode()">
+  🌙
+</div>
 <!-- ================= BEAUTIFUL GREEN HEADER ================= -->
-<header class="premium-header">
 
   <!-- LOGO -->
   <div class="logo-box">
@@ -1934,6 +2007,26 @@ function toggleMenu(){
   document.getElementById("sideMenu").classList.toggle("open");
   document.getElementById("menuOverlay").classList.toggle("show");
 }
+ </script>
+ <script>
+function toggleDarkMode(){
+  document.body.classList.toggle("dark");
+
+  // save preference
+  if(document.body.classList.contains("dark")){
+    localStorage.setItem("theme","dark");
+  }else{
+    localStorage.setItem("theme","light");
+  }
+}
+
+/* LOAD SAVED MODE */
+window.addEventListener("load", ()=>{
+  const theme = localStorage.getItem("theme");
+  if(theme === "dark"){
+    document.body.classList.add("dark");
+  }
+});
  </script>
 </body>
 </html>
