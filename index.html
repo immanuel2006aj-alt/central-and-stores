@@ -639,37 +639,6 @@ body{
     <span>Oil</span>
   </div>
 </div>
-
-<!-- ================= SEARCH BAR ================= -->
-<!-- ===== ADVANCED SEARCH BAR ===== -->
-<div class="search-wrapper">
-  
-  <!-- Search Icon -->
-  <svg class="search-icon" viewBox="0 0 24 24">
-    <path d="M15.5 14h-.79l-.28-.27
-    A6.471 6.471 0 0016 9.5
-    6.5 6.5 0 109.5 16
-    a6.471 6.471 0 004.23-1.57
-    l.27.28v.79l5 4.99
-    L20.49 19l-4.99-5zM9.5 14
-    C7.01 14 5 11.99 5 9.5
-    S7.01 5 9.5 5 14 7.01 14 9.5
-    11.99 14 9.5 14z"/>
-  </svg>
-
-  <!-- Input -->
-  <input 
-    type="text"
-    id="searchInput"
-    placeholder="Search products (Rice, Oil, Soap...)"
-    onkeyup="searchProducts()"
-  >
-
-  <!-- Clear Button -->
-  <span class="clear-btn" onclick="clearSearch()">✕</span>
-
-</div>  >
-</div>
   <!-- ⓘ Collapsible Brand Info -->
 <div class="info-box">
   <div class="info-header" onclick="toggleBrandInfo()">
@@ -1599,33 +1568,6 @@ function toggleBrandInfo(){
   document.getElementById("brandInfo").classList.toggle("show");
 }
 </script>
-  <script>
-function toggleMenu(){
-  document.getElementById("sideMenu").classList.toggle("open");
-  document.getElementById("menuOverlay").classList.toggle("show");
-}
-<script>
-function searchProducts(){
-  const input = document.getElementById("searchInput").value.toLowerCase();
-  const products = document.querySelectorAll(".product-card");
-  const clearBtn = document.querySelector(".clear-btn");
-
-  clearBtn.style.display = input ? "block" : "none";
-
-  products.forEach(product=>{
-    const text = product.textContent.toLowerCase();
-
-    product.style.display = text.includes(input) ? "block" : "none";
-  });
-}
-
-function clearSearch(){
-  const input = document.getElementById("searchInput");
-  input.value = "";
-  searchProducts();
-}
-</script>
-    
   </script>
 </body>
 </html>
