@@ -22,6 +22,7 @@ body{
   color:#222;
   padding-bottom:120px; /* 🔥 FIX: prevents bottom menu from hiding last row */
 }
+  
 /* ================= HEADER ================= */
 .header{
   margin:16px;
@@ -799,6 +800,24 @@ body{
     width:90%;
   }
   }
+  .end-quote{
+  text-align:center;
+  margin-top:25px;
+  padding:20px 10px;
+  color:#666;
+  font-size:13px;
+  line-height:1.6;
+}
+
+.end-quote p{
+  font-weight:500;
+  margin-bottom:6px;
+}
+
+.end-quote span{
+  font-size:12px;
+  opacity:0.8;
+}
 
 
 </style>
@@ -1651,8 +1670,11 @@ body{
     <div class="product-name">Pasta</div>
     <button class="add-btn" onclick="addToCart(this)">Add to Cart</button>
   </div>
-
-
+  
+  <div class="end-quote">
+  <p>🛒 Fresh groceries • Trusted quality • Fast service ❤️</p>
+  <span>Thank you for choosing Central & Stores</span>
+  </div>
   
   <script>
 
