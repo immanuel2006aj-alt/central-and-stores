@@ -778,15 +778,94 @@ body{
  header{
   position:relative; /* 🔥 IMPORTANT */
 }
+ .site-header{
+  position:relative;
+  background:#16a34a;
+  padding:30px 20px 60px;
+  text-align:center;
+}
 
+/* LOGO CENTER */
+.logo-box img{
+  width:90px;
+  border-radius:16px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.2);
+}
+
+/* MENU BUTTON LEFT */
+.menu-btn{
+  position:absolute;
+  top:20px;
+  left:15px;
+  z-index:9999;
+
+  font-size:26px;
+  color:#fff;
+  cursor:pointer;
+
+  background:rgba(255,255,255,0.2);
+  padding:6px 12px;
+  border-radius:10px;
+  backdrop-filter:blur(6px);
+}
+
+/* CLICK EFFECT */
+.menu-btn:active{
+  transform:scale(0.9);
+}
+.menu-btn{
+  pointer-events:auto;
+}
+
+.site-header *{
+  pointer-events:auto;
+}
+ .side-menu{
+  position:fixed;
+  top:0;
+  left:-260px;
+  width:260px;
+  height:100%;
+  background:#fff;
+  z-index:5000;
+  transition:0.3s;
+}
+
+.side-menu.open{
+  left:0;
+}
+
+.menu-overlay{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.4);
+  display:none;
+  z-index:4000;
+}
+
+.menu-overlay.show{
+  display:block;
+ }
 </style>
 </head>
 
 <body>
   <!-- ================= HEADER ================= -->
 <header class="site-header">
-  <div class="header-inner">
-</div>  
+
+  <!-- LEFT MENU -->
+  <div class="menu-btn" onclick="toggleMenu()">
+    ☰
+  </div>
+
+  <!-- CENTER LOGO -->
+  <div class="logo-box">
+    <img src="logo2.jpg" alt="logo">
+  </div>
+
 </header>
     <!-- CENTER LOGO -->
     <img src="logoz.jpg" alt="Central & Stores Logo" class="site-logo">
@@ -1870,6 +1949,11 @@ function toggleMenu(){
 
   menu.classList.toggle("open");
   overlay.classList.toggle("show");
+}
+  <script>
+function toggleMenu(){
+  document.getElementById("sideMenu").classList.toggle("open");
+  document.getElementById("menuOverlay").classList.toggle("show");
 }
  </script>
 </body>
