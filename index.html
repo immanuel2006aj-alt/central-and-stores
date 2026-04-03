@@ -46,57 +46,6 @@ body{
   font-size:12px;
   margin-left:4px;
 }
-
-.brand-card{
-  margin: 14px 16px;
-  background: #ffffff;
-  border-radius: 14px;
-  box-shadow: 0 6px 18px rgba(0,0,0,.08);
-  overflow: hidden;
-  cursor: pointer;
-}
-
-.brand-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:14px;
-}
-
-.brand-left{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  font-weight:600;
-}
-
-.brand-icon{
-  width:28px;
-  height:28px;
-  border-radius:50%;
-  background:#f59e0b;
-  color:#fff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:700;
-}
-
-.brand-arrow{
-  font-size:14px;
-  transition:0.3s;
-}
-
-.brand-content{
-  max-height:0;
-  overflow:hidden;
-  padding:0 14px;
-  font-size:13px;
-  color:#444;
-  line-height:1.5;
-  transition:0.3s ease;
-}
-
 /* ================= CATEGORY ROW ================= */
 .category-row{
   display:flex;
@@ -324,14 +273,20 @@ body{
   font-weight:700;
 }
 
-/* Bottom */
+/* =========================
+   FOOTER BOTTOM
+========================= */
 .footer-bottom{
   border-top:1px dashed #ddd;
   padding:12px;
   font-size:12px;
   opacity:.65;
 }
-  .info-box{
+
+/* =========================
+   INFO BOX (COLLAPSIBLE)
+========================= */
+.info-box{
   margin:10px 16px 14px;
   border-radius:14px;
   background:#ffffff;
@@ -339,6 +294,7 @@ body{
   overflow:hidden;
 }
 
+/* HEADER */
 .info-header{
   display:flex;
   align-items:center;
@@ -348,6 +304,7 @@ body{
   user-select:none;
 }
 
+/* ICON */
 .info-icon{
   width:26px;
   height:26px;
@@ -361,12 +318,14 @@ body{
   font-size:14px;
 }
 
+/* TITLE */
 .info-title{
   font-size:14px;
   font-weight:600;
   color:#111827;
 }
 
+/* CONTENT (HIDDEN STATE) */
 .info-content{
   padding:0 14px;
   font-size:13px;
@@ -374,14 +333,15 @@ body{
   color:#92400e;
   background:linear-gradient(135deg,#fff7ed,#fffbeb);
   border-left:4px solid #f59e0b;
+
   max-height:0;
   overflow:hidden;
-  transition:max-height 0.35s ease, padding 0.35s ease;
+  transition:max-height 0.4s ease, padding 0.3s ease;
 }
 
-/* Expanded state */
+/* EXPANDED STATE */
 .info-content.show{
-  max-height:120px;
+  max-height:200px; /* increased for better space */
   padding:10px 14px 14px;
 }
   /* MENU BUTTON */
@@ -2123,6 +2083,11 @@ function toggleBrandInfo(){
     arrow.style.transform = "rotate(180deg)";
   }
 }
+  <script>
+function toggleInfo(){
+  document.querySelector(".info-content").classList.toggle("show");
+}
+</script>
  </script>
 </body>
 </html>
