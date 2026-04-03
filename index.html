@@ -1008,17 +1008,22 @@ body.dark .menu-item:hover{
   </div>
 </div>
   <!-- ⓘ Collapsible Brand Info -->
-<div class="info-box">
-  <div class="info-header" onclick="toggleBrandInfo()">
-    <span class="info-icon">ⓘ</span>
-    <span class="info-title">Brand information</span>
+<div class="brand-card" onclick="toggleBrandInfo()">
+  
+  <div class="brand-header">
+    <div class="brand-left">
+      <div class="brand-icon">i</div>
+      <span>Brand Information</span>
+    </div>
+    <div class="brand-arrow" id="brandArrow">▼</div>
   </div>
 
-  <div class="info-content" id="brandInfo">
-    Brand images are for identification reference only.
-    Actual brand may vary based on availability.
+  <div class="brand-content" id="brandContent">
+    Brand images are for identification reference only.<br><br>
+    Products may vary based on availability.<br><br>
     Final confirmation will be done via phone call.
   </div>
+
 </div>
 
 
@@ -2053,6 +2058,21 @@ function setDarkMode(){
 function setLightMode(){
   document.body.classList.remove("dark");
   localStorage.setItem("theme","light");
+}
+  <script>
+function toggleBrandInfo(){
+  const content = document.getElementById("brandContent");
+  const arrow = document.getElementById("brandArrow");
+
+  if(content.style.maxHeight){
+    content.style.maxHeight = null;
+    content.style.padding = "0 14px";
+    arrow.style.transform = "rotate(0deg)";
+  } else {
+    content.style.maxHeight = content.scrollHeight + "px";
+    content.style.padding = "14px";
+    arrow.style.transform = "rotate(180deg)";
+  }
 }
  </script>
 </body>
