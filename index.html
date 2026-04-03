@@ -965,6 +965,46 @@ body.dark .menu-item:hover{
 
   outline: none;
  }
+ .social-bar{
+  display:flex;
+  gap:10px;
+  margin:10px 16px;
+  overflow-x:auto;
+}
+
+.social-btn{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:8px 12px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:600;
+  text-decoration:none;
+  white-space:nowrap;
+  box-shadow:0 4px 10px rgba(0,0,0,0.08);
+}
+
+.social-btn svg{
+  width:16px;
+  height:16px;
+}
+
+/* Colors */
+.whatsapp{
+  background:#dcfce7;
+  color:#166534;
+}
+
+.instagram{
+  background:#fdf2f8;
+  color:#be185d;
+}
+
+.call{
+  background:#eff6ff;
+  color:#1d4ed8;
+}
 
  
 </style>
@@ -1018,6 +1058,25 @@ body.dark .menu-item:hover{
   placeholder="Search products (Rice, Oil, Soap...)"
   class="search-bar"
 />
+ <!-- SOCIAL MEDIA LINKS -->
+<div class="social-bar">
+
+  <a href="https://wa.me/91XXXXXXXXXX" target="_blank" class="social-btn whatsapp">
+    <svg viewBox="0 0 24 24"><path d="M20 4.5A10 10 0 006.5 19l-1.5 4 4-1.5A10 10 0 1020 4.5zm-8 14a8 8 0 01-4.2-1.2l-.3-.2-2.5.7.7-2.4-.2-.3A8 8 0 1112 18zm4.3-5.7c-.2-.1-1.3-.6-1.5-.7-.2-.1-.3-.1-.4.1s-.5.7-.6.8c-.1.1-.2.1-.4 0-.2-.1-.9-.3-1.7-1-.6-.5-1-1.2-1.1-1.4-.1-.2 0-.3.1-.4.1-.1.2-.2.3-.3.1-.1.1-.2.2-.3.1-.1 0-.2 0-.3 0-.1-.4-1-.6-1.4-.2-.4-.3-.3-.4-.3h-.3c-.1 0-.3 0-.4.2s-.5.5-.5 1.3.5 1.6.6 1.7c.1.2 1 1.6 2.4 2.2 1.4.6 1.4.4 1.6.4.2 0 .7-.3.8-.6.1-.3.1-.5.1-.6 0-.1-.2-.1-.4-.2z"/></svg>
+    WhatsApp
+  </a>
+
+  <a href="https://instagram.com/yourprofile" target="_blank" class="social-btn instagram">
+    <svg viewBox="0 0 24 24"><path d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-2.8-2.2-5-5-5H7zm0 2h10c1.7 0 3 1.3 3 3v10c0 1.7-1.3 3-3 3H7c-1.7 0-3-1.3-3-3V7c0-1.7 1.3-3 3-3zm5 3a5 5 0 100 10 5 5 0 000-10zm0 2a3 3 0 110 6 3 3 0 010-6zm4.5-.9a1.1 1.1 0 100 2.2 1.1 1.1 0 000-2.2z"/></svg>
+    Instagram
+  </a>
+
+  <a href="tel:91XXXXXXXXXX" class="social-btn call">
+    <svg viewBox="0 0 24 24"><path d="M6.6 10.8a15 15 0 006.6 6.6l2.2-2.2c.3-.3.7-.4 1.1-.3 1.2.4 2.5.6 3.8.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.3 21 3 13.7 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.6.6 3.8.1.4 0 .8-.3 1.1l-2.2 2.2z"/></svg>
+    Call
+  </a>
+
+</div>
 
 </header>
 <!-- ================= TOP BAR ================= -->
