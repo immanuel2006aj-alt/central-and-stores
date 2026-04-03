@@ -1017,25 +1017,18 @@ body.dark .menu-item:hover{
   </div>
 </div>
   <!-- ⓘ Collapsible Brand Info -->
-<div class="brand-card" onclick="toggleBrandInfo()">
-  
-  <div class="brand-header">
-    <div class="brand-left">
-      <div class="brand-icon">i</div>
-      <span>Brand Information</span>
-    </div>
-    <div class="brand-arrow" id="brandArrow">▼</div>
+<div class="brand-info-card">
+  <div class="brand-header" onclick="toggleBrandInfo()">
+    <span>Brand Information</span>
+    <span id="brandArrow">▼</span>
   </div>
 
-  <div class="brand-content" id="brandContent">
-    Brand images are for identification reference only.<br><br>
-    Products may vary based on availability.<br><br>
-    Final confirmation will be done via phone call.
+  <div id="brandContent" class="brand-content">
+    <p>Brand images are for identification reference only.</p>
+    <p>Products may vary based on availability.</p>
+    <p>Final confirmation will be done via phone call.</p>
   </div>
-
 </div>
-
-
 <!-- ================= RICE SECTION ================= -->
 <div class="section-title">🌾 RICE <span style="font-size:14px;">(அரிசி)</span></div>
 
@@ -2088,6 +2081,20 @@ function toggleInfo(){
   document.querySelector(".info-content").classList.toggle("show");
 }
 </script>
+ <script>
+function toggleBrandInfo(){
+  const content = document.getElementById("brandContent");
+  const arrow = document.getElementById("brandArrow");
+
+  if(content.style.display === "block"){
+    content.style.display = "none";
+    arrow.innerText = "▼";
+  } else {
+    content.style.display = "block";
+    arrow.innerText = "▲";
+  }
+}
+ </script>
  </script>
 </body>
 </html>
