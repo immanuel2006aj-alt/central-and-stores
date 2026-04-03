@@ -150,7 +150,8 @@ body{
 }
 
 /* ADD BUTTON */
-.add-btn{
+
+ .add-btn{
   width: 100%;
   padding: 10px;
   border-radius: 10px;
@@ -166,6 +167,7 @@ body{
   font-weight:600;
   cursor:pointer;
 }
+
 .cart-indicator span{
   background:#0fbf4a;
   color:#fff;
@@ -174,15 +176,17 @@ body{
   font-size:12px;
   margin-left:4px;
 }
+
 .product-card img{
   width:100%;
-  height:140px;          /* fixed height */
-  object-fit:contain;    /* IMPORTANT */
-  background:#f2f2f2;    /* clean background */
+  height:140px;
+  object-fit:contain;
+  background:#f2f2f2;
   border-radius:14px;
   padding:10px;
 }
-  .cart-icon{
+
+.cart-icon{
   display:flex;
   align-items:center;
   gap:8px;
@@ -197,13 +201,17 @@ body{
 }
 
 .cart-icon span{
+  position:absolute;           /* 🔥 better badge position */
+  top:-6px;
+  right:-8px;
+
   background:#16a34a;
   color:#fff;
-  font-size:13px;
+  font-size:12px;
   font-weight:700;
-  padding:2px 8px;
+  padding:2px 6px;
   border-radius:999px;
-  min-width:20px;
+  min-width:18px;
   text-align:center;
 }
  .add-btn:active{
